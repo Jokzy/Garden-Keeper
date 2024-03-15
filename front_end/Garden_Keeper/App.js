@@ -1,54 +1,41 @@
-import { StatusBar } from 'expo-status-bar';
+import {StatusBar} from 'expo-status-bar';
 import React, {useState} from "react";
-import {Button, Linking, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {Button, ImageBackground, Linking, SafeAreaView, StyleSheet, Text, View, Image} from 'react-native';
 
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  image: {
+    flex: 1,
+    justifyContent: 'center',
+    borderCurve : 15,
+    borderRadius : 15,
+
+  },
+  text: {
+    color: 'white',
+    fontSize: 42,
+    lineHeight: 84,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    backgroundColor: '#000000c0',
+  },
+});
 
 
 export default function App() {
 
-const [name, setName]  = useState(  'Style Test')
-const onClickHandler = () => {
-setName('Style Test is Done!')
 
-}
-  return (
+    return (
+        <View style={styles.container}>
 
+          <ImageBackground source={require('./assets/background1.png')} resizeMode={'cover'} style={styles.image}>
+          <Text>
 
-    <View style={styles.container}>
-      <Text style={ styles.text}> {name}  </Text>
-      <Button style={styles.text} title= {'Update'} onPress={ onClickHandler   } >
-
-      </Button>
-    </View>
-
-  );
+          </Text>
+          </ImageBackground>
+        </View>
+    );
 };
-
-const styles = StyleSheet.create({
-  container: {
-
-    width: '100%',
-    height : '50%',
-    backgroundColor: 'grey',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth : 10 ,
-    borderColor: '#f03',
-    borderRadius : 10,
-    borderTopColor : 'black',
-    borderBottomColor : 'black'
-  },
-  text:{
-    color: '#ff00ff',
-    alignItems :'center',
-    justifyContent:'center',
-    fontStyle : "italic",
-    fontFamily : "Times New Roman",
-    fontWeight : "bold",
-    fontSize : 30,
-
-  },
-
-
-
-});
