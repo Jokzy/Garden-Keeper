@@ -9,3 +9,5 @@ from .models import Plante
 class PlanteView(viewsets.ModelViewSet):
     serializer_class = PlanteSerializer
     queryset = Plante.objects.all()
+
+
