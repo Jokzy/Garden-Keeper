@@ -9,6 +9,7 @@ export default function App() {
 
   const handleSearch = () => {
     // the logic part idk what goes here lol
+    // heeheheheheheh
     setSearchResult(searchText);
   };
 
