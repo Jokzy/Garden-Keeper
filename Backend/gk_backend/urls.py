@@ -20,7 +20,7 @@ from gk_app import views
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register(r'plante', views.PlanteView, 'plante')
+router.register(r'plante', views.PlanteView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
