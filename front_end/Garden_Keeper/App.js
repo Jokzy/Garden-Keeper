@@ -1,29 +1,23 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createMaterialTopTabNavigator} from "@react-navigation/material-top-tabs";
+import ScreenEnc from "./Encyclopédie";
 
 
 export default function App() {
-  const [searchText, setSearchText] = useState('');
-  const [searchResult, setSearchResult] = useState('');
 
-  const handleSearch = () => {
-    // the logic part idk what goes here lol
-    // heeheheheheheh
-    setSearchResult(searchText);
-  };
+  const topTab = createMaterialTopTabNavigator()
+
 
   return (
-      <View style={styles.container}>
-        <TextInput
-            style={styles.input}
-            placeholder="Type here to search..."
-            value={searchText}
-            onChangeText={text => setSearchText(text)}
-        />
-        <Button title="Search" onPress={handleSearch} />
-        <Text style={styles.result}>{searchResult}</Text>
-      </View>
+      <NavigationContainer>
+        <topTab.Navigator>
+          <topTab.Screen name="Ency" component={ScreenEnc} />
+
+        </topTab.Navigator>
+      </NavigationContainer>
   );
 };
 
