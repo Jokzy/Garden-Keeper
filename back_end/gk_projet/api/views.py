@@ -24,12 +24,10 @@ def getData(request, query):
         r= requests.get(perenual_url)
         info= r.json()
 
-        Plante.objects.create(nom=info["nom"], nom_scientifique=info["nom_scientifique"])
+        Plante.objects.create(nom=info["common_name"], nom_scientifique=info["scientific_name"])
 
         #temp=info['data'][0]['watering']
         return Response(info)
-
-
 
 
 @api_view(['POST'])
