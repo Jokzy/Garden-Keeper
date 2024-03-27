@@ -11,4 +11,4 @@ class Plante(models.Model):
     @classmethod
     def create(cls, nom):
         plante = cls(nom=nom)
-        return plante;
+        return plante
