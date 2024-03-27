@@ -4,19 +4,41 @@ import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator} from "@react-navigation/material-top-tabs";
 import ScreenEnc from "./Encyclopédie";
+import ScreenAmi from "./Amis";
+import ScreenJar from "./Jardin";
+
 
 
 export default function App() {
-
+  const navigationTheme = {
+    colors: {
+      background: "transparent",
+    },
+  }
   const topTab = createMaterialTopTabNavigator()
 
 
-  return (
-      <NavigationContainer>
-        <topTab.Navigator>
-          <topTab.Screen name="Ency" component={ScreenEnc} />
+  function SettingsScreen() {
+    return (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text>Settings!</Text>
+        </View>
+    );
+  }
 
-        </topTab.Navigator>
+  return (
+      <NavigationContainer theme={navigationTheme}>
+          <topTab.Navigator screenOptions={ {
+            tabBarStyle: {
+            position: 'absolute',
+            borderTopLeftRadius: 12,
+            borderTopRightRadius: 12,
+            backgroundColor: 'transparent'}}}>
+            <topTab.Screen name="Menu" component={SettingsScreen}/>
+            <topTab.Screen name="Encyclopédie" component={ScreenEnc}/>
+            <topTab.Screen name="Jardin" component={ScreenJar}/>
+            <topTab.Screen name="Amis" component={ScreenAmi}/>
+          </topTab.Navigator>
       </NavigationContainer>
   );
 };
@@ -42,5 +64,3 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-
-

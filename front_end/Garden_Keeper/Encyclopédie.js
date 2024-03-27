@@ -13,18 +13,20 @@ export default function ScreenEnc() {
     };
 
     return (
-        <View style={styles.container}>
-            <ImageBackground source={require('/assets/background2.png')} resizeMode = {'center'} style={styles.image}>
-            <TextInput
-                style={styles.input}
-                placeholder="Type here to search..."
-                value={searchText}
-                onChangeText={text => setSearchText(text)}
-            />
-            <Button title="Search" onPress={handleSearch} />
-            <Text style={styles.result}>{searchResult}</Text>
-            </ImageBackground>
-        </View>
+        <ImageBackground source={require("./assets/background2.png")} resizeMode={"cover"} style={styles.image}>
+            <View style={styles.container}>
+
+                <TextInput
+                    style={styles.input}
+                    placeholder="Type here to search..."
+                    value={searchText}
+                    onChangeText={text => setSearchText(text)}
+                />
+                <Button title="Search" onPress={handleSearch} />
+                <Text style={styles.result}>{searchResult}</Text>
+
+            </View>
+        </ImageBackground>
     );
 };
 
@@ -51,5 +53,8 @@ const styles = StyleSheet.create({
     image: {
         flex: 1,
         justifyContent: 'center',
+
+
+
     },
 });
