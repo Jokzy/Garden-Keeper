@@ -1,41 +1,52 @@
-import {StatusBar} from 'expo-status-bar';
-import React, {useState} from "react";
-import {Button, ImageBackground, Linking, SafeAreaView, StyleSheet, Text, View, Image} from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import React, { useState } from 'react';
+import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
 
+
+export default function App() {
+  const [searchText, setSearchText] = useState('');
+  const [searchResult, setSearchResult] = useState('');
+
+  const handleSearch = () => {
+    // the logic part idk what goes here lol
+    // heeheheheheheh
+    setSearchResult(searchText);
+  };
+
+  return (
+      <View style={styles.container}>
+        <TextInput
+            style={styles.input}
+            placeholder="Type here to search..."
+            value={searchText}
+            onChangeText={text => setSearchText(text)}
+        />
+        <Button title="Search" onPress={handleSearch} />
+        <Text style={styles.result}>{searchResult}</Text>
+      </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  image: {
-    flex: 1,
     justifyContent: 'center',
-    borderCurve : 15,
-    borderRadius : 15,
-
+    alignItems: 'center',
+    paddingHorizontal: 20,
   },
-  text: {
-    color: 'white',
-    fontSize: 42,
-    lineHeight: 84,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    backgroundColor: '#000000c0',
+  input: {
+    width: '100%',
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 10,
+  },
+  result: {
+    marginTop: 20,
+    fontSize: 16,
   },
 });
 
 
-export default function App() {
-
-
-    return (
-        <View style={styles.container}>
-
-          <ImageBackground source={require('./assets/background1.png')} resizeMode={'cover'} style={styles.image}>
-          <Text>
-
-          </Text>
-          </ImageBackground>
-        </View>
-    );
-};
