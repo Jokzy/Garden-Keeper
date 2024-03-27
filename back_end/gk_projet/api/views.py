@@ -16,15 +16,15 @@ api_key = "sk-eKNW65d813327065e4323" #perenual
 
 @api_view(['GET'])
 def getData(request, query):
-    if Plante.objects.filter(name=query).exists():
-        return Response(Plante.objects.get(name=query))
+    if Plante.objects.filter(nom=query).exists():
+        return Response(Plante.objects.get(nom=query))
     # plante = Plante.objects.get(scientific_name=query)  # here u check shit bitch to see if it exists
     else:
         perenual_url = f"https://perenual.com/api/species-list?key={api_key}&q={query}"
         r= requests.get(perenual_url)
         info= r.json()
 
-        Plante.objects.create(name=info["name"], scientific_name=info["scientific_name"])
+        Plante.objects.create(nom=info["nom"], nom_scientifique=info["nom_scientifique"])
 
         #temp=info['data'][0]['watering']
         return Response(info)
