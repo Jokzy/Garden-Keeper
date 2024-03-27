@@ -14,7 +14,7 @@ export default function ScreenEnc() {
 
     return (
         <View style={styles.container}>
-            <ImageBackground source={require('/assets/background2.png')} resizeMode = {'center'} style={styles.image}>
+
             <TextInput
                 style={styles.input}
                 placeholder="Type here to search..."
@@ -23,7 +23,7 @@ export default function ScreenEnc() {
             />
             <Button title="Search" onPress={handleSearch} />
             <Text style={styles.result}>{searchResult}</Text>
-            </ImageBackground>
+
         </View>
     );
 };

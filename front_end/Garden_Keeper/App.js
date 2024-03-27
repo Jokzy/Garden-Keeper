@@ -6,15 +6,24 @@ import { createMaterialTopTabNavigator} from "@react-navigation/material-top-tab
 import ScreenEnc from "./Encyclopédie";
 
 
+
 export default function App() {
 
   const topTab = createMaterialTopTabNavigator()
 
+  function SettingsScreen() {
+    return (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text>Settings!</Text>
+        </View>
+    );
+  }
 
   return (
       <NavigationContainer>
         <topTab.Navigator>
-          <topTab.Screen name="Ency" component={ScreenEnc} />
+          <topTab.Screen name="hello" component={SettingsScreen}/>
+          <topTab.Screen name="Ency" component={ScreenEnc}/>
 
         </topTab.Navigator>
       </NavigationContainer>
