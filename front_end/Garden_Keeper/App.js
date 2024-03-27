@@ -1,16 +1,14 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
-
 
 export default function App() {
   const [searchText, setSearchText] = useState('');
   const [searchResult, setSearchResult] = useState('');
 
   const handleSearch = () => {
-    // the logic part idk what goes here lol
-    // heeheheheheheh
-    setSearchResult(searchText);
+    fetch(`http://127.0.0.1:8000/get-data/` + searchText)
+        .then(response => response.json())
+        .then(data => setSearchResult(data))
   };
 
   return (
