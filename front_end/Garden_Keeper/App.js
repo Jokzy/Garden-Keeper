@@ -1,15 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
 
 export default function App() {
   const [searchText, setSearchText] = useState('');
   const [searchResult, setSearchResult] = useState('');
 
+  // useEffect(() => {
+  //     fetch(`http://127.0.0.1:8000/get-data/${searchText}`)
+  //         .then(response => response.json())
+  //         .then(data => setSearchResult(data))
+  //         .catch((err) => setSearchResult("No plant!"))
+  //   }, []);
+
+
   const handleSearch = () => {
-    fetch(`http://127.0.0.1:8000/get-data/` + searchText)
-        .then(response => response.json())
-        .then(data => setSearchResult(data))
-  };
+    //setSearchResult(searchText)
+
+    fetch(`http://127.0.0.1:8000/get-data/${searchText}/`)
+          .then(response => response.json())
+          .then(data => setSearchResult(data))
+          .catch((error) => console.error(error))
+  }
 
   return (
       <View style={styles.container}>
@@ -19,7 +30,7 @@ export default function App() {
             value={searchText}
             onChangeText={text => setSearchText(text)}
         />
-        <Button title="Search" onPress={handleSearch} />
+        <Button title="Search" onPress={handleSearch}/>
         <Text style={styles.result}>{searchResult}</Text>
       </View>
   );
