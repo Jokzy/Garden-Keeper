@@ -2,6 +2,8 @@ import React, { useState , useEffect} from 'react';
 import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
 
 export default function App() {
+  const ip_adresse = "10.186.2.117"
+
   const [searchText, setSearchText] = useState('');
   const [searchResult, setSearchResult] = useState('');
 
@@ -13,14 +15,23 @@ export default function App() {
   //   }, []);
 
 
-  const handleSearch = () => {
-    //setSearchResult(searchText)
+  // const handleSearch = () => {
+  //   //setSearchResult(searchText)
+  //
+  //   fetch(`http://127.0.0.1:8000/get-data/${searchText}/`)
+  //         .then(response => response.json())
+  //         .then(data => setSearchResult(data))
+  //         .catch((error) => console.error(error))
+  // }
 
-    fetch(`http://127.0.0.1:8000/get-data/${searchText}/`)
-          .then(response => response.json())
-          .then(data => setSearchResult(data))
-          .catch((error) => console.error(error))
+
+    const handleSearch = async () => {
+      const response = await fetch(`http://${ip_adresse}:8000/get-data/${searchText}/`)
+
+      const info_as_object = await response.json()
+      setSearchResult(JSON.stringify(info_as_object))
   }
+
 
   return (
       <View style={styles.container}>
