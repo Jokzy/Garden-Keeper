@@ -9,6 +9,7 @@ export default function App() {
     fetch(`http://127.0.0.1:8000/get-data/` + searchText)
         .then(response => response.json())
         .then(data => setSearchResult(data))
+
   };
 
   return (

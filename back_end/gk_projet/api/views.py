@@ -18,7 +18,9 @@ api_key = "sk-eKNW65d813327065e4323"  # perenual
 @api_view(['GET'])
 def getData(request, query):
     if Plante.objects.filter(nom_recherche=query).exists():
+        # or Plante.objects.get(nom=query).exists()
         plante = Plante.objects.get(nom_recherche=query)
+        #  plante = Plante.objects.get(nom_recherche=query) if Plante.objects.filter(nom_recherche=query).exists() else Plante.objects.get(nom=query)
         serializer = PlanteSerializer(plante, many=False)
         return Response(serializer.data)
     else:
@@ -26,13 +28,17 @@ def getData(request, query):
         r = requests.get(perenual_url)
         info = r.json()
 
-        if info['data']: # vérifie si le dictionnaire est vide
+        if info['data']:  # vérifie si le dictionnaire est vide
+            # ajoute les models dans les cases de la base de données
             Plante.objects.create(nom_recherche=query, nom=info['data'][0]["common_name"],
-                                  nom_scientifique=info['data'][0]["scientific_name"])
+                                  nom_scientifique=info['data'][0]["scientific_name"][0],
+                                  arrosage=info['data'][0]["watering"], soleil=info['data'][0]["sunlight"],
+                                  cycle=info['data'][0]["cycle"])
             plante = Plante.objects.get(nom_recherche=query)
             serializer = PlanteSerializer(plante)
             return Response(serializer.data)
         return Response({"message": "Plante introuvable"})
+
 
 @api_view(['POST'])
 def addItem(request):
