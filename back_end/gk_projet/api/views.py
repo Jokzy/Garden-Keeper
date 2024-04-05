@@ -17,10 +17,8 @@ api_key = "sk-eKNW65d813327065e4323"  # perenual
 
 @api_view(['GET'])
 def getData(request, query):
-    if Plante.objects.filter(nom_recherche=query).exists():
-        # or Plante.objects.get(nom=query).exists()
-        plante = Plante.objects.get(nom_recherche=query)
-        #  plante = Plante.objects.get(nom_recherche=query) if Plante.objects.filter(nom_recherche=query).exists() else Plante.objects.get(nom=query)
+    if Plante.objects.filter(nom_recherche=query).exists() or Plante.objects.filter(nom=query).exists():
+        plante = Plante.objects.get(nom_recherche=query) if Plante.objects.filter(nom_recherche=query).exists() else Plante.objects.get(nom=query)
         serializer = PlanteSerializer(plante, many=False)
         return Response(serializer.data)
     else:
