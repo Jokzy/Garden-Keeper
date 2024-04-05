@@ -1,60 +1,151 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import {View, TextInput, Button, Text, StyleSheet, ImageBackground} from 'react-native';
+import {
+    View,
+    TextInput,
+    Button,
+    Text,
+    StyleSheet,
+    ImageBackground,
+    Image,
+    TouchableOpacity,
+    KeyboardAvoidingView
+} from 'react-native';
+import * as Font from "expo-font"
+import { AppLoading } from 'expo';
 
-export default function ScreenEnc() {
-    const [searchText, setSearchText] = useState('');
-    const [searchResult, setSearchResult] = useState('');
+async function loadFont(){
+    await Font.loadAsync({
+        "Cheflat": require("./assets/fonts/Cheflat.ttf"),
+    });
+}
 
-    const handleSearch = () => {
-        // the logic part idk what goes here lol
-        // heeheheheheheh
-        setSearchResult(searchText);
+
+
+    export default function ScreenEnc() {
+        const [searchText, setSearchText] = useState('');
+        const [searchResult, setSearchResult] = useState('');
+
+        const handleSearch = () => {
+            // the logic part idk what goes here lol
+            // heeheheheheheh
+            setSearchResult(searchText);
+        };
+        const MyIconButton = ({ onPress }) => (
+            <TouchableOpacity onPress={onPress} style={styles.button}>
+                <Image
+                    source={require('./assets/Magnifying_glass_icon.png')}
+                    style={styles.icon}
+                />
+            </TouchableOpacity>
+        );
+
+
+        return (
+            <ImageBackground source={require("./assets/background2.png")} resizeMode={"cover"} style={styles.image}>
+                <View style={styles.container}>
+
+                    <KeyboardAvoidingView style={styles.containerTop}>
+                        <Text style={styles.titleText}>Encyclopédie</Text>
+                        <View style={styles.containerSearchBar}>
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Type here to search..."
+                                value={searchText}
+                                onChangeText={text => setSearchText(text)}
+                            />
+                            <MyIconButton onPress={handleSearch}></MyIconButton>
+                        </View>
+                            <Text style={styles.result}>{searchResult}</Text>
+
+                    </KeyboardAvoidingView>
+                    <View style={styles.containerFlatList}>
+
+                    </View>
+                </View>
+            </ImageBackground>
+        );
     };
 
-    return (
-        <ImageBackground source={require("./assets/background2.png")} resizeMode={"cover"} style={styles.image}>
-            <View style={styles.container}>
-
-                <TextInput
-                    style={styles.input}
-                    placeholder="Type here to search..."
-                    value={searchText}
-                    onChangeText={text => setSearchText(text)}
-                />
-                <Button title="Search" onPress={handleSearch} />
-                <Text style={styles.result}>{searchResult}</Text>
-
-            </View>
-        </ImageBackground>
-    );
-};
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingHorizontal: 20,
-    },
-    input: {
-        width: '100%',
-        height: 40,
-        borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 5,
-        paddingHorizontal: 10,
-        marginBottom: 10,
-    },
-    result: {
-        marginTop: 20,
-        fontSize: 16,
-    },
-    image: {
-        flex: 1,
-        justifyContent: 'center',
 
 
+    const styles = StyleSheet.create({
+        container: {
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
 
-    },
-});
+        },
+        containerTop: {
+            flex: 2,
+            paddingTop: 10,
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
+            paddingHorizontal: 30,
+        },
+        containerSearchBar: {
+            flex: 0.3,
+            flexDirection: "row",
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingHorizontal: 30,
+
+
+        },
+
+        containerFlatList: {
+            flex: 3
+        },
+
+        input: {
+            width: '90%',
+            height: 40,
+            borderWidth: 1,
+            borderColor: 'white',
+            borderRadius: 25,
+            paddingHorizontal: 10,
+            marginBottom: 10,
+            backgroundColor: "white",
+            alignItems: 'center',
+            justifyContent: "center",
+            paddingLeft: 10
+        },
+        result: {
+            marginTop: 20,
+            fontSize: 30,
+            fontFamily: "Cheflat",
+            fontWeight: "bold",
+            color: "white"
+        },
+        image: {
+            flex: 1,
+            justifyContent: 'center',
+        },
+        titleText: {
+            fontFamily: "Cheflat",
+            fontWeight: "bold",
+            fontSize: 40,
+            color: "#75904b"
+        },
+        button:{
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: 'white',
+            padding: 10,
+            borderRadius: 25,
+            width: 35,
+            height:35,
+            paddingRight:0
+
+
+        },
+        icon: {
+            width: 15,
+            height: 15,
+            marginRight: 10,
+
+        },
+
+    });
+
