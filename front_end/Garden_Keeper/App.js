@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import {View, TextInput, Button, Text, StyleSheet, ImageBackground, TouchableOpacity, Image} from 'react-native';
@@ -6,6 +7,12 @@ import { createMaterialTopTabNavigator} from "@react-navigation/material-top-tab
 import ScreenEnc from "./Encyclopédie";
 import ScreenAmi from "./Amis";
 import ScreenJar from "./Jardin";
+import ScreenSett from "./Settings";
+import MenuIcon from "./assets/Menu.png"
+import EncyclopedieIcon from "./assets/Encyclopédie.png"
+import GardenIcon from "./assets/Mon jardin.png"
+import FriendsIcon from "./assets/Mes amis.png"
+
 
 
 export default function App() {
@@ -30,7 +37,7 @@ export default function App() {
             />
         </TouchableOpacity>
     );
-
+    //const Drawer = createDrawerNavigator();
   const topTab = createMaterialTopTabNavigator()
   function SettingsScreen() {
     return (
@@ -53,9 +60,28 @@ export default function App() {
 
 return (
     <NavigationContainer  theme={navigationTheme}>
-      <topTab.Navigator screenOptions={ {
-          tabBarShowLabel: true,
-          tabBarShowIcon: false,
+      <topTab.Navigator
+          initialRouteName={"Menu"}
+          screenOptions={({ route }) => ({
+              tabBarIcon: ({ focused, color, size }) => {
+                  let icon;
+                  if (route.name === 'Home') {
+                      icon = MenuIcon;
+                  } else if (route.name === 'Encyclopédie') {
+                      icon = EncyclopedieIcon
+                  } else if (route.name === 'Jardin') {
+                      icon = GardenIcon
+                  } else if (route.name === 'Amis') {
+                      icon = FriendsIcon
+                  }
+                  // This whole thing lets us change the icons for the top bar. It works ish we just have to find a way to make them all fit
+                  return <Image source={icon} style={{ width: size, height: size, tintColor: color }} />;
+              },
+              tabBarShowLabel: true,
+              tabBarShowIcon: false,
+              swipeEnabled: false,
+
+
         tabBarStyle: {
           position: 'absolute',
           borderTopLeftRadius: 12,
@@ -64,10 +90,9 @@ return (
           bottom: 695,
           right:0,
           left:0,
-
           elevation: 0, // Elevation 0 fait qu'il y a pas de shadow en dessous de la tab bar
-          //paddingTop: StatusBar.height, I tried to not make the status bar and top bar overlap. Unsuccessfully
-          backgroundColor: 'transparent',}}}
+          backgroundColor: 'transparent',}
+          })}
         >
 
         <topTab.Screen  name="Menu" component={SettingsScreen}/>
@@ -77,6 +102,19 @@ return (
       </topTab.Navigator>
     </NavigationContainer>
   );
+
+
+
+
+  return(
+      <NavigationContainer>
+          <Drawer.Navigator>
+              <Drawer.Screen name={"Settings"} component={ScreenSett}/>
+              <Drawer.Screen name={"Settings"} component={ScreenSett}/>
+          </Drawer.Navigator>
+
+      </NavigationContainer>
+  )
 };
 
 
