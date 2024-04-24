@@ -8,6 +8,7 @@ import ScreenEnc from "./Encyclopédie";
 import ScreenAmi from "./Amis";
 import ScreenJar from "./Jardin";
 import ScreenSett from "./Settings";
+import Camera from "./Camera";
 import MenuIcon from "./assets/Menu.png"
 import EncyclopedieIcon from "./assets/Encyclopédie.png"
 import GardenIcon from "./assets/Mon jardin.png"
@@ -21,6 +22,7 @@ export default function App() {
       background: "transparent",
     },
   }
+
     const CameraIconButton = ({ onPress }) => (
         <TouchableOpacity onPress={onPress} style={styles.button}>
             <Image
@@ -28,6 +30,8 @@ export default function App() {
                 style={styles.icon}
             />
         </TouchableOpacity>
+
+
     );
     const SettingsIconButton = ({ onPress }) => (
         <TouchableOpacity onPress={onPress} style={styles.button}>
@@ -51,7 +55,7 @@ export default function App() {
 
             </View>
             <View style={styles.containerPressables}>
-            <CameraIconButton></CameraIconButton>
+            <CameraIconButton onPress={}></CameraIconButton>
                 <SettingsIconButton></SettingsIconButton>
             </View>
         </ImageBackground>
