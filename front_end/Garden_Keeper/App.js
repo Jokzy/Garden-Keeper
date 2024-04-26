@@ -21,6 +21,7 @@ const topTab = createMaterialTopTabNavigator()
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+
   const navigationTheme = {
     colors: {
       background: "transparent",
@@ -120,9 +121,6 @@ export default function App() {
                 </Stack.Navigator>
             </NavigationContainer>
         );
-
-
-
     };
 
 

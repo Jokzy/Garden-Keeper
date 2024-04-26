@@ -23,14 +23,19 @@ async function loadFont(){
 
 
     export default function ScreenEnc() {
+        const ip_adresse = "" //TODO: REMOVE THIS BEFORE PUSHING
+
         const [searchText, setSearchText] = useState('');
         const [searchResult, setSearchResult] = useState('');
 
-        const handleSearch = () => {
-            // the logic part idk what goes here lol
-            // heeheheheheheh
+        const handleSearch = async() => {
+            const response = await fetch(`http://${ip_adresse}:8000/get-data/${searchText}/`)
+            const info_as_object = await response.json()
+
+            setSearchResult(JSON.stringify(info_as_object))
             setSearchResult(searchText);
         };
+
         const MyIconButton = ({ onPress }) => (
             <TouchableOpacity onPress={onPress} style={styles.button}>
                 <Image
