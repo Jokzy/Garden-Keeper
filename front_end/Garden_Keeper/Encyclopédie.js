@@ -23,7 +23,7 @@ async function loadFont(){
 
 
     export default function ScreenEnc() {
-        const ip_adresse = "" //TODO: REMOVE THIS BEFORE PUSHING
+        const ip_adresse = "10.186.2.188" //TODO: REMOVE THIS BEFORE PUSHING
 
         const [searchText, setSearchText] = useState('');
         const [searchResult, setSearchResult] = useState('');
