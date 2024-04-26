@@ -28,7 +28,10 @@ def getData(request, query):
 
         if info['data']: # vérifie si le dictionnaire est vide
             Plante.objects.create(nom_recherche=query, nom=info['data'][0]["common_name"],
-                                  nom_scientifique=info['data'][0]["scientific_name"])
+                                  nom_scientifique=info['data'][0]["scientific_name"],
+                                  arrosage=info['data'][0]["watering"], soleil=info['data'][0]["sunlight"],
+                                  cycle=info['data'][0]["cycle"])
+
             plante = Plante.objects.get(nom_recherche=query)
             serializer = PlanteSerializer(plante)
             return Response(serializer.data)
