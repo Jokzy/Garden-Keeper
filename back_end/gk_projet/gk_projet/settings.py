@@ -26,7 +26,10 @@ SECRET_KEY = 'django-insecure-@1p05o68(x#x0y6%0rz7@kxg3!xh$46&t499^daa8wcth%g(_8
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'localhost', '127.0.0', '10.186.2.117', # Mettre l'addresse IP de l'ordinateur!
+    'localhost',
+    '127.0.0',
+    '127.0.0.1',
+    '192.168.0.248', #Mettre l'addresse IP de l'ordinateur! #TODO: REMOVE YOUR IP BEFORE PUSHING LOL
 ]
 
 # Application definition
@@ -39,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'corsheaders'
     'rest_framework',
     'gk_app',
 ]
