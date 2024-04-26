@@ -3,12 +3,14 @@ import { StyleSheet, Text, View, SafeAreaView, Button, Image } from 'react-nativ
 import { useEffect, useRef, useState } from 'react';
 import { Camera } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
+import { useNavigation } from '@react-navigation/native';
 
 export default function App() {
     let cameraRef = useRef();
     const [hasCameraPermission, setHasCameraPermission] = useState();
     const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState();
     const [photo, setPhoto] = useState();
+    const navigation = useNavigation();
 
     useEffect(() => {
         (async () => {
@@ -63,8 +65,9 @@ export default function App() {
         <Camera style={styles.container} ref={cameraRef}>
             <View style={styles.buttonContainer}>
                 <Button title="Take Pic" onPress={takePic} />
+                <Button title="Home" onPress={() => navigation.goBack()} />
             </View>
-            <StatusBar style="auto" />
+
         </Camera>
     );
 }
@@ -82,6 +85,12 @@ const styles = StyleSheet.create({
     preview: {
         alignSelf: 'stretch',
         flex: 1
+    },
+    buttonStyle:{
+        borderRadius: 25,
+        height: 50,
+        width: 50,
+        backgroundColor: "white"
     }
 });
 
