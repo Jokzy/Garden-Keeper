@@ -29,7 +29,7 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0',
     '127.0.0.1',
-    '192.168.0.248', #Mettre l'addresse IP de l'ordinateur! #TODO: REMOVE YOUR IP BEFORE PUSHING LOL
+    '', #Mettre l'addresse IP de l'ordinateur! #TODO: REMOVE YOUR IP BEFORE PUSHING LOL
 ]
 
 # Application definition
@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'corsheaders'
+    'corsheaders',
     'rest_framework',
     'gk_app',
 ]
@@ -50,6 +50,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
