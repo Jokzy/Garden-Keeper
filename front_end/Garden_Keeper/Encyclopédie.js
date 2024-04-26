@@ -12,6 +12,7 @@ import {
     KeyboardAvoidingView
 } from 'react-native';
 import * as Font from "expo-font"
+import * as ImagePicker from 'expo-image-picker';
 import { AppLoading } from 'expo';
 
 async function loadFont(){
@@ -25,6 +26,26 @@ async function loadFont(){
     export default function ScreenEnc() {
         const [searchText, setSearchText] = useState('');
         const [searchResult, setSearchResult] = useState('');
+        const [image, setImage] = useState(null);
+
+        const pickImage = async () => {
+
+            const {status} = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if (status !== 'granted') {
+                alert('Sorry, we need camera roll permissions to make this work!');
+            }
+            let result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.All,
+                allowsEditing: true,
+                aspect: [4, 3],
+                quality: 1,
+            })
+
+            if (!result.cancelled) {
+                setImage(result.uri);
+            }
+        };
+
 
         const handleSearch = () => {
             // the logic part idk what goes here lol
@@ -35,6 +56,15 @@ async function loadFont(){
             <TouchableOpacity onPress={onPress} style={styles.button}>
                 <Image
                     source={require('./assets/Magnifying_glass_icon.png')}
+                    style={styles.icon}
+                />
+            </TouchableOpacity>
+        );
+
+        const MyPickingButton = ({ onPress }) => (
+            <TouchableOpacity onPress={onPress} style={styles.button}>
+                <Image
+                    source={require('./assets/imagesicon.png')}
                     style={styles.icon}
                 />
             </TouchableOpacity>
@@ -59,6 +89,7 @@ async function loadFont(){
                             <Text style={styles.result}>{searchResult}</Text>
 
                     </KeyboardAvoidingView>
+                    <MyPickingButton onPress={pickImage}></MyPickingButton>
                     <View style={styles.containerFlatList}>
 
                     </View>
