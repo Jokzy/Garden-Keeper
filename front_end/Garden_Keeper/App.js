@@ -2,8 +2,11 @@ import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import React, {Component, useState} from 'react';
 import {View, TextInput, Button, Text, StyleSheet, ImageBackground, TouchableOpacity, Image} from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import { createMaterialTopTabNavigator} from "@react-navigation/material-top-tabs";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+
 import ScreenEnc from "./Encyclopédie";
 import ScreenAmi from "./Amis";
 import ScreenJar from "./Jardin";
@@ -14,7 +17,8 @@ import EncyclopedieIcon from "./assets/Encyclopédie.png"
 import GardenIcon from "./assets/Mon jardin.png"
 import FriendsIcon from "./assets/Mes amis.png"
 
-
+const topTab = createMaterialTopTabNavigator()
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   const navigationTheme = {
@@ -42,8 +46,9 @@ export default function App() {
         </TouchableOpacity>
     );
     //const Drawer = createDrawerNavigator();
-  const topTab = createMaterialTopTabNavigator()
+
   function SettingsScreen() {
+      const navigation = useNavigation();
     return (
         <ImageBackground source={require("./assets/background1.png")} resizeMode={"cover"} style={styles.image}>
           <View style={styles.containerTitle}>
@@ -55,15 +60,14 @@ export default function App() {
 
             </View>
             <View style={styles.containerPressables}>
-            <CameraIconButton ></CameraIconButton>
+            <CameraIconButton onPress={navigation.navigate('Camera')}></CameraIconButton>
                 <SettingsIconButton></SettingsIconButton>
             </View>
         </ImageBackground>
     );
   }
-
-return (
-    <NavigationContainer  theme={navigationTheme}>
+    const HomeTabNavigator = () => {
+      return(
         <topTab.Navigator
             initialRouteName={"Menu"}
             screenOptions={({route}) => ({
@@ -106,80 +110,79 @@ return (
             <topTab.Screen name="Amis" component={ScreenAmi}/>
             <topTab.Screen name="Camera" component={Camera}/>
         </topTab.Navigator>
-    </NavigationContainer>
-);
-
-
-    return (
-        <NavigationContainer>
-          <Drawer.Navigator>
-              <Drawer.Screen name={"Settings"} component={ScreenSett}/>
-              <Drawer.Screen name={"Settings"} component={ScreenSett}/>
-          </Drawer.Navigator>
-
-      </NavigationContainer>
-  )
-};
-
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingHorizontal:20,
-    },
-    image: {
-        flex: 1,
-        justifyContent: 'center',
-    },
-    containerTitle:{
-        flex:2,
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    containerCarousel:{
-        flex:2,
-    },
-    containerPressables:{
-        flex:0.5,
-        flexDirection: "row",
-        justifyContent: 'space-between',
-        alignItems: 'baseline',
+      )
+    }
+        return (
+            <NavigationContainer theme={navigationTheme}>
+                <Stack.Navigator>
+                    <Stack.Screen name="Home" component={HomeTabNavigator}/>
+                    <Stack.Screen name={"Camera"} component={Camera}/>
+                </Stack.Navigator>
+            </NavigationContainer>
+        );
 
 
 
-    },
-    titleText: {
-        fontFamily: "Cheflat",
-        fontWeight: "bold",
-        fontSize: 60,
-        color: "#75904b"
-    },
-    titleText2: {
-        fontFamily: "Cheflat",
-        fontWeight: "bold",
-        fontSize: 50,
-        color: "#75904b"
-    },
-    button:{
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: 'transparent',
-        padding: 10,
-        borderRadius: 25,
-        width: 65,
-        height:65,
-        paddingRight:0
+    };
 
 
-    },
-    icon: {
-        width: 45,
-        height: 45,
-        marginRight: 10,
+    const styles = StyleSheet.create({
+        container: {
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingHorizontal: 20,
+        },
+        image: {
+            flex: 1,
+            justifyContent: 'center',
+        },
+        containerTitle: {
+            flex: 2,
+            alignItems: "center",
+            justifyContent: "center",
+        },
+        containerCarousel: {
+            flex: 2,
+        },
+        containerPressables: {
+            flex: 0.5,
+            flexDirection: "row",
+            justifyContent: 'space-between',
+            alignItems: 'baseline',
 
-    },
 
-      });
+        },
+        titleText: {
+            fontFamily: "Cheflat",
+            fontWeight: "bold",
+            fontSize: 60,
+            color: "#75904b"
+        },
+        titleText2: {
+            fontFamily: "Cheflat",
+            fontWeight: "bold",
+            fontSize: 50,
+            color: "#75904b"
+        },
+        button: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: 'transparent',
+            padding: 10,
+            borderRadius: 25,
+            width: 65,
+            height: 65,
+            paddingRight: 0
+
+
+        },
+        icon: {
+            width: 45,
+            height: 45,
+            marginRight: 10,
+
+        },
+
+    });
 
