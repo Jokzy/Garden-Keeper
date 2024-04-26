@@ -115,7 +115,7 @@ export default function App() {
     }
         return (
             <NavigationContainer theme={navigationTheme}>
-                <Stack.Navigator>
+                <Stack.Navigator screenOptions={{headerShown: false}}>
                     <Stack.Screen name="Home" component={HomeTabNavigator}/>
                     <Stack.Screen name={"Camera"} component={Camera}/>
                 </Stack.Navigator>
