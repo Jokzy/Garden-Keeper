@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import React, {Component, useState} from 'react';
 import {View, TextInput, Button, Text, StyleSheet, ImageBackground, TouchableOpacity, Image} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator} from "@react-navigation/material-top-tabs";
@@ -8,6 +8,7 @@ import ScreenEnc from "./Encyclopédie";
 import ScreenAmi from "./Amis";
 import ScreenJar from "./Jardin";
 import ScreenSett from "./Settings";
+import Camera from "./Camera";
 import MenuIcon from "./assets/Menu.png"
 import EncyclopedieIcon from "./assets/Encyclopédie.png"
 import GardenIcon from "./assets/Mon jardin.png"
@@ -21,6 +22,7 @@ export default function App() {
       background: "transparent",
     },
   }
+
     const CameraIconButton = ({ onPress }) => (
         <TouchableOpacity onPress={onPress} style={styles.button}>
             <Image
@@ -28,6 +30,8 @@ export default function App() {
                 style={styles.icon}
             />
         </TouchableOpacity>
+
+
     );
     const SettingsIconButton = ({ onPress }) => (
         <TouchableOpacity onPress={onPress} style={styles.button}>
@@ -51,7 +55,7 @@ export default function App() {
 
             </View>
             <View style={styles.containerPressables}>
-            <CameraIconButton></CameraIconButton>
+            <CameraIconButton ></CameraIconButton>
                 <SettingsIconButton></SettingsIconButton>
             </View>
         </ImageBackground>
@@ -60,54 +64,54 @@ export default function App() {
 
 return (
     <NavigationContainer  theme={navigationTheme}>
-      <topTab.Navigator
-          initialRouteName={"Menu"}
-          screenOptions={({ route }) => ({
-              tabBarIcon: ({ focused, color, size }) => {
-                  let icon;
-                  if (route.name === 'Home') {
-                      icon = MenuIcon;
-                  } else if (route.name === 'Encyclopédie') {
-                      icon = EncyclopedieIcon
-                  } else if (route.name === 'Jardin') {
-                      icon = GardenIcon
-                  } else if (route.name === 'Amis') {
-                      icon = FriendsIcon
-                  }
-                  // This whole thing lets us change the icons for the top bar. It works ish we just have to find a way to make them all fit
-                  return <Image source={icon} style={{ width: size, height: size, tintColor: color }} />;
-              },
-              tabBarShowLabel: true,
-              tabBarShowIcon: false,
-              swipeEnabled: false,
+        <topTab.Navigator
+            initialRouteName={"Menu"}
+            screenOptions={({route}) => ({
+                tabBarIcon: ({focused, color, size}) => {
+                    let icon;
+                    if (route.name === 'Home') {
+                        icon = MenuIcon;
+                    } else if (route.name === 'Encyclopédie') {
+                        icon = EncyclopedieIcon
+                    } else if (route.name === 'Jardin') {
+                        icon = GardenIcon
+                    } else if (route.name === 'Amis') {
+                        icon = FriendsIcon
+                    }
+                    // This whole thing lets us change the icons for the top bar. It works ish we just have to find a way to make them all fit
+                    return <Image source={icon} style={{width: size, height: size, tintColor: color}}/>;
+                },
+                tabBarShowLabel: true,
+                tabBarShowIcon: false,
+                swipeEnabled: false,
 
 
-        tabBarStyle: {
-          position: 'absolute',
-          borderTopLeftRadius: 12,
-          borderTopRightRadius: 12,
-          top:30, //Top, bottom, right, left, sont la position arbitraire de la tab bar et permettent de la voir.
-          bottom: 695,
-          right:0,
-          left:0,
-          elevation: 0, // Elevation 0 fait qu'il y a pas de shadow en dessous de la tab bar
-          backgroundColor: 'transparent',}
-          })}
+                tabBarStyle: {
+                    position: 'absolute',
+                    borderTopLeftRadius: 12,
+                    borderTopRightRadius: 12,
+                    top: 30, //Top, bottom, right, left, sont la position arbitraire de la tab bar et permettent de la voir.
+                    bottom: 695,
+                    right: 0,
+                    left: 0,
+                    elevation: 0, // Elevation 0 fait qu'il y a pas de shadow en dessous de la tab bar
+                    backgroundColor: 'transparent',
+                }
+            })}
         >
 
-        <topTab.Screen  name="Menu" component={SettingsScreen}/>
-        <topTab.Screen name="Encyclopédie" component={ScreenEnc}/>
-        <topTab.Screen name="Jardin" component={ScreenJar}/>
-        <topTab.Screen name="Amis" component={ScreenAmi}/>
-      </topTab.Navigator>
+            <topTab.Screen name="Menu" component={SettingsScreen}/>
+            <topTab.Screen name="Encyclopédie" component={ScreenEnc}/>
+            <topTab.Screen name="Jardin" component={ScreenJar}/>
+            <topTab.Screen name="Amis" component={ScreenAmi}/>
+            <topTab.Screen name="Camera" component={Camera}/>
+        </topTab.Navigator>
     </NavigationContainer>
-  );
+);
 
 
-
-
-  return(
-      <NavigationContainer>
+    return (
+        <NavigationContainer>
           <Drawer.Navigator>
               <Drawer.Screen name={"Settings"} component={ScreenSett}/>
               <Drawer.Screen name={"Settings"} component={ScreenSett}/>
