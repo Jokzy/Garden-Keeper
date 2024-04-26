@@ -14,8 +14,13 @@ export default function App() {
         (async () => {
             const cameraPermission = await Camera.requestCameraPermissionsAsync();
             const mediaLibraryPermission = await MediaLibrary.requestPermissionsAsync();
-            setHasCameraPermission(cameraPermission.status === "granted");
-            setHasMediaLibraryPermission(mediaLibraryPermission.status === "granted");
+           setHasCameraPermission(cameraPermission.status === "granted");
+           setHasMediaLibraryPermission(mediaLibraryPermission.status === "granted");
+            if (mediaLibraryPermission.status === "granted") {
+                console.log("Permission to access media library granted");
+            } else {
+                console.log("Permission to access media library not granted");
+            }
         })();
     }, []);
 
@@ -24,6 +29,7 @@ export default function App() {
     } else if (!hasCameraPermission) {
         return <Text>Permission for camera not granted. Please change this in settings.</Text>
     }
+
 
     let takePic = async () => {
         let options = {
