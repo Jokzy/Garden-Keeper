@@ -2,7 +2,7 @@ import React, { useState , useEffect} from 'react';
 import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
 
 export default function App() {
-  const ip_adresse = "" //TODO: REMOVE THIS BEFORE PUSHING
+  const ip_adresse = "10.186.2.188" //TODO: REMOVE THIS BEFORE PUSHING
 
   const [searchText, setSearchText] = useState('');
   const [searchResult, setSearchResult] = useState('Text');
