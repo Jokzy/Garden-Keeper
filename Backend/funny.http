@@ -1,0 +1,13 @@
+@host = http://localhost:8000
+
+GET {{host}}/api/plante/
+###
+GET {{host}}/api/plante/1/
+###
+POST {{host}}/api/plante/
+Content-Type: application/json
+
+{
+  "nom": "e",
+  "nom_scientifique": "e"
+}

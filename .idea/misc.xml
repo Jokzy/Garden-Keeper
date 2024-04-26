@@ -1,3 +1,12 @@
 <project version="4">
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.9" project-jdk-type="Python SDK" />
+  <component name="Black">
+    <option name="sdkName" value="Python 3.12 (Garden-Keeper)" />
+  </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.12 (Garden-Keeper)" project-jdk-type="Python SDK" />
+  <component name="ReactNativePackager" nodePath="project" reactNativePackagePath="$USER_HOME$/AppData/Roaming/npm/node_modules/react-native-cli" workingDirectory="$PROJECT_DIR$">
+    <scripts>
+      <item value="npm" />
+      <item value="run" />
+    </scripts>
+  </component>
 </project>
