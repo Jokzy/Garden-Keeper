@@ -1,9 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, SafeAreaView, Button, Image } from 'react-native';
-import { useEffect, useRef, useState } from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import { Camera } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
 import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
+import React from 'react';
 
 export default function App() {
     let cameraRef = useRef();
@@ -11,6 +13,37 @@ export default function App() {
     const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState();
     const [photo, setPhoto] = useState();
     const navigation = useNavigation();
+
+    const originalTabBarStyle = {
+        position: 'absolute',
+        borderTopLeftRadius: 12,
+        borderTopRightRadius: 12,
+        top: 30,
+        bottom: 695,
+        right: 0,
+        left: 0,
+        elevation: 0,
+        backgroundColor: 'transparent', };
+    const hiddenTabBarStyle = { display: 'none' };
+
+    useFocusEffect(
+        useCallback(() => {
+            // Function to hide the tab bar
+            const hideTabBar = () => navigation.getParent().setOptions({ tabBarStyle: hiddenTabBarStyle });
+            // Function to show the tab bar with the original style
+            const showTabBar = () => navigation.getParent().setOptions({ tabBarStyle: originalTabBarStyle });
+
+            const unsubscribeFocus = navigation.addListener('focus', hideTabBar);
+            const unsubscribeBlur = navigation.addListener('blur', showTabBar);
+
+            return () => {
+                unsubscribeFocus();
+                unsubscribeBlur();
+                showTabBar();  // Reapply the original tab bar style when the screen is left
+            };
+        }, [navigation])
+    );
+
 
     useEffect(() => {
         (async () => {

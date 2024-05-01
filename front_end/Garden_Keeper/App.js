@@ -4,8 +4,6 @@ import {Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View} from '
 import {NavigationContainer, useIsFocused, useNavigation} from '@react-navigation/native';
 import {createMaterialTopTabNavigator} from "@react-navigation/material-top-tabs";
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-
-
 import ScreenEnc from "./Encyclopédie";
 import ScreenAmi from "./Amis";
 import ScreenJar from "./Jardin";

@@ -52,7 +52,7 @@ async function loadFont(){
             // heeheheheheheh
             setSearchResult(searchText);
         };
-        const MyIconButton = ({ onPress }) => (
+        const SearchButton = ({ onPress }) => (
             <TouchableOpacity onPress={onPress} style={styles.button}>
                 <Image
                     source={require('./assets/Magnifying_glass_icon.png')}
@@ -61,7 +61,7 @@ async function loadFont(){
             </TouchableOpacity>
         );
 
-        const MyPickingButton = ({ onPress }) => (
+        const ImageUploadButton = ({ onPress }) => (
             <TouchableOpacity onPress={onPress} style={styles.button}>
                 <Image
                     source={require('./assets/imagesicon.png')}
@@ -78,18 +78,19 @@ async function loadFont(){
                     <KeyboardAvoidingView style={styles.containerTop}>
                         <Text style={styles.titleText}>Encyclopédie</Text>
                         <View style={styles.containerSearchBar}>
+                            <ImageUploadButton onPress={pickImage}></ImageUploadButton>
                             <TextInput
                                 style={styles.input}
                                 placeholder="Type here to search..."
                                 value={searchText}
                                 onChangeText={text => setSearchText(text)}
                             />
-                            <MyIconButton onPress={handleSearch}></MyIconButton>
+                            <SearchButton onPress={handleSearch}></SearchButton>
                         </View>
                             <Text style={styles.result}>{searchResult}</Text>
 
                     </KeyboardAvoidingView>
-                    <MyPickingButton onPress={pickImage}></MyPickingButton>
+
                     <View style={styles.containerFlatList}>
 
                     </View>
