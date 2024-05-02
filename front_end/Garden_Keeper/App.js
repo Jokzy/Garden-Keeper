@@ -122,6 +122,7 @@ export default function App() {
             >
 
                 <topTab.Screen name="Menu" component={StackNav}/>
+                <topTab.Screen name="Recherche" component={ScreenAmi}/>
                 <topTab.Screen name="Encyclopédie" component={ScreenEnc}/>
                 <topTab.Screen name="Jardin" component={ScreenJar}/>
                 <topTab.Screen name="Équipe" component={ScreenAmi}/>

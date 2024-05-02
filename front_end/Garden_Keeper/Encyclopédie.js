@@ -8,7 +8,8 @@ import {
     ImageBackground,
     Image,
     TouchableOpacity,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    ScrollView
 } from 'react-native';
 import * as Font from "expo-font"
 import * as ImagePicker from 'expo-image-picker';
@@ -27,6 +28,7 @@ async function loadFont(){
         const [searchText, setSearchText] = useState('');
         const [searchResult, setSearchResult] = useState('');
         const [image, setImage] = useState(null);
+        const { images } = useImages();
         const { addImage } = useImages();
 
         const pickImage = async () => {
@@ -94,7 +96,17 @@ async function loadFont(){
                     </KeyboardAvoidingView>
 
                     <View style={styles.containerFlatList}>
-
+                        <ScrollView contentContainerStyle={styles.container}>
+                            {images.length > 0 ? (
+                                images.map(image => (
+                                    <View key={image.id} style={styles.imageContainer}>
+                                        <Image source={{ uri: image.uri }} style={styles.imageFormat} />
+                                    </View>
+                                ))
+                            ) : (
+                                <Text>No images available</Text>  // Display this text if no images are available
+                            )}
+                        </ScrollView>
                     </View>
                 </View>
             </ImageBackground>
@@ -180,6 +192,21 @@ async function loadFont(){
             marginRight: 10,
 
         },
+        imageContainer: {
+        margin: 10,
+        borderRadius: 10,
+        overflow: 'hidden',  // Apply overflow hidden for borderRadius effect
+        elevation: 5,        // Add elevation for shadow (Android)
+        shadowColor: '#000', // Shadow color for iOS
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
+    },
+    imageFormat: {
+    width: 300,  // Set image width
+        height: 200, // Set image height
+}
 
-    });
+
+});
 
