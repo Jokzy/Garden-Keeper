@@ -5,6 +5,7 @@ import { Camera } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
 import { useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
+import { useImages } from './ImageContext';
 import React from 'react';
 
 export default function App() {
@@ -13,6 +14,7 @@ export default function App() {
     const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState();
     const [photo, setPhoto] = useState();
     const navigation = useNavigation();
+    const { addImage } = useImages();
 
     const originalTabBarStyle = {
         position: 'absolute',
@@ -28,18 +30,16 @@ export default function App() {
 
     useFocusEffect(
         useCallback(() => {
-            // Function to hide the tab bar
-            const hideTabBar = () => navigation.getParent().setOptions({ tabBarStyle: hiddenTabBarStyle });
-            // Function to show the tab bar with the original style
-            const showTabBar = () => navigation.getParent().setOptions({ tabBarStyle: originalTabBarStyle });
 
+            const hideTabBar = () => navigation.getParent().setOptions({ tabBarStyle: hiddenTabBarStyle });
+            const showTabBar = () => navigation.getParent().setOptions({ tabBarStyle: originalTabBarStyle });
             const unsubscribeFocus = navigation.addListener('focus', hideTabBar);
             const unsubscribeBlur = navigation.addListener('blur', showTabBar);
 
             return () => {
                 unsubscribeFocus();
                 unsubscribeBlur();
-                showTabBar();  // Reapply the original tab bar style when the screen is left
+                showTabBar();
             };
         }, [navigation])
     );
@@ -85,10 +85,19 @@ export default function App() {
             });
         };
 
+        const exportPhoto = () => {
+            if (photo) {
+                addImage(photo.uri);  // Add the photo URI to the context-managed array
+                setPhoto(undefined); // Optionally clear the photo after adding
+            }
+        };
+
+
+
         return (
             <SafeAreaView style={styles.container}>
                 <Image style={styles.preview} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />
-                {hasMediaLibraryPermission ? <Button title="Save" onPress={savePhoto} /> : undefined}
+                {hasMediaLibraryPermission ? <Button title="Save" onPress={exportPhoto} /> : undefined}
                 <Button title="Discard" onPress={() => setPhoto(undefined)} />
             </SafeAreaView>
         );

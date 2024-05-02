@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, createContext, useContext} from 'react';
 import {Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {NavigationContainer, useIsFocused, useNavigation} from '@react-navigation/native';
 import {createMaterialTopTabNavigator} from "@react-navigation/material-top-tabs";
@@ -12,9 +12,13 @@ import MenuIcon from "./assets/Menu.png"
 import EncyclopedieIcon from "./assets/Encyclopédie.png"
 import GardenIcon from "./assets/Mon jardin.png"
 import FriendsIcon from "./assets/Mes amis.png"
+import { ImageProvider } from './ImageContext';
 
 const topTab = createMaterialTopTabNavigator()
 const Stack = createNativeStackNavigator();
+
+
+
 
 export default function App() {
     return topTabNav();
@@ -79,7 +83,7 @@ export default function App() {
         }
 
     return (
-
+        <ImageProvider>
         <NavigationContainer theme={navigationTheme}>
             <topTab.Navigator
                 initialRouteName={"Menu"}
@@ -120,9 +124,10 @@ export default function App() {
                 <topTab.Screen name="Menu" component={StackNav}/>
                 <topTab.Screen name="Encyclopédie" component={ScreenEnc}/>
                 <topTab.Screen name="Jardin" component={ScreenJar}/>
-                <topTab.Screen name="Amis" component={ScreenAmi}/>
+                <topTab.Screen name="Équipe" component={ScreenAmi}/>
             </topTab.Navigator>
         </NavigationContainer>
+        </ImageProvider>
     )
 }
 function StackNav(){
@@ -134,6 +139,8 @@ function StackNav(){
             </Stack.Navigator>
     );
 }
+
+
 
 
 
@@ -167,13 +174,13 @@ function StackNav(){
 
         },
         titleText: {
-            fontFamily: "Cheflat",
+            //fontFamily: "Cheflat",
             fontWeight: "bold",
             fontSize: 60,
             color: "#75904b"
         },
         titleText2: {
-            fontFamily: "Cheflat",
+            //fontFamily: "Cheflat",
             fontWeight: "bold",
             fontSize: 50,
             color: "#75904b"

@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import {
     View,
@@ -14,6 +13,7 @@ import {
 import * as Font from "expo-font"
 import * as ImagePicker from 'expo-image-picker';
 import { AppLoading } from 'expo';
+import { useImages } from './ImageContext';
 
 async function loadFont(){
     await Font.loadAsync({
@@ -27,6 +27,7 @@ async function loadFont(){
         const [searchText, setSearchText] = useState('');
         const [searchResult, setSearchResult] = useState('');
         const [image, setImage] = useState(null);
+        const { addImage } = useImages();
 
         const pickImage = async () => {
 
@@ -42,7 +43,8 @@ async function loadFont(){
             })
 
             if (!result.cancelled) {
-                setImage(result.uri);
+                //setImage(result.uri);
+                addImage(result.uri);
             }
         };
 
@@ -146,7 +148,7 @@ async function loadFont(){
         result: {
             marginTop: 20,
             fontSize: 30,
-            fontFamily: "Cheflat",
+            //fontFamily: "Cheflat",
             fontWeight: "bold",
             color: "white"
         },
@@ -155,7 +157,7 @@ async function loadFont(){
             justifyContent: 'center',
         },
         titleText: {
-            fontFamily: "Cheflat",
+            //fontFamily: "Cheflat",
             fontWeight: "bold",
             fontSize: 40,
             color: "#75904b"
