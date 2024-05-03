@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, SafeAreaView, Button, Image } from 'react-native';
+import {StyleSheet, Text, View, SafeAreaView, Button, Image, TouchableOpacity} from 'react-native';
 import {useCallback, useEffect, useRef, useState} from 'react';
 import { Camera } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
@@ -97,43 +97,88 @@ export default function App() {
         return (
             <SafeAreaView style={styles.container}>
                 <Image style={styles.preview} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />
-                {hasMediaLibraryPermission ? <Button title="Save" onPress={exportPhoto} /> : undefined}
-                <Button title="Discard" onPress={() => setPhoto(undefined)} />
+                <View style={styles.proceedingContainer}>
+
+
+                {hasMediaLibraryPermission ? <TouchableOpacity onPress= {exportPhoto}>
+                    <Image
+                        style={{width: 98, height: 98}}
+                        source={require('./assets/save.png')}
+                    />
+                </TouchableOpacity> : undefined}
+
+                <TouchableOpacity onPress={() => setPhoto(undefined)}>
+                    <Image
+                        style={{width: 80, height: 98}}
+                        source={require('./assets/trash.png')}
+                    />
+                </TouchableOpacity>
+
+                </View>
             </SafeAreaView>
+
         );
     }
 
     return (
         <Camera style={styles.container} ref={cameraRef}>
-            <View style={styles.buttonContainer}>
-                <Button title="Take Pic" onPress={takePic} />
-                <Button title="Home" onPress={() => navigation.goBack()} />
+            <View style={styles.topContainer}>
+                <TouchableOpacity  onPress={() => navigation.goBack()}>
+                    <Image
+                        style={{width: 50, height: 50}}
+                        source={require('./assets/back icon.png')}
+                    />
+
+                </TouchableOpacity>
+            </View>
+            <View style={styles.bottomContainer} >
+                <TouchableOpacity  onPress={() => takePic()}>
+                    <Image
+                        style={{width: 150, height: 150}}
+                        source={require('./assets/camera cercle.png')}
+                    />
+                </TouchableOpacity>
             </View>
 
         </Camera>
     );
 }
 
+
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
+        position:'relative'
+
     },
-    buttonContainer: {
-        backgroundColor: '#fff',
-        alignSelf: 'flex-end'
-    },
+
     preview: {
         alignSelf: 'stretch',
         flex: 1
     },
-    buttonStyle:{
-        borderRadius: 25,
-        height: 50,
-        width: 50,
-        backgroundColor: "white"
-    }
+     proceedingContainer:{
+        margin : 30,
+        padding : 15,
+        backgroundColor: "transparent",
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    topContainer: {
+        flex: 1,
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        top: 20,
+        margin: 10,
+        padding: 30
+    },
+    bottomContainer: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        padding : 20
+    },
+
 });
 
 
