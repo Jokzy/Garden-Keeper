@@ -1,14 +1,49 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, SafeAreaView, Button, Image } from 'react-native';
-import { useEffect, useRef, useState } from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import { Camera } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
+import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
+import { useImages } from './ImageContext';
+import React from 'react';
 
 export default function App() {
     let cameraRef = useRef();
     const [hasCameraPermission, setHasCameraPermission] = useState();
     const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState();
     const [photo, setPhoto] = useState();
+    const navigation = useNavigation();
+    const { addImage } = useImages();
+
+    const originalTabBarStyle = {
+        position: 'absolute',
+        borderTopLeftRadius: 12,
+        borderTopRightRadius: 12,
+        top: 30,
+        bottom: 695,
+        right: 0,
+        left: 0,
+        elevation: 0,
+        backgroundColor: 'transparent', };
+    const hiddenTabBarStyle = { display: 'none' };
+
+    useFocusEffect(
+        useCallback(() => {
+
+            const hideTabBar = () => navigation.getParent().setOptions({ tabBarStyle: hiddenTabBarStyle });
+            const showTabBar = () => navigation.getParent().setOptions({ tabBarStyle: originalTabBarStyle });
+            const unsubscribeFocus = navigation.addListener('focus', hideTabBar);
+            const unsubscribeBlur = navigation.addListener('blur', showTabBar);
+
+            return () => {
+                unsubscribeFocus();
+                unsubscribeBlur();
+                showTabBar();
+            };
+        }, [navigation])
+    );
+
 
     useEffect(() => {
         (async () => {
@@ -50,10 +85,19 @@ export default function App() {
             });
         };
 
+        const exportPhoto = () => {
+            if (photo) {
+                addImage(photo.uri);  // Add the photo URI to the context-managed array
+                setPhoto(undefined); // Optionally clear the photo after adding
+            }
+        };
+
+
+
         return (
             <SafeAreaView style={styles.container}>
                 <Image style={styles.preview} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />
-                {hasMediaLibraryPermission ? <Button title="Save" onPress={savePhoto} /> : undefined}
+                {hasMediaLibraryPermission ? <Button title="Save" onPress={exportPhoto} /> : undefined}
                 <Button title="Discard" onPress={() => setPhoto(undefined)} />
             </SafeAreaView>
         );
@@ -63,8 +107,9 @@ export default function App() {
         <Camera style={styles.container} ref={cameraRef}>
             <View style={styles.buttonContainer}>
                 <Button title="Take Pic" onPress={takePic} />
+                <Button title="Home" onPress={() => navigation.goBack()} />
             </View>
-            <StatusBar style="auto" />
+
         </Camera>
     );
 }
@@ -82,6 +127,12 @@ const styles = StyleSheet.create({
     preview: {
         alignSelf: 'stretch',
         flex: 1
+    },
+    buttonStyle:{
+        borderRadius: 25,
+        height: 50,
+        width: 50,
+        backgroundColor: "white"
     }
 });
 
