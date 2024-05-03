@@ -13,7 +13,6 @@ import {
 } from 'react-native';
 import * as Font from "expo-font"
 import * as ImagePicker from 'expo-image-picker';
-import { AppLoading } from 'expo';
 import { useImages } from './ImageContext';
 
 async function loadFont(){
@@ -82,7 +81,6 @@ async function loadFont(){
                     <KeyboardAvoidingView style={styles.containerTop}>
                         <Text style={styles.titleText}>Encyclopédie</Text>
                         <View style={styles.containerSearchBar}>
-                            <ImageUploadButton onPress={pickImage}></ImageUploadButton>
                             <TextInput
                                 style={styles.input}
                                 placeholder="Type here to search..."
@@ -124,11 +122,12 @@ async function loadFont(){
         },
         containerTop: {
             flex: 2,
-            paddingTop: 10,
+            paddingTop: 20,
             justifyContent: 'center',
             alignItems: 'center',
             flexDirection: 'column',
             paddingHorizontal: 30,
+
         },
         containerSearchBar: {
             flex: 0.3,

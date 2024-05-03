@@ -7,6 +7,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import ScreenEnc from "./Encyclopédie";
 import ScreenAmi from "./Amis";
 import ScreenJar from "./Jardin";
+import ScreenSearch from "./Recherche";
 import Camera from "./Camera";
 import MenuIcon from "./assets/Menu.png"
 import EncyclopedieIcon from "./assets/Encyclopédie.png"
@@ -121,8 +122,8 @@ export default function App() {
                 })}
             >
 
-                <topTab.Screen name="Menu" component={StackNav}/>
-                <topTab.Screen name="Recherche" component={ScreenAmi}/>
+                <topTab.Screen name="Menu" component={StackNavMain}/>
+                <topTab.Screen name="Recherche" component={StackNavSearch}/>
                 <topTab.Screen name="Encyclopédie" component={ScreenEnc}/>
                 <topTab.Screen name="Jardin" component={ScreenJar}/>
                 <topTab.Screen name="Équipe" component={ScreenAmi}/>
@@ -131,7 +132,7 @@ export default function App() {
         </ImageProvider>
     )
 }
-function StackNav(){
+function StackNavMain(){
 
     return (
             <Stack.Navigator screenOptions={{headerShown: false}}>
@@ -140,6 +141,16 @@ function StackNav(){
             </Stack.Navigator>
     );
 }
+
+function StackNavSearch(){
+
+    return (
+        <Stack.Navigator screenOptions={{headerShown: false}}>
+            <Stack.Screen name="MainRecherche" component={ScreenSearch}/>
+        </Stack.Navigator>
+    );
+}
+
 
 
 
@@ -204,6 +215,7 @@ function StackNav(){
             marginRight: 10,
 
         },
+
 
     })
 
