@@ -23,8 +23,9 @@ async function loadFont(){
 }
 
 
-
 export default function ScreenSearch() {
+    const ip_adresse = "" //TODO: REMOVE THIS BEFORE PUSHING
+
     const [searchText, setSearchText] = useState('');
     const [searchResult, setSearchResult] = useState('');
     const [image, setImage] = useState(null);
@@ -51,11 +52,33 @@ export default function ScreenSearch() {
     };
 
 
-    const handleSearch = () => {
-        // the logic part idk what goes here lol
-        // heeheheheheheh
-        setSearchResult(searchText);
-    };
+    const handleSearch = async () => {
+            const response = await fetch(`http://${ip_adresse}:8000/get-data/${searchText}/`)
+            const info_as_object = await response.json()
+            let info = ""
+            for (let key in info_as_object) {
+                if (key !== "id" && key !== "nom_recherche") {
+                    let nom_categorie = key[0].toUpperCase() + key.slice(1).replace("_", " ")
+                    if (Array.isArray(info_as_object[key])) { //this no work for some reason haha
+                        let array_texte = ""
+                        for (let i = 0; i < info_as_object.length; i++) {
+                            array_texte += info_as_object[i]
+                        }
+                        info += (nom_categorie + ": " + array_texte + "\n");
+                    } else {
+                        let valeur = info_as_object[key].replace("[", "").replace("\"","").replace("]","")
+                        info += (nom_categorie + ": " + valeur + "\n");
+                    }
+
+                }
+
+            }
+
+            setSearchResult(info)
+            //setSearchResult(JSON.stringify(info_as_object))
+            //setSearchResult(searchText);
+        };
+
     const SearchButton = ({ onPress }) => (
         <TouchableOpacity onPress={onPress} style={styles.button}>
             <Image

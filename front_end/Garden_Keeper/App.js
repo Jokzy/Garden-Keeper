@@ -9,6 +9,7 @@ import ScreenAmi from "./Amis";
 import ScreenJar from "./Jardin";
 import ScreenSearch from "./Recherche";
 import Camera from "./Camera";
+import ScreenInfoCard from "./InfoCard"
 import MenuIcon from "./assets/Menu.png"
 import EncyclopedieIcon from "./assets/Encyclopédie.png"
 import GardenIcon from "./assets/Mon jardin.png"
@@ -99,6 +100,8 @@ export default function App() {
                             icon = GardenIcon
                         } else if (route.name === 'Amis') {
                             icon = FriendsIcon
+                        } else if (route.name == 'InfoCard') {
+                            icon = FriendsIcon //TODO: To code
                         }
                         // This whole thing lets us change the icons for the top bar. It works ish we just have to find a way to make them all fit
                         return <Image source={icon} style={{width: size, height: size, tintColor: color}}/>;
@@ -106,7 +109,6 @@ export default function App() {
                     tabBarShowLabel: true,
                     tabBarShowIcon: false,
                     swipeEnabled: false,
-
 
                     tabBarStyle: {
                         position: 'absolute',
@@ -127,6 +129,7 @@ export default function App() {
                 <topTab.Screen name="Encyclopédie" component={ScreenEnc}/>
                 <topTab.Screen name="Jardin" component={ScreenJar}/>
                 <topTab.Screen name="Équipe" component={ScreenAmi}/>
+                <topTab.Screen name="InfoCard" component={ScreenInfoCard}/>
             </topTab.Navigator>
         </NavigationContainer>
         </ImageProvider>
@@ -150,7 +153,6 @@ function StackNavSearch(){
         </Stack.Navigator>
     );
 }
-
 
 
 

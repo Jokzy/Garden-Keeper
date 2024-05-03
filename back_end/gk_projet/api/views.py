@@ -1,4 +1,5 @@
 import requests
+import base64
 import json
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -6,14 +7,8 @@ from gk_app.models import Plante
 from .serializers import PlanteSerializer
 from django.http import HttpResponse
 
-api_key = "sk-eKNW65d813327065e4323"  # perenual
-
-
-# @api_view(['GET'])
-# def getData(request):
-#     items = Plante.objects.all()
-#     serializer = ItemSerializer(items, many=True)
-#     return Response(serializer.data) # This outputs json data
+perenual_key = "sk-eKNW65d813327065e4323"  # perenual
+plantID_key = "O6JC4gc3FtgXkbE6frVGPaLiqkRmULsUTKrwO9APWAaWxCqWMV" #TODO: Put this in comments when it isn't being used
 
 @api_view(['GET'])
 def getData(request, query):
@@ -22,7 +17,7 @@ def getData(request, query):
         serializer = PlanteSerializer(plante, many=False)
         return Response(serializer.data)
     else:
-        perenual_url = f"https://perenual.com/api/species-list?key={api_key}&q={query}"
+        perenual_url = f"https://perenual.com/api/species-list?key={perenual_key}&q={query}"
         r = requests.get(perenual_url)
         info = r.json()
 
@@ -43,3 +38,16 @@ def addItem(request):
     if serializer.is_valid():
         serializer.save()
     return Response(serializer.data)  # This outputs json data
+
+@api_view(['POST'])
+def sendImage(request): #idea: location of image in your files in arg
+    with open('back_end/gk_projet/api/images/rose.jpg', 'rb') as file:
+        image = base64.b64encode(file.read()).decode('ascii')
+
+    print(image)
+    response = requests.post(url='https://plant.id/api/v3/identification',
+                      headers={'Api-Key': plantID_key, 'Content-Type': 'application/json'},
+                      json={'images': image},
+                      )
+    info = response.json()
+    return Response({"message": info["result"]["classification"]["suggestions"][0]["name"]})
