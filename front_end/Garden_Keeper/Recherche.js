@@ -22,7 +22,6 @@ async function loadFont(){
     });
 }
 
-
 export default function ScreenSearch() {
     const ip_adresse = "" //TODO: REMOVE THIS BEFORE PUSHING
 
