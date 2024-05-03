@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import {
     View,
@@ -9,10 +8,12 @@ import {
     ImageBackground,
     Image,
     TouchableOpacity,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    ScrollView
 } from 'react-native';
 import * as Font from "expo-font"
-import { AppLoading } from 'expo';
+import * as ImagePicker from 'expo-image-picker';
+import { useImages } from './ImageContext';
 
 async function loadFont(){
     await Font.loadAsync({
@@ -25,16 +26,48 @@ async function loadFont(){
     export default function ScreenEnc() {
         const [searchText, setSearchText] = useState('');
         const [searchResult, setSearchResult] = useState('');
+        const [image, setImage] = useState(null);
+        const { images } = useImages();
+        const { addImage } = useImages();
+
+        const pickImage = async () => {
+
+            const {status} = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if (status !== 'granted') {
+                alert('Sorry, we need camera roll permissions to make this work!');
+            }
+            let result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.All,
+                allowsEditing: true,
+                aspect: [4, 3],
+                quality: 1,
+            })
+
+            if (!result.cancelled) {
+                //setImage(result.uri);
+                addImage(result.uri);
+            }
+        };
+
 
         const handleSearch = () => {
             // the logic part idk what goes here lol
             // heeheheheheheh
             setSearchResult(searchText);
         };
-        const MyIconButton = ({ onPress }) => (
+        const SearchButton = ({ onPress }) => (
             <TouchableOpacity onPress={onPress} style={styles.button}>
                 <Image
                     source={require('./assets/Magnifying_glass_icon.png')}
+                    style={styles.icon}
+                />
+            </TouchableOpacity>
+        );
+
+        const ImageUploadButton = ({ onPress }) => (
+            <TouchableOpacity onPress={onPress} style={styles.button}>
+                <Image
+                    source={require('./assets/imagesicon.png')}
                     style={styles.icon}
                 />
             </TouchableOpacity>
@@ -54,13 +87,24 @@ async function loadFont(){
                                 value={searchText}
                                 onChangeText={text => setSearchText(text)}
                             />
-                            <MyIconButton onPress={handleSearch}></MyIconButton>
+                            <SearchButton onPress={handleSearch}></SearchButton>
                         </View>
                             <Text style={styles.result}>{searchResult}</Text>
 
                     </KeyboardAvoidingView>
-                    <View style={styles.containerFlatList}>
 
+                    <View style={styles.containerFlatList}>
+                        <ScrollView contentContainerStyle={styles.container}>
+                            {images.length > 0 ? (
+                                images.map(image => (
+                                    <View key={image.id} style={styles.imageContainer}>
+                                        <Image source={{ uri: image.uri }} style={styles.imageFormat} />
+                                    </View>
+                                ))
+                            ) : (
+                                <Text>No images available</Text>  // Display this text if no images are available
+                            )}
+                        </ScrollView>
                     </View>
                 </View>
             </ImageBackground>
@@ -78,11 +122,12 @@ async function loadFont(){
         },
         containerTop: {
             flex: 2,
-            paddingTop: 10,
+            paddingTop: 20,
             justifyContent: 'center',
             alignItems: 'center',
             flexDirection: 'column',
             paddingHorizontal: 30,
+
         },
         containerSearchBar: {
             flex: 0.3,
@@ -114,7 +159,7 @@ async function loadFont(){
         result: {
             marginTop: 20,
             fontSize: 30,
-            fontFamily: "Cheflat",
+            //fontFamily: "Cheflat",
             fontWeight: "bold",
             color: "white"
         },
@@ -123,7 +168,7 @@ async function loadFont(){
             justifyContent: 'center',
         },
         titleText: {
-            fontFamily: "Cheflat",
+            //fontFamily: "Cheflat",
             fontWeight: "bold",
             fontSize: 40,
             color: "#75904b"
@@ -146,6 +191,21 @@ async function loadFont(){
             marginRight: 10,
 
         },
+        imageContainer: {
+        margin: 10,
+        borderRadius: 10,
+        overflow: 'hidden',  // Apply overflow hidden for borderRadius effect
+        elevation: 5,        // Add elevation for shadow (Android)
+        shadowColor: '#000', // Shadow color for iOS
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
+    },
+    imageFormat: {
+    width: 300,  // Set image width
+        height: 200, // Set image height
+}
 
-    });
+
+});
 
