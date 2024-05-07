@@ -101,7 +101,7 @@ async function loadFont(){
                         renderItem={({ item }) => (
                             <Pressable onPress={() => console.log("Pressed item", item.id)} style={styles.pressableItem}>
                                 <Image source={{ uri: item.uri }} style={styles.imageFormat} />
-                                <Text>Ta maman</Text>
+                                <Text>Plant namecd</Text>
                             </Pressable>
                         )}
                         ListEmptyComponent={<Text style={styles.emptyMessage}>C'est bien vide ici...</Text>}

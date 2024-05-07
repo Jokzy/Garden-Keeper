@@ -15,6 +15,7 @@ export default function App() {
     const [photo, setPhoto] = useState();
     const navigation = useNavigation();
     const { addImage } = useImages();
+    const { addGardenImage } = useImages();
 
     const originalTabBarStyle = {
         position: 'absolute',
@@ -92,6 +93,11 @@ export default function App() {
             }
         };
 
+        const addPhotoGarden = () => {
+            if (photo) {
+                addGardenImage(photo.uri);  // Add the photo URI to the context-managed array
+            }
+        };
 
 
         return (
@@ -103,17 +109,22 @@ export default function App() {
                 {hasMediaLibraryPermission ? <TouchableOpacity onPress= {exportPhoto}>
                     <Image
                         style={{width: 98, height: 98}}
-                        source={require('./assets/save.png')}
+                        source={require('./assets/save_icon.png')}
                     />
                 </TouchableOpacity> : undefined}
 
                 <TouchableOpacity onPress={() => setPhoto(undefined)}>
                     <Image
                         style={{width: 80, height: 98}}
-                        source={require('./assets/trash.png')}
+                        source={require('./assets/delete_icon.png')}
                     />
                 </TouchableOpacity>
-
+                    <TouchableOpacity onPress={addPhotoGarden}>
+                        <Image
+                            style={{width: 80, height: 98}}
+                            source={require('./assets/yard_icon.png')}
+                        />
+                    </TouchableOpacity>
                 </View>
             </SafeAreaView>
 
@@ -126,7 +137,7 @@ export default function App() {
                 <TouchableOpacity  onPress={() => navigation.goBack()}>
                     <Image
                         style={{width: 50, height: 50}}
-                        source={require('./assets/back icon.png')}
+                        source={require('./assets/back_icon.png')}
                     />
 
                 </TouchableOpacity>
@@ -135,7 +146,7 @@ export default function App() {
                 <TouchableOpacity  onPress={() => takePic()}>
                     <Image
                         style={{width: 150, height: 150}}
-                        source={require('./assets/camera cercle.png')}
+                        source={require('./assets/circle_icon.png')}
                     />
                 </TouchableOpacity>
             </View>

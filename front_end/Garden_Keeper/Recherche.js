@@ -59,7 +59,7 @@ export default function ScreenSearch() {
     const SearchButton = ({ onPress }) => (
         <TouchableOpacity onPress={onPress} style={styles.button}>
             <Image
-                source={require('./assets/Magnifying_glass_icon.png')}
+                source={require('./assets/search_icon.png')}
                 style={styles.icon}
             />
         </TouchableOpacity>
@@ -69,7 +69,7 @@ export default function ScreenSearch() {
         <TouchableOpacity onPress={onPress} style={styles.input}>
             <Text>Upload an image</Text>
             <Image
-                source={require('./assets/imagesicon.png')}
+                source={require('./assets/upload_icon.png')}
                 style={styles.icon}
             />
         </TouchableOpacity>

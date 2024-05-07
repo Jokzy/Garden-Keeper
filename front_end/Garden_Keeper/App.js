@@ -41,7 +41,7 @@ export default function App() {
         const CameraIconButton = ({onPress}) => (
             <TouchableOpacity onPress={onPress} style={styles.button}>
                 <Image
-                    source={require('./assets/CameraIcon.png')}
+                    source={require('./assets/photo_camera_icon.png')}
                     style={styles.icon}
                 />
             </TouchableOpacity>
@@ -51,7 +51,7 @@ export default function App() {
         const SettingsIconButton = ({onPress}) => (
             <TouchableOpacity onPress={onPress} style={styles.button}>
                 <Image
-                    source={require('./assets/SettingsIcon.png')}
+                    source={require('./assets/menu_icon.png')}
                     style={styles.icon}
                 />
             </TouchableOpacity>
