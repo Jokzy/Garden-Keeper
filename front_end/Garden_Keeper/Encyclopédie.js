@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 import {
     View,
     TextInput,
-    Button,
     Text,
     StyleSheet,
     ImageBackground,
     Image,
     TouchableOpacity,
     KeyboardAvoidingView,
-    ScrollView
+    FlatList,
+    Pressable
+
+
 } from 'react-native';
 import * as Font from "expo-font"
 import * as ImagePicker from 'expo-image-picker';
@@ -48,6 +50,7 @@ async function loadFont(){
                 addImage(result.uri);
             }
         };
+
 
 
         const handleSearch = () => {
@@ -92,20 +95,19 @@ async function loadFont(){
                             <Text style={styles.result}>{searchResult}</Text>
 
                     </KeyboardAvoidingView>
-
-                    <View style={styles.containerFlatList}>
-                        <ScrollView contentContainerStyle={styles.container}>
-                            {images.length > 0 ? (
-                                images.map(image => (
-                                    <View key={image.id} style={styles.imageContainer}>
-                                        <Image source={{ uri: image.uri }} style={styles.imageFormat} />
-                                    </View>
-                                ))
-                            ) : (
-                                <Text>No images available</Text>  // Display this text if no images are available
-                            )}
-                        </ScrollView>
-                    </View>
+                    <FlatList
+                        data={images}
+                        keyExtractor={item => item.id.toString()}
+                        renderItem={({ item }) => (
+                            <Pressable onPress={() => console.log("Pressed item", item.id)} style={styles.pressableItem}>
+                                <Image source={{ uri: item.uri }} style={styles.imageFormat} />
+                                <Text>Plant namecd</Text>
+                            </Pressable>
+                        )}
+                        ListEmptyComponent={<Text style={styles.emptyMessage}>C'est bien vide ici...</Text>}
+                        numColumns={3}
+                        style={styles.containerFlatList}
+                    />
                 </View>
             </ImageBackground>
         );
@@ -121,7 +123,7 @@ async function loadFont(){
 
         },
         containerTop: {
-            flex: 2,
+            flex: 0.7,
             paddingTop: 20,
             justifyContent: 'center',
             alignItems: 'center',
@@ -202,10 +204,20 @@ async function loadFont(){
         shadowRadius: 2,
     },
     imageFormat: {
-    width: 300,  // Set image width
-        height: 200, // Set image height
-}
-
-
+    width: 100,  // Set image width
+        height: 100, // Set image height
+    },
+        pressableItem: {
+            padding: 10,
+            marginVertical: 5,
+            backgroundColor: '#f0f0f0',
+            alignItems: 'center'
+        },
+        emptyMessage: {
+            textAlign: 'center',
+            fontSize: 20,
+            color: "#75904b",
+            marginTop: 20
+        }
 });
 
