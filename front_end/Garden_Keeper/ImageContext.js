@@ -8,10 +8,10 @@ export const useImages = () => useContext(ImageContext);
 export const ImageProvider = ({ children }) => {
     const [images, setImages] = useState([]);
 
-    const addImage = (newImageUri) => {
+    const addImage = (newImageBase64) => {
         const newImage = {
             id: images.length + 1,  // Ensuring each image has a unique id
-            uri: newImageUri,
+            uri: newImageBase64,
         };
         setImages(currentImages => [...currentImages, newImage]);
     };

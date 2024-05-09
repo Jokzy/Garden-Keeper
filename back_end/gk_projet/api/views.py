@@ -40,14 +40,19 @@ def addItem(request):
     return Response(serializer.data)  # This outputs json data
 
 @api_view(['POST'])
-def sendImage(request): #idea: location of image in your files in arg
+def sendImage(request, img): #idea: location of image in your files in arg
     with open('back_end/gk_projet/api/images/rose.jpg', 'rb') as file:
         image = base64.b64encode(file.read()).decode('ascii')
 
-    print(image)
+    # print(image) #TODO: TEST
+    # response = requests.post(url='https://plant.id/api/v3/identification',
+    #                   headers={'Api-Key': plantID_key, 'Content-Type': 'application/json'},
+    #                   json={'images': image},
+    #                   )
     response = requests.post(url='https://plant.id/api/v3/identification',
-                      headers={'Api-Key': plantID_key, 'Content-Type': 'application/json'},
-                      json={'images': image},
-                      )
+                             headers={'Api-Key': plantID_key, 'Content-Type': 'application/json'},
+                             json={'image': img},)
+
     info = response.json()
+    print({"message": info["result"]["classification"]["suggestions"][0]["name"]})
     return Response({"message": info["result"]["classification"]["suggestions"][0]["name"]})

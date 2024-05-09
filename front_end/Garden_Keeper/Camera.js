@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, SafeAreaView, Button, Image } from 'react-native';
 import {useCallback, useEffect, useRef, useState} from 'react';
 import { Camera } from 'expo-camera';
@@ -9,9 +8,12 @@ import { useImages } from './ImageContext';
 import React from 'react';
 
 export default function App() {
-    let cameraRef = useRef();
+    const plantID_key = "O6JC4gc3FtgXkbE6frVGPaLiqkRmULsUTKrwO9APWAaWxCqWMV"
+    let cameraRef = useRef(null);
     const [hasCameraPermission, setHasCameraPermission] = useState();
     const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState();
+    const [photoUri, setPhotoUri] = useState();
+    const [photoBase64, setPhotoBase64] = useState();
     const [photo, setPhoto] = useState();
     const navigation = useNavigation();
     const { addImage } = useImages();
@@ -30,7 +32,6 @@ export default function App() {
 
     useFocusEffect(
         useCallback(() => {
-
             const hideTabBar = () => navigation.getParent().setOptions({ tabBarStyle: hiddenTabBarStyle });
             const showTabBar = () => navigation.getParent().setOptions({ tabBarStyle: originalTabBarStyle });
             const unsubscribeFocus = navigation.addListener('focus', hideTabBar);
@@ -65,43 +66,42 @@ export default function App() {
         return <Text>Permission for camera not granted. Please change this in settings.</Text>
     }
 
+    const handleSearch = async() => {
+        const response = fetch(url='https://plant.id/api/v3/identification',
+                      headers={'Api-Key': plantID_key, 'Content-Type': 'application/json'},
+                      json={'images': photo},
+                      )
+        const info = response.json()
+        return info["result"]["classification"]["suggestions"][0]["name"]
+    }
 
-    let takePic = async () => {
-        let options = {
-            quality: 1,
-            base64: true,
-            exif: false
-        };
 
-        let newPhoto = await cameraRef.current.takePictureAsync(options);
+    const takePic = async () => {
+        const newPhoto = await cameraRef.current.takePictureAsync();
         setPhoto(newPhoto);
-    };
+        setPhotoUri(newPhoto.uri);
+        console.log(photoUri)
+        setPhotoBase64(newPhoto.base64);
 
-    if (photo) {
-
-        let savePhoto = () => {
-            MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
-                setPhoto(undefined);
-            });
-        };
-
+        if (photo) {
         const exportPhoto = () => {
             if (photo) {
-                addImage(photo.uri);  // Add the photo URI to the context-managed array
-                setPhoto(undefined); // Optionally clear the photo after adding
-            }
+                // console.log(photoUri)
+                addImage(photo);  // Add the photo URI to the context-managed array
+                //setPhoto(undefined); // Optionally clear the photo after adding
+
+                }
         };
 
-
-
-        return (
-            <SafeAreaView style={styles.container}>
-                <Image style={styles.preview} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />
-                {hasMediaLibraryPermission ? <Button title="Save" onPress={exportPhoto} /> : undefined}
-                <Button title="Discard" onPress={() => setPhoto(undefined)} />
-            </SafeAreaView>
-        );
-    }
+            return (
+                <SafeAreaView style={styles.container}>
+                    <Image style={styles.preview} source={{ uri: photoUri}} />
+                    {hasMediaLibraryPermission ? <Button title="Save" onPress={exportPhoto} /> : undefined}
+                    <Button title="Discard" onPress={() => setPhoto(undefined)} />
+                </SafeAreaView>
+            );
+         }
+    };
 
     return (
         <Camera style={styles.container} ref={cameraRef}>

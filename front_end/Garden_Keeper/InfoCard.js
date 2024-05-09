@@ -4,10 +4,20 @@ import {
     ImageBackground, KeyboardAvoidingView,
     StyleSheet, Text, TextInput, View
 } from 'react-native';
+import ScreenSearch from './Recherche.js';
 
 export default function InfoCard() {
     return (
-        <Text>Yeah babyy</Text>
+        <ImageBackground source={require("./assets/background2.png")}
+                         resizeMode={"cover"}
+                         style={styles.image}
+        >
+            <KeyboardAvoidingView style={styles.container}>
+                <Text style={styles.titleText}>Info Card</Text>
+            </KeyboardAvoidingView>
+
+
+        </ImageBackground>
     );
 };
 

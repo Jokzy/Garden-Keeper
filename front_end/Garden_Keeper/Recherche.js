@@ -79,8 +79,8 @@ export default function ScreenSearch() {
             }
 
             setSearchResult(info)
-
         };
+
 
     const SearchButton = ({ onPress }) => (
         <TouchableOpacity onPress={onPress} style={styles.button}>
@@ -90,6 +90,7 @@ export default function ScreenSearch() {
             />
         </TouchableOpacity>
     );
+
 
     const ImageUploadButton = ({ onPress }) => (
         <TouchableOpacity onPress={onPress} style={styles.input}>
