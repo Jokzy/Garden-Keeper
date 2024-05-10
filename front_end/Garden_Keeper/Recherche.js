@@ -40,20 +40,22 @@ export default function ScreenSearch() {
                 alert('Sorry, we need camera roll permissions to make this work!');
             }
             let result = await ImagePicker.launchImageLibraryAsync({
-                base64: true,
-                mediaTypes: ImagePicker.MediaTypeOptions.All,
+                base64: false,
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: true,
                 aspect: [4, 3],
                 quality: 1,
-                exif: false
+                exif: false,
+                uri: true
             })
 
-            if (!result.cancelled) {
-                console.log(result.uri);
-                addImage(result.uri);
+
+            if (!result["cancelled"]) {
+                let image = result["assets"][0]["uri"];
+                addImage(image);
             }
         } catch (error) {
-            console.error("Error picking image: ", error);
+
         }
     };
 
