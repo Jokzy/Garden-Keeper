@@ -9,10 +9,10 @@ import ScreenAmi from "./Amis";
 import ScreenJar from "./Jardin";
 import ScreenSearch from "./Recherche";
 import Camera from "./Camera";
-import MenuIcon from "./assets/Menu.png"
-import EncyclopedieIcon from "./assets/Encyclopédie.png"
-import GardenIcon from "./assets/Mon jardin.png"
-import FriendsIcon from "./assets/Mes amis.png"
+import MenuIcon from "./assets/MainTopTabIcon.png"
+import EncyclopedieIcon from "./assets/EncyTopTabIcon.png"
+import GardenIcon from "./assets/yard_icon.png"
+import SearchIcon from "./assets/search_icon.png"
 import { ImageProvider } from './ImageContext';
 
 const topTab = createMaterialTopTabNavigator()
@@ -99,14 +99,14 @@ export default function App() {
                             icon = EncyclopedieIcon
                         } else if (route.name === 'Jardin') {
                             icon = GardenIcon
-                        } else if (route.name === 'Amis') {
-                            icon = FriendsIcon
+                        } else if (route.name === 'Recherche') {
+                            icon = SearchIcon
                         }
                         // This whole thing lets us change the icons for the top bar. It works ish we just have to find a way to make them all fit
-                        return <Image source={icon} style={{width: size, height: size, tintColor: color}}/>;
+                        return <Image source={icon} style={{width: 35, height: 35, tintColor: color}}/>;
                     },
-                    tabBarShowLabel: true,
-                    tabBarShowIcon: false,
+                    tabBarShowLabel: false,
+                    tabBarShowIcon: true,
                     swipeEnabled: false,
 
 
