@@ -4,5 +4,5 @@ from . import views
 urlpatterns = [
     path('api/', views.addItem),
     path('get-data/<str:query>/', views.getData),
-    path('send-image/', views.sendImage),
+    path('send-image/<str:img>', views.sendImage),
 ]
