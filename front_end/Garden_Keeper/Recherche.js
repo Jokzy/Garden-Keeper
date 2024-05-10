@@ -32,21 +32,28 @@ export default function ScreenSearch() {
     const { addImage } = useImages();
 
     const pickImage = async () => {
+        try {
 
-        const {status} = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (status !== 'granted') {
-            alert('Sorry, we need camera roll permissions to make this work!');
-        }
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-        })
 
-        if (!result.cancelled) {
-            //setImage(result.uri);
-            addImage(result.uri);
+            const {status} = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if (status !== 'granted') {
+                alert('Sorry, we need camera roll permissions to make this work!');
+            }
+            let result = await ImagePicker.launchImageLibraryAsync({
+                base64: true,
+                mediaTypes: ImagePicker.MediaTypeOptions.All,
+                allowsEditing: true,
+                aspect: [4, 3],
+                quality: 1,
+                exif: false
+            })
+
+            if (!result.cancelled) {
+                console.log(result.uri);
+                addImage(result.uri);
+            }
+        } catch (error) {
+            console.error("Error picking image: ", error);
         }
     };
 
