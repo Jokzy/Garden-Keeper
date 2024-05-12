@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import {StyleSheet, Text, View, SafeAreaView, Button, Image, TouchableOpacity} from 'react-native';
 import {useCallback, useEffect, useRef, useState} from 'react';
-import { Camera } from 'expo-camera';
+import { Camera, CameraView, useCameraPermissions } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
 import { useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
@@ -9,10 +9,13 @@ import { useImages } from './ImageContext';
 import React from 'react';
 
 export default function App() {
+    const plantID_key = "O6JC4gc3FtgXkbE6frVGPaLiqkRmULsUTKrwO9APWAaWxCqWMV";
     let cameraRef = useRef();
     const [hasCameraPermission, setHasCameraPermission] = useState();
     const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState();
     const [photo, setPhoto] = useState();
+    const [photoURI, setPhotoURI] = useState();
+    const [photoBase64, setPhotoBase64] = useState()
     const navigation = useNavigation();
     const { addImage } = useImages();
     const { addGardenImage } = useImages();
@@ -76,33 +79,54 @@ export default function App() {
 
         let newPhoto = await cameraRef.current.takePictureAsync(options);
         setPhoto(newPhoto);
+        setPhotoURI(newPhoto.uri)
     };
 
-    if (photo) {
+    if (photoURI) {
 
-        let savePhoto = () => {
-            MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
-                setPhoto(undefined);
-            });
-        };
+        // let savePhoto = () => {
+        //     MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
+        //         setPhoto(undefined);
+        //     });
+        // };
 
         const exportPhoto = () => {
-            if (photo) {
-                addImage(photo.uri);  // Add the photo URI to the context-managed array
-                setPhoto(undefined); // Optionally clear the photo after adding
+            if (photoURI) {
+                addImage(photoURI);  // Add the photo URI to the context-managed array
+                //setPhoto(undefined); // Optionally clear the photo after adding
             }
+            handlePhotoSearch().then(r => "works")
         };
+
+        const handlePhotoSearch = async () => {
+            // console.log("yeah:", photo)
+            fetch('https://plant.id/api/v3/identification',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Api-Key': plantID_key
+                    },
+                    body: JSON.stringify({
+                        images: [photo['base64']],
+                    })
+                })
+                .then(response => response.json())
+                .then(data => console.log(`data haha:`, data["result"]["classification"]["suggestions"][0]["name"]))
+                .catch(error => console.error('Error:', error));
+
+        }
 
         const addPhotoGarden = () => {
             if (photo) {
-                addGardenImage(photo.uri);  // Add the photo URI to the context-managed array
+                addGardenImage(photoURI);  // Add the photo URI to the context-managed array
             }
         };
 
 
         return (
             <SafeAreaView style={styles.container}>
-                <Image style={styles.preview} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />
+                <Image style={styles.preview} source={{ uri: photoURI }} />
                 <View style={styles.proceedingContainer}>
 
 
