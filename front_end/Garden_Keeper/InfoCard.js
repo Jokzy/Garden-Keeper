@@ -11,10 +11,10 @@ export default function InfoCard() {
         <ImageBackground
             source={require("./assets/background2.png")}
             resizeMode={"cover"}
-            style={styles.bg_image}
+            style={styles.bgImage}
         >
-            <View style={styles.main_container}>
-                <View style={styles.title_container}>
+            <View style={styles.mainContainer}>
+                <View style={styles.titleContainer}>
                     <Text style={styles.titleText}>Info</Text>
                 </View>
             </View>
@@ -25,7 +25,7 @@ export default function InfoCard() {
 
 
 const styles= StyleSheet.create({
-    bg_image: {
+    bgImage: {
         flex: 1,
         justifyContent: 'center',
     },
@@ -36,13 +36,13 @@ const styles= StyleSheet.create({
         color: "#75904b"
     },
 
-    title_container: {
+    titleContainer: {
         flex: 2,
         justifyContent: 'center',
         alignItems: 'center',
     },
 
-    main_container: {
+    mainContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
