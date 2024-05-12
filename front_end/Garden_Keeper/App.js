@@ -5,10 +5,10 @@ import {NavigationContainer, useIsFocused, useNavigation} from '@react-navigatio
 import {createMaterialTopTabNavigator} from "@react-navigation/material-top-tabs";
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import ScreenEnc from "./Encyclopédie";
-import ScreenAmi from "./Amis";
 import ScreenJar from "./Jardin";
 import ScreenSearch from "./Recherche";
 import Camera from "./Camera";
+import ScreenInfoCard from "./InfoCard";
 import MenuIcon from "./assets/Menu.png"
 import EncyclopedieIcon from "./assets/Encyclopédie.png"
 import GardenIcon from "./assets/Mon jardin.png"
@@ -19,25 +19,10 @@ const topTab = createMaterialTopTabNavigator()
 const Stack = createNativeStackNavigator();
 
 
-
-
 export default function App() {
     return topTabNav();
-
 }
     function SettingsScreen() {
-        /*const isFocused = useIsFocused();
-        const [showTabBar, setShowTabBar] = useState(true);
-
-        useEffect(() => {
-            return navigation.addListener('focus', () => {
-                setShowTabBar(true);
-            });
-        }, [navigation]);
-
-        const toggleTabBarVisibility = () => {
-            setShowTabBar(!showTabBar);
-        };*/
         const CameraIconButton = ({onPress}) => (
             <TouchableOpacity onPress={onPress} style={styles.button}>
                 <Image
@@ -58,7 +43,6 @@ export default function App() {
         );
         const navigation = useNavigation();
 
-
         return (
             <ImageBackground source={require("./assets/background1.png")} resizeMode={"cover"} style={styles.image}>
                 <View style={styles.containerTitle}>
@@ -78,6 +62,7 @@ export default function App() {
             </ImageBackground>
         );
     }
+
     function topTabNav(){
         const navigationTheme = {
             colors: {
@@ -128,6 +113,7 @@ export default function App() {
                 <topTab.Screen name="Recherche" component={StackNavSearch}/>
                 <topTab.Screen name="Encyclopédie" component={StackNavEnc}/>
                 <topTab.Screen name="Jardin" component={ScreenJar}/>
+                <topTab.Screen name="InfoCard" component={ScreenInfoCard}/>
             </topTab.Navigator>
         </NavigationContainer>
         </ImageProvider>

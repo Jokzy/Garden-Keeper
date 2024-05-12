@@ -8,35 +8,46 @@ import ScreenSearch from './Recherche.js';
 
 export default function InfoCard() {
     return (
-        <ImageBackground source={require("./assets/background2.png")}
-                         resizeMode={"cover"}
-                         style={styles.image}
+        <ImageBackground
+            source={require("./assets/background2.png")}
+            resizeMode={"cover"}
+            style={styles.bg_image}
         >
-            <KeyboardAvoidingView style={styles.container}>
-                <Text style={styles.titleText}>Info Card</Text>
-            </KeyboardAvoidingView>
-
-
+            <View style={styles.main_container}>
+                <View style={styles.title_container}>
+                    <Text style={styles.titleText}>Info</Text>
+                </View>
+            </View>
         </ImageBackground>
+
     );
 };
 
 
 const styles= StyleSheet.create({
-    container: {
+    bg_image: {
         flex: 1,
+        justifyContent: 'center',
     },
 
     titleText: {
-
+        fontWeight: "bold",
+        fontSize: 40,
+        color: "#75904b"
     },
 
-    containerSearchBar: {
-
+    title_container: {
+        flex: 2,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 
-    result: {
-
+    main_container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
+
+
 
 });
