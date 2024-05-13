@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import {StyleSheet, Text, View, SafeAreaView, Button, Image, TouchableOpacity} from 'react-native';
 import {useCallback, useEffect, useRef, useState} from 'react';
 import { Camera } from 'expo-camera';
@@ -7,18 +6,20 @@ import { useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useImages } from './ImageContext';
 import React from 'react';
+import {IP_ADDRESS} from "./IP";
 
 export default function App() {
+    // note: on utilise des [const, funct] au lieu d'un let, car, comme ça, React said qu'il doit rafraîchir la page
     const plantID_key = "O6JC4gc3FtgXkbE6frVGPaLiqkRmULsUTKrwO9APWAaWxCqWMV";
     let cameraRef = useRef();
     const [hasCameraPermission, setHasCameraPermission] = useState();
     const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState();
     const [photo, setPhoto] = useState();
     const [photoURI, setPhotoURI] = useState();
-    const [photoBase64, setPhotoBase64] = useState()
     const navigation = useNavigation();
     const { addImage } = useImages();
     const { addGardenImage } = useImages();
+    const [plantName, setPlantName ] = useState();
 
     const originalTabBarStyle = {
         position: 'absolute',
@@ -30,7 +31,7 @@ export default function App() {
         left: 0,
         elevation: 0,
         backgroundColor: 'transparent', };
-    const hiddenTabBarStyle = { display: 'none' };
+    const hiddenTabBarStyle = { display: 'Pas de nom!' };
 
     useFocusEffect(
         useCallback(() => {
@@ -95,24 +96,62 @@ export default function App() {
                 addImage(photoURI);  // Add the photo URI to the context-managed array
                 //setPhoto(undefined); // Optionally clear the photo after adding
             }
-            handlePhotoSearch().then(r => "works")
+            handlePhotoSearch().then(r => 'null');
         };
 
+        //Sending the name of the plant and the picture we took of the plant to our API, so that it can store them in DB
+        const sendPlantToDatabase = async () => {
+            console.log("run")
+            const postData = {
+                nom_scientifique: plantName,
+                image_personelle: photoURI,
+            }
+
+            const options = {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(postData)
+            };
+
+            const url = `http://${IP_ADDRESS}:8000/add-plante/`
+
+            fetch(url, options)
+                .then(response => {
+                    if (response.ok) {
+                        console.log("SENT!")
+                        return response.json();
+                    } else {
+                        throw new Error('Failed to send POST request');
+                    }
+                })
+                .then(data => {
+                    console.log('Response:', data)
+                })
+                .catch(error => {
+                    console.error('Error', error);
+                });
+        }
+
         const handlePhotoSearch = async () => {
-            // console.log("yeah:", photo)
-            fetch('https://plant.id/api/v3/identification',
-                {
-                    method: 'POST',
-                    headers: {
+            const options = {
+                method: 'POST',
+                headers: {
                         'Content-Type': 'application/json',
                         'Api-Key': plantID_key
-                    },
-                    body: JSON.stringify({
-                        images: [photo['base64']],
-                    })
-                })
+                },
+                body: JSON.stringify({images: [photo.base64]})
+            };
+
+            // Plant.id API identifies what the picture is
+            fetch('https://plant.id/api/v3/identification', options)
                 .then(response => response.json())
-                .then(data => console.log(`data haha:`, data["result"]["classification"]["suggestions"][0]["name"]))
+                .then(data => {
+                    console.log('Response from API:', data); //TEST
+                    const nom_scientifique= data.result?.classification?.suggestions?.[0]?.name;
+                    setPlantName(nom_scientifique);
+                    console.log('Plant Name:', plantName); //TEST
+                    sendPlantToDatabase()
+                })
                 .catch(error => console.error('Error:', error));
 
         }
@@ -149,16 +188,16 @@ export default function App() {
                             source={require('./assets/yard_icon.png')}
                         />
                     </TouchableOpacity>
+
                 </View>
             </SafeAreaView>
-
         );
     }
 
     return (
         <Camera style={styles.container} ref={cameraRef}>
             <View style={styles.topContainer}>
-                <TouchableOpacity  onPress={() => navigation.goBack()}>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Image
                         style={{width: 50, height: 50}}
                         source={require('./assets/back_icon.png')}
@@ -166,19 +205,18 @@ export default function App() {
 
                 </TouchableOpacity>
             </View>
-            <View style={styles.bottomContainer} >
-                <TouchableOpacity  onPress={() => takePic()}>
+            <View style={styles.bottomContainer}>
+                <TouchableOpacity onPress={() => takePic()}>
                     <Image
                         style={{width: 150, height: 150}}
                         source={require('./assets/circle_icon.png')}
                     />
                 </TouchableOpacity>
             </View>
-
         </Camera>
+
     );
 }
-
 
 
 const styles = StyleSheet.create({
@@ -187,7 +225,6 @@ const styles = StyleSheet.create({
         position:'relative'
 
     },
-
     preview: {
         alignSelf: 'stretch',
         flex: 1

@@ -23,8 +23,6 @@ async function loadFont(){
 }
 
 export default function ScreenSearch() {
-    const ip_adresse = "" //TODO: REMOVE THIS BEFORE PUSHING
-
     const [searchText, setSearchText] = useState('');
     const [searchResult, setSearchResult] = useState('');
     const [image, setImage] = useState(null);

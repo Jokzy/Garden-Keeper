@@ -1,6 +1,7 @@
 import requests
 import base64
 import json
+from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from gk_app.models import Plante
@@ -40,19 +41,40 @@ def addItem(request):
     return Response(serializer.data)  # This outputs json data
 
 @api_view(['POST'])
-def sendImage(request, img): #idea: location of image in your files in arg
-    with open('back_end/gk_projet/api/images/rose.jpg', 'rb') as file:
-        image = base64.b64encode(file.read()).decode('ascii')
+def addPlant(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            processed_data = {}
+            for key, value in data.items():
+                if value:
+                    processed_data[key] = value
 
-    # print(image) #TODO: TEST
-    # response = requests.post(url='https://plant.id/api/v3/identification',
-    #                   headers={'Api-Key': plantID_key, 'Content-Type': 'application/json'},
-    #                   json={'images': image},
-    #                   )
-    response = requests.post(url='https://plant.id/api/v3/identification',
-                             headers={'Api-Key': plantID_key, 'Content-Type': 'application/json'},
-                             json={'image': img},)
+            # Creating a Plante instance and adding it to the database
+            Plante.objects.create(**processed_data)
 
-    info = response.json()
-    print({"message": info["result"]["classification"]["suggestions"][0]["name"]})
-    return Response({"message": info["result"]["classification"]["suggestions"][0]["name"]})
+            response_data = {'message': 'Data received succesfully', 'processed_data': processed_data}
+            return JsonResponse(response_data)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON format'})
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed'})
+
+
+# @api_view(['POST'])
+# def sendImage(request, img): #idea: location of image in your files in arg
+#     with open('back_end/gk_projet/api/images/rose.jpg', 'rb') as file:
+#         image = base64.b64encode(file.read()).decode('ascii')
+#
+#     # print(image) #TODO: TEST
+#     # response = requests.post(url='https://plant.id/api/v3/identification',
+#     #                   headers={'Api-Key': plantID_key, 'Content-Type': 'application/json'},
+#     #                   json={'images': image},
+#     #                   )
+#     response = requests.post(url='https://plant.id/api/v3/identification',
+#                              headers={'Api-Key': plantID_key, 'Content-Type': 'application/json'},
+#                              json={'image': img},)
+#
+#     info = response.json()
+#     print({"message": info["result"]["classification"]["suggestions"][0]["name"]})
+#     return Response({"message": info["result"]["classification"]["suggestions"][0]["name"]})

@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import ScreenSearch from './Recherche.js';
 
-export default function InfoCard() {
+export default function InfoCard({plantName}) {
     return (
         <ImageBackground
             source={require("./assets/background2.png")}
@@ -16,6 +16,7 @@ export default function InfoCard() {
             <View style={styles.mainContainer}>
                 <View style={styles.titleContainer}>
                     <Text style={styles.titleText}>Info</Text>
+                    <Text style={{color: 'black'}}>Plant Name: {plantName} </Text>
                 </View>
             </View>
         </ImageBackground>

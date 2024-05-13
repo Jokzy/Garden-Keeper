@@ -29,7 +29,7 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0',
     '127.0.0.1',
-    '', #Mettre l'addresse IP de l'ordinateur! #TODO: REMOVE YOUR IP BEFORE PUSHING LOL
+    '1', #Mettre l'addresse IP de l'ordinateur! #TODO: REMOVE YOUR IP BEFORE PUSHING LOL
 ]
 
 # Application definition
@@ -56,6 +56,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+CORD_ALLOWED_ORIGINS = [
+    'http://192.168.0.248:8000'
 ]
 
 ROOT_URLCONF = 'gk_projet.urls'
