@@ -30,23 +30,27 @@ export default function ScreenSearch() {
     const { addImage } = useImages();
 
     const pickImage = async () => {
-
-        const {status} = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
             alert('Sorry, we need camera roll permissions to make this work!');
+            return;  // Ensure no further execution if permission is not granted
         }
-        let result = await ImagePicker.launchImageLibraryAsync({
+
+        const result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
             aspect: [4, 3],
             quality: 1,
-        })
+        });
 
-        if (!result.cancelled) {
-            //setImage(result.uri);
-            addImage(result.uri);
+        console.log('Image Picker Result:', result); // Log the entire result
+
+
+            if (!result["cancelled"]) {
+                let image = result["assets"][0]["uri"];
+                addImage(image);
+            }
         }
-    };
 
 
     const handleSearch = async () => {

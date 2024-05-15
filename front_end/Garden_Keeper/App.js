@@ -5,24 +5,40 @@ import {NavigationContainer, useIsFocused, useNavigation} from '@react-navigatio
 import {createMaterialTopTabNavigator} from "@react-navigation/material-top-tabs";
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import ScreenEnc from "./Encyclopédie";
+import ScreenAmi from "./Amis";
 import ScreenJar from "./Jardin";
 import ScreenSearch from "./Recherche";
+import StylesTests from "./StylesTests";
 import Camera from "./Camera";
-import ScreenInfoCard from "./InfoCard";
-import MenuIcon from "./assets/Menu.png"
-import EncyclopedieIcon from "./assets/Encyclopédie.png"
-import GardenIcon from "./assets/Mon jardin.png"
-import FriendsIcon from "./assets/Mes amis.png"
+import MenuIcon from "./assets/MainTopTabIcon.png"
+import EncyclopedieIcon from "./assets/EncyTopTabIcon.png"
+import GardenIcon from "./assets/yard_icon.png"
+import SearchIcon from "./assets/search_icon.png"
 import { ImageProvider } from './ImageContext';
 
 const topTab = createMaterialTopTabNavigator()
 const Stack = createNativeStackNavigator();
 
 
+
+
 export default function App() {
     return topTabNav();
+
 }
     function SettingsScreen() {
+        /*const isFocused = useIsFocused();
+        const [showTabBar, setShowTabBar] = useState(true);
+
+        useEffect(() => {
+            return navigation.addListener('focus', () => {
+                setShowTabBar(true);
+            });
+        }, [navigation]);
+
+        const toggleTabBarVisibility = () => {
+            setShowTabBar(!showTabBar);
+        };*/
         const CameraIconButton = ({onPress}) => (
             <TouchableOpacity onPress={onPress} style={styles.button}>
                 <Image
@@ -43,6 +59,7 @@ export default function App() {
         );
         const navigation = useNavigation();
 
+
         return (
             <ImageBackground source={require("./assets/background1.png")} resizeMode={"cover"} style={styles.image}>
                 <View style={styles.containerTitle}>
@@ -62,7 +79,6 @@ export default function App() {
             </ImageBackground>
         );
     }
-
     function topTabNav(){
         const navigationTheme = {
             colors: {
@@ -84,14 +100,14 @@ export default function App() {
                             icon = EncyclopedieIcon
                         } else if (route.name === 'Jardin') {
                             icon = GardenIcon
-                        } else if (route.name === 'Amis') {
-                            icon = FriendsIcon
+                        } else if (route.name === 'Recherche') {
+                            icon = SearchIcon
                         }
                         // This whole thing lets us change the icons for the top bar. It works ish we just have to find a way to make them all fit
-                        return <Image source={icon} style={{width: size, height: size, tintColor: color}}/>;
+                        return <Image source={icon} style={{width: 35, height: 35, tintColor: color}}/>;
                     },
-                    tabBarShowLabel: true,
-                    tabBarShowIcon: false,
+                    tabBarShowLabel: false,
+                    tabBarShowIcon: true,
                     swipeEnabled: false,
 
 
@@ -113,10 +129,10 @@ export default function App() {
                 <topTab.Screen name="Recherche" component={StackNavSearch}/>
                 <topTab.Screen name="Encyclopédie" component={StackNavEnc}/>
                 <topTab.Screen name="Jardin" component={ScreenJar}/>
-                <topTab.Screen name="InfoCard" component={ScreenInfoCard}/>
             </topTab.Navigator>
         </NavigationContainer>
         </ImageProvider>
+        //<topTab.Screen name={"Styles"} component={StylesTests}/> pour test les styles
     )
 }
 function StackNavMain(){

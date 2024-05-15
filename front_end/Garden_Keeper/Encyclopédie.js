@@ -101,7 +101,7 @@ async function loadFont(){
                         renderItem={({ item }) => (
                             <Pressable onPress={() => console.log("Pressed item", item.id)} style={styles.pressableItem}>
                                 <Image source={{ uri: item.uri }} style={styles.imageFormat} />
-                                <Text>Plant namecd</Text>
+                                <Text>Plant name</Text>
                             </Pressable>
                         )}
                         ListEmptyComponent={<Text style={styles.emptyMessage}>C'est bien vide ici...</Text>}
@@ -196,9 +196,9 @@ async function loadFont(){
         imageContainer: {
         margin: 10,
         borderRadius: 10,
-        overflow: 'hidden',  // Apply overflow hidden for borderRadius effect
-        elevation: 5,        // Add elevation for shadow (Android)
-        shadowColor: '#000', // Shadow color for iOS
+        overflow: 'hidden',
+        elevation: 5,
+        shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 2,
