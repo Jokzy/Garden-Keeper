@@ -8,6 +8,7 @@ import ScreenEnc from "./Encyclopédie";
 import ScreenAmi from "./Amis";
 import ScreenJar from "./Jardin";
 import ScreenSearch from "./Recherche";
+import StylesTests from "./StylesTests";
 import Camera from "./Camera";
 import MenuIcon from "./assets/MainTopTabIcon.png"
 import EncyclopedieIcon from "./assets/EncyTopTabIcon.png"
@@ -131,6 +132,7 @@ export default function App() {
             </topTab.Navigator>
         </NavigationContainer>
         </ImageProvider>
+        //<topTab.Screen name={"Styles"} component={StylesTests}/> pour test les styles
     )
 }
 function StackNavMain(){

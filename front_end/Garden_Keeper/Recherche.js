@@ -23,7 +23,7 @@ async function loadFont(){
 }
 
 export default function ScreenSearch() {
-    const ip_adresse = "10.186.7.22" //TODO: REMOVE THIS BEFORE PUSHING
+    const ip_adresse = "" //TODO: REMOVE THIS BEFORE PUSHING
 
     const [searchText, setSearchText] = useState('');
     const [searchResult, setSearchResult] = useState('');
@@ -32,21 +32,31 @@ export default function ScreenSearch() {
     const { addImage } = useImages();
 
     const pickImage = async () => {
-
-        const {status} = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
             alert('Sorry, we need camera roll permissions to make this work!');
+            return;  // Ensure no further execution if permission is not granted
         }
-        let result = await ImagePicker.launchImageLibraryAsync({
+
+        const result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
             aspect: [4, 3],
             quality: 1,
-        })
+        });
+
+        console.log('Image Picker Result:', result); // Log the entire result
 
         if (!result.cancelled) {
-            //setImage(result.uri);
-            addImage(result.uri);
+            console.log('Selected Image URI:', result.uri); // Log the URI specifically
+
+            if (result.uri) {
+                addImage(result.uri);
+            } else {
+                console.log('URI is undefined even though result is not cancelled.');
+            }
+        } else {
+            console.log('Image selection was cancelled.');
         }
     };
 
