@@ -20,6 +20,8 @@
           "isAccessMediaLocationEnabled": "true"
         }
       ],
+      ["expo-image-picker"],
+
       "expo-font"
     ],
     "assetBundlePatterns": [

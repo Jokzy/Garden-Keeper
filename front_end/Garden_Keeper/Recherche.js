@@ -47,16 +47,11 @@ export default function ScreenSearch() {
 
         console.log('Image Picker Result:', result); // Log the entire result
 
-        if (!result.cancelled) {
-            console.log('Selected Image URI:', result.uri); // Log the URI specifically
 
-            if (result.uri) {
-                addImage(result.uri);
-            } else {
-                console.log('URI is undefined even though result is not cancelled.');
+            if (!result["cancelled"]) {
+                let image = result["assets"][0]["uri"];
+                addImage(image);
             }
-        } else {
-            console.log('Image selection was cancelled.');
         }
     };
 
