@@ -53,7 +53,6 @@ export default function ScreenSearch() {
                 addImage(image);
             }
         }
-    };
 
 
     const handleSearch = async () => {
