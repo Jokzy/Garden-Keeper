@@ -9,7 +9,7 @@ from .serializers import PlanteSerializer
 from django.http import HttpResponse
 
 perenual_key = "sk-eKNW65d813327065e4323"  # perenual
-plantID_key = "O6JC4gc3FtgXkbE6frVGPaLiqkRmULsUTKrwO9APWAaWxCqWMV" #TODO: Put this in comments when it isn't being used
+plantID_key = "uNrAXKqhOOBBoNXCMQIaEJpqmE6gFs8g0O6tFoEAa5q9AzpQgG" #TODO: Put this in comments when it isn't being used
 
 @api_view(['GET'])
 def getData(request, query):
@@ -18,19 +18,19 @@ def getData(request, query):
         serializer = PlanteSerializer(plante, many=False)
         return Response(serializer.data)
     else:
-        perenual_url = f"https://perenual.com/api/species-list?key={perenual_key}&q={query}"
-        r = requests.get(perenual_url)
-        info = r.json()
-
-        if info['data']: # vérifie si le dictionnaire est vide
-            Plante.objects.create(nom_recherche=query, nom=info['data'][0]["common_name"],
-                                  nom_scientifique=info['data'][0]["scientific_name"],
-                                  arrosage=info['data'][0]["watering"], soleil=info['data'][0]["sunlight"],
-                                  cycle=info['data'][0]["cycle"])
-
-            plante = Plante.objects.get(nom_recherche=query)
-            serializer = PlanteSerializer(plante)
-            return Response(serializer.data)
+        # perenual_url = f"https://perenual.com/api/species-list?key={perenual_key}&q={query}"
+        # r = requests.get(perenual_url)
+        # info = r.json()
+        #
+        # if info['data']: # vérifie si le dictionnaire est vide
+        #     Plante.objects.create(nom_recherche=query, nom=info['data'][0]["common_name"],
+        #                           nom_scientifique=info['data'][0]["scientific_name"],
+        #                           arrosage=info['data'][0]["watering"], soleil=info['data'][0]["sunlight"],
+        #                           cycle=info['data'][0]["cycle"])
+        #
+        #     plante = Plante.objects.get(nom_recherche=query)
+        #     serializer = PlanteSerializer(plante)
+        #     return Response(serializer.data)
         return Response({"message": "Plante introuvable"})
 
 @api_view(['POST'])
@@ -52,15 +52,23 @@ def addPlant(request):
 
             # Creating a Plante instance and adding it to the database
             Plante.objects.create(**processed_data)
-
-            response_data = {'message': 'Data received succesfully', 'processed_data': processed_data}
-            return JsonResponse(response_data)
+            #The next lines are to serialize the plante object so that we can store it in the database
+            nom_recherche = processed_data.get('nom_scientifique')
+            if nom_recherche:
+                plante = Plante.objects.get(nom_scientifique=nom_scientifique)
+                serializer = PlanteSerializer(plante)
+                serializer.save()
+                response_data = {'message': 'Data received succesfully', 'processed_data': processed_data}
+                return JsonResponse(response_data)
+            else:
+                return JsonResponse({'error': 'Plante not found'})
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON format'})
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'})
 
 
+# ----------------- CODE GRAVEYARD -----------------
 # @api_view(['POST'])
 # def sendImage(request, img): #idea: location of image in your files in arg
 #     with open('back_end/gk_projet/api/images/rose.jpg', 'rb') as file:

@@ -6,4 +6,11 @@ from gk_app.models import Plante
 class PlanteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Plante
-        fields ='__all__'
+        fields =fields = ['frequence_arrosage',
+                          'ensoleillement',
+                          'image_personelle',
+                          'image_API',
+                          'nom_personnel',
+                          'nom_scientifique',
+                          'description',
+                          'dans_jardin']

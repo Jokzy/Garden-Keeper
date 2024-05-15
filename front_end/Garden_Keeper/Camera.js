@@ -6,11 +6,10 @@ import { useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useImages } from './ImageContext';
 import React from 'react';
-import {IP_ADDRESS} from "./IP";
+import {addNewPlantToDatabase, handlePhotoSearchAPI, getPerenualID} from "./ApiCalls";
 
 export default function App() {
     // note: on utilise des [const, funct] au lieu d'un let, car, comme ça, React said qu'il doit rafraîchir la page
-    const plantID_key = "O6JC4gc3FtgXkbE6frVGPaLiqkRmULsUTKrwO9APWAaWxCqWMV";
     let cameraRef = useRef();
     const [hasCameraPermission, setHasCameraPermission] = useState();
     const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState();
@@ -97,69 +96,61 @@ export default function App() {
                 //setPhoto(undefined); // Optionally clear the photo after adding
             }
             handlePhotoSearch().then(r => 'null');
-        };
 
-        //Sending the name of the plant and the picture we took of the plant to our API, so that it can store them in DB
-        const sendPlantToDatabase = async () => {
-            console.log("run")
-            const postData = {
-                nom_scientifique: plantName,
-                image_personelle: photoURI,
-            }
-
-            const options = {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(postData)
-            };
-
-            const url = `http://${IP_ADDRESS}:8000/add-plante/`
-
-            fetch(url, options)
-                .then(response => {
-                    if (response.ok) {
-                        console.log("SENT!")
-                        return response.json();
-                    } else {
-                        throw new Error('Failed to send POST request');
-                    }
-                })
-                .then(data => {
-                    console.log('Response:', data)
+            //console.log('Plant Name:', plantName); //TEST
+            getPerenualID("European Silver Fir")
+                .then(resolve => {
+                    console.log("ID of the plant from Perenual", resolve)
                 })
                 .catch(error => {
-                    console.error('Error', error);
+                    console.error("Whoospies!", error)
+                })
+        };
+
+        const sendPlantToDatabase = async () => {
+            try {
+                console.log('Before addNewPlantToDatabase', {
+                    frequence_arrosage: null,
+                    ensoleillement: null,
+                    image_personelle: photoURI,
+                    image_API: null,
+                    nom_personnel: null,
+                    nom_scientifique: plantName,
+                    description: null,
+                    dans_jardin: null,
+                })
+                await addNewPlantToDatabase({
+                    frequence_arrosage: null,
+                    ensoleillement: null,
+                    image_personelle: photoURI,
+                    image_API: null,
+                    nom_personnel: null,
+                    nom_scientifique: plantName,
+                    description: null,
+                    dans_jardin: null,
                 });
-        }
+
+            } catch (error) {
+                console.error('Error in sendPlantToDatabase', error);
+            }
+        };
 
         const handlePhotoSearch = async () => {
-            const options = {
-                method: 'POST',
-                headers: {
-                        'Content-Type': 'application/json',
-                        'Api-Key': plantID_key
-                },
-                body: JSON.stringify({images: [photo.base64]})
-            };
+            try {
+                //Retrieves the scientific name of the plant:
+                await handlePhotoSearchAPI(photo, setPlantName);
+                sendPlantToDatabase()
 
-            // Plant.id API identifies what the picture is
-            fetch('https://plant.id/api/v3/identification', options)
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Response from API:', data); //TEST
-                    const nom_scientifique= data.result?.classification?.suggestions?.[0]?.name;
-                    setPlantName(nom_scientifique);
-                    console.log('Plant Name:', plantName); //TEST
-                    sendPlantToDatabase()
-                })
-                .catch(error => console.error('Error:', error));
-
-        }
+            } catch (error) {
+                console.error('Error in handlePhotoSearch', error);
+            }
+        };
 
         const addPhotoGarden = () => {
             if (photo) {
                 addGardenImage(photoURI);  // Add the photo URI to the context-managed array
             }
+
         };
 
 
@@ -253,4 +244,59 @@ const styles = StyleSheet.create({
 
 });
 
+// ----------------- CODE GRAVEYARD -----------------
+// //Sending the name of the plant and the picture we took of the plant to our API, so that it can store them in DB
+// const sendPlantToDatabase = async () => {
+//     console.log("run")
+//     const postData = {
+//         nom_scientifique: plantName,
+//         image_personelle: photoURI,
+//     }
+//
+//     const options = {
+//         method: 'POST',
+//         headers: {'Content-Type': 'application/json'},
+//         body: JSON.stringify(postData)
+//     };
+//
+//     const url = `http://${IP_ADDRESS}:8000/add-plante/`
+//
+//     fetch(url, options)
+//         .then(response => {
+//             if (response.ok) {
+//                 console.log("SENT!")
+//                 return response.json();
+//             } else {
+//                 throw new Error('Failed to send POST request');
+//             }
+//         })
+//         .then(data => {
+//             console.log('Response:', data)
+//         })
+//         .catch(error => {
+//             console.error('Error', error);
+//         });
+// }
 
+// const handlePhotoSearch = async () => {
+//     const options = {
+//         method: 'POST',
+//         headers: {
+//                 'Content-Type': 'application/json',
+//                 'Api-Key': plantID_key
+//         },
+//         body: JSON.stringify({images: [photo.base64]})
+//     };
+//
+//     // Plant.id API identifies what the picture is
+//     fetch('https://plant.id/api/v3/identification', options)
+//         .then(response => response.json())
+//         .then(data => {
+//             console.log('Response from API:', data); //TEST
+//             const nom_scientifique= data.result?.classification?.suggestions?.[0]?.name;
+//             setPlantName(nom_scientifique);
+//             console.log('Plant Name:', plantName); //TEST
+//             sendPlantToDatabase()
+//         })
+//         .catch(error => console.error('Error:', error));
+// }
