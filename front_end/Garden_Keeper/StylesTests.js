@@ -1,9 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import {View, TextInput, Button, Text, StyleSheet, ImageBackground, Image, TouchableOpacity, Dimensions} from 'react-native';
+import {photoDB, setPhotoDB} from "./Camera";
+import {getPerenualID, getPlantFromDatabase, handlePhotoSearchAPI} from "./ApiCalls";
 
 export default function StylesTests() {
-
     const CheckBox = ({isChecked, onPress}) => (
         <TouchableOpacity style={styles.checkBox} onPress={onPress}>
             <Image
@@ -17,10 +18,9 @@ export default function StylesTests() {
 
 
     return (
-
         <View style={styles.container}>
             <View style={styles.containerPhotoPrise}>
-                <Image source={require('./assets/PlanteMenu.png')} style={styles.imagePhoto}/>
+                <Image source={{uri: photoDB}} style={styles.imagePhoto}/>
             </View>
             <View style={styles.containerID}>
 

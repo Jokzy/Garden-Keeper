@@ -14,6 +14,7 @@ export default function App() {
     const [hasCameraPermission, setHasCameraPermission] = useState();
     const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState();
     const [photo, setPhoto] = useState(null);
+    const [photoDB, setPhotoDB] = useState() //TODO: temp test constant
     const [photoURI, setPhotoURI] = useState();
     const navigation = useNavigation();
     const { addImage } = useImages();
@@ -61,6 +62,8 @@ export default function App() {
                 console.log("Permission to access media library not granted");
             }
         })();
+
+
     }, []);
 
     if (hasCameraPermission === undefined) {
@@ -98,8 +101,21 @@ export default function App() {
                 const nom_plante = await handlePhotoSearchAPI(photo);
                 console.log("nom de la damn plante:", nom_plante)
                 const id_plant = await getPerenualID(nom_plante)
+                console.log("ID of the damn plant:", id_plant)
                 const plant = await getPlantFromDatabase(id_plant)
-                console.log(plant)
+                console.log("This is the response:", plant)
+
+
+                const imagePersonelle = plant.Plant_data.image_personelle;
+                console.log("Image Personelle", imagePersonelle)
+                setPhotoDB(imagePersonelle)
+                await console.log(photoDB)
+
+                // getPlantFromDatabase(id_plant)
+                //     .then(Plant_data => {
+                //         const imagePersonelle = Plant_data.image_personelle;
+                //         console.log("Image Personelle", imagePersonelle)
+                //     })
             } catch (error) {
                 console.error('Error in handlePhotoSearch', error);
             }
@@ -117,8 +133,6 @@ export default function App() {
             <SafeAreaView style={styles.container}>
                 <Image style={styles.preview} source={{ uri: photoURI }} />
                 <View style={styles.proceedingContainer}>
-
-
                 {hasMediaLibraryPermission ? <TouchableOpacity onPress= {exportPhoto}>
                     <Image
                         style={{width: 98, height: 98}}

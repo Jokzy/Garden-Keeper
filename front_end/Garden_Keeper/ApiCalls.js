@@ -1,8 +1,8 @@
 import {useState} from "react";
 
 const IP_ADDRESS = "" //TODO: Don't push your IP address!
-const perenual_key = "sk-3pOW6643942e18ef15485"
-const plantID_key = "uNrAXKqhOOBBoNXCMQIaEJpqmE6gFs8g0O6tFoEAa5q9AzpQgG"
+const perenual_key = "sk-WBy766460d80d73615523"
+const plantID_key = "0X99pkY4nMqFiA2tyXxUBIAn7yYe9tmwn52FiwmCPwNomcMacz"
 
 //TODO: A lot of this can be handled directly in the API calls, like the setPlantName
 
@@ -10,7 +10,8 @@ export const getPerenualID = async(nom_scientifique) => {
     try {
         const response = await fetch(`https://perenual.com/api/species-list?key=${perenual_key}&q=${nom_scientifique}`);
         if (!response.ok) {
-            throw new Error('Failed to fetch data');
+            const errorText = await response.text();
+            throw new Error(`Failed to fetch data ${errorText}`);
         }
         const result = await response.json();
         console.log("result json", result);
@@ -45,27 +46,33 @@ export const handlePhotoSearchAPI = async (photo) => {
     };
 
     console.log(photo.uri) //TEST
+    try {
+        const response = await fetch('https://plant.id/api/v3/identification', options)
+        const data = await response.json()
+        console.log('Response from API:', data); //TEST
 
-    fetch('https://plant.id/api/v3/identification', options)
-        .then(response => response.json())
-        .then(async data => {
-            console.log('Response from API:', data); //TEST
-            const nom_scientifique = data.result?.classification?.suggestions?.[0]?.name;
-            console.log("Perenual ID HA", await getPerenualID(nom_scientifique))
-            const id_perenual = await getPerenualID(nom_scientifique)
+        const nom_scientifique = data.result?.classification?.suggestions?.[0]?.name;
+        console.log("nom ScientiFique", nom_scientifique)
+        if (!nom_scientifique) {
+            throw new Error('Plant name not found in response');
+        }
 
-            console.log('Checking nom_scientifique and id_perenual', nom_scientifique, id_perenual);
-            addNewPlantToDatabase({
+        //Getting the id in Perenual from the scientific name
+        const id_perenual = await getPerenualID(nom_scientifique);
+        console.log("dis the id:", id_perenual)
+
+        //Adding 3 base info into the DB
+        await addNewPlantToDatabase({
                     nom_scientifique: nom_scientifique,
                     image_personelle: photo.uri,
                     id_perenual: id_perenual,
-                }
-            )
-        })
-        .catch(error => {
-            console.error('Error here:', error)
-            throw error;
-        });
+                });
+
+        return nom_scientifique;
+    } catch (error) {
+        console.error('Error in handlePhotoSearchAPI:', error);
+        throw error;
+    }
 };
 
 //Works no matter how much information you send to the API!
@@ -112,17 +119,39 @@ export const getPlantFromDatabase = async (id_perenual) => {
         headers: { 'Content-Type': 'application/json'},
     }
 
-    const url = `http://${IP_ADDRESS}:8000/get-plante/${id_perenual}/`
+    const url = `http://${IP_ADDRESS}:8000/get-plante/${id_perenual}/`;
 
-    return fetch(url, options)
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error("Failed to retrieve plant from database.")
-            }
-        })
-}
+    try {
+        const response = await fetch(url, options);
+        console.log("Response status:", response.status);
+
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log("tis tes response:", data);
+            return data;
+        } else {
+            throw new Error(data.error || "Failes to retrieve plant from database.");
+        }
+    } catch (error) {
+        console.error("Error in handlePhotoSearch", error);
+        throw error;
+    }
+//
+//     return fetch(url, options)
+//         .then(response => {
+//             console.log("Response status:", response.status);
+//
+//             const data = await response.json();
+//             // console.log("Response body:", response)
+//             if (response.ok) {
+//                 console.log("tis the response:", response.json())
+//                 return response.json();
+//             } else {
+//                 throw new Error("Failed to retrieve plant from database.")
+//             }
+//         })
+// }
 
 // Get the plant from our database and fill its information
 // Or get the information first and then fill it?
@@ -150,6 +179,7 @@ const acquireInformationAPI = async (nom_scientifique) => {
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
         })
+}
 }
 
 
@@ -259,4 +289,26 @@ const acquireInformationAPI = async (nom_scientifique) => {
     //     description: description || null,
     //     dans_jardin: dans_jardin || null
     // };
+
+// Code that used to be in handlePhotoSearchAPI:
+    // fetch('https://plant.id/api/v3/identification', options)
+    //     .then(response => response.json())
+    //     .then(async data => {
+    //         console.log('Response from API:', data); //TEST
+    //         const nom_scientifique = data.result?.classification?.suggestions?.[0]?.name;
+    //         console.log("Perenual ID HA", await getPerenualID(nom_scientifique))
+    //         const id_perenual = await getPerenualID(nom_scientifique)
+    //
+    //         console.log('Checking nom_scientifique and id_perenual', nom_scientifique, id_perenual);
+    //         addNewPlantToDatabase({
+    //                 nom_scientifique: nom_scientifique,
+    //                 image_personelle: photo.uri,
+    //                 id_perenual: id_perenual,
+    //             }
+    //         )
+    //     })
+    //     .catch(error => {
+    //         console.error('Error here:', error)
+    //         throw error;
+    //     });
 

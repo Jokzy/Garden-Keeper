@@ -129,10 +129,11 @@ export default function App() {
                 <topTab.Screen name="Recherche" component={StackNavSearch}/>
                 <topTab.Screen name="Encyclopédie" component={StackNavEnc}/>
                 <topTab.Screen name="Jardin" component={ScreenJar}/>
+                <topTab.Screen name={"Styles"} component={StylesTests}/>
             </topTab.Navigator>
         </NavigationContainer>
         </ImageProvider>
-        //<topTab.Screen name={"Styles"} component={StylesTests}/> pour test les styles
+
     )
 }
 function StackNavMain(){
