@@ -18,7 +18,7 @@ export default function App() {
     const navigation = useNavigation();
     const { addImage } = useImages();
     const { addGardenImage } = useImages();
-    const [plantName, setPlantName ] = useState(null);
+    // const [plantName, setPlantName ] = useState(null);
 
     const originalTabBarStyle = {
         position: 'absolute',
@@ -90,58 +90,56 @@ export default function App() {
             }
             handlePhotoSearch().then(r => 'null');
 
-            console.log('Plant Name:', plantName); //TEST
-            if (plantName) {
-                getPerenualID(plantName)
-                    .then(resolve => {
-                        console.log("ID of the plant from Perenual", resolve)
-
-                    })
-                    .catch(error => {
-                        console.error("Whoospies!", error)
-                    })
-            }
+            // console.log('Plant Name:', plantName); //TEST
+            // if (plantName) {
+            //     getPerenualID(plantName)
+            //         .then(resolve => {
+            //             console.log("ID of the plant from Perenual", resolve)
+            //
+            //         })
+            //         .catch(error => {
+            //             console.error("Whoospies!", error)
+            //         })
+            // }
         };
 
-        const sendPlantToDatabase = async () => {
-            try {
-                const image_personelle = typeof photoURI !== 'undefined' ? photoURI : '';
-                const nom_scientifique = typeof plantName !== 'undefined' ? plantName : '';
-
-                console.log('Before addNewPlantToDatabase', {
-                    id_perenual: "",
-                    frequence_arrosage: "",
-                    ensoleillement: "",
-                    image_personelle: image_personelle || "",
-                    image_API: "",
-                    nom_personnel: "",
-                    nom_scientifique: nom_scientifique || "",
-                    description: "",
-                    dans_jardin: 'False',
-                })
-                await addNewPlantToDatabase({
-                    id_perenual: "",
-                    frequence_arrosage: "",
-                    ensoleillement: "",
-                    image_personelle: photoURI || "",
-                    image_API: "",
-                    nom_personnel: "",
-                    nom_scientifique: plantName || "",
-                    description: "",
-                    dans_jardin: "False",
-                });
-
-            } catch (error) {
-                console.error('Error in sendPlantToDatabase', error);
-            }
-        };
+        // const sendPlantToDatabase = async () => {
+        //     try {
+        //         const image_personelle = typeof photoURI !== 'undefined' ? photoURI : '';
+        //
+        //         console.log('Before addNewPlantToDatabase', {
+        //             id_perenual: "",
+        //             frequence_arrosage: "",
+        //             ensoleillement: "",
+        //             image_personelle: image_personelle || "",
+        //             image_API: "",
+        //             nom_personnel: "",
+        //             nom_scientifique: "",
+        //             description: "",
+        //             dans_jardin: 'False',
+        //         })
+        //         await addNewPlantToDatabase({
+        //             id_perenual: "",
+        //             frequence_arrosage: "",
+        //             ensoleillement: "",
+        //             image_personelle: photoURI || "",
+        //             image_API: "",
+        //             nom_personnel: "",
+        //             nom_scientifique: "",
+        //             description: "",
+        //             dans_jardin: "False",
+        //         });
+        //
+        //     } catch (error) {
+        //         console.error('Error in sendPlantToDatabase', error);
+        //     }
+        // };
 
 
         const handlePhotoSearch = async () => {
             try {
                 //Retrieves the scientific name of the plant:
-                await handlePhotoSearchAPI(photo, setPlantName);
-                await sendPlantToDatabase()
+                await handlePhotoSearchAPI(photo);
 
             } catch (error) {
                 console.error('Error in handlePhotoSearch', error);
