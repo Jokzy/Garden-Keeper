@@ -144,7 +144,6 @@ export default function App() {
                             source={require('./assets/yard_icon.png')}
                         />
                     </TouchableOpacity>
-
                 </View>
             </SafeAreaView>
         );
