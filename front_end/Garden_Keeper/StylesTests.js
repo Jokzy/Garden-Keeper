@@ -2,11 +2,13 @@ import { StatusBar } from 'expo-status-bar';
 import React, {useContext, useEffect, useState} from 'react';
 import {View, TextInput, Button, Text, StyleSheet, ImageBackground, Image, TouchableOpacity, Dimensions} from 'react-native';
 import {useAppContext} from './AppContext'
+import { useNavigation } from '@react-navigation/native';
 
 export default function StylesTests() {
     const {imagePersonnelle} = useAppContext(); //Use context to access photoDB
     const {nomScientifique} = useAppContext();
     const [isChecked, setIsChecked] = useState(false);
+    const navigation = useNavigation();
 
     useEffect(() => { //THIS IS JUST TO TEST
         console.log('photoDB in StylesTests:', imagePersonnelle);
@@ -50,6 +52,13 @@ export default function StylesTests() {
 
             </View>
             <View style={styles.containerCheckBox}>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <Image
+                        style={{width: 30, height: 30, marginRight: 30}}
+                        source={require('./assets/back_icon.png')}
+                    />
+
+                </TouchableOpacity>
                 <CheckBox
                     isChecked={isChecked}
                     onPress={()=> setIsChecked(!isChecked)}

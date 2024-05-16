@@ -15,6 +15,7 @@ import * as Font from "expo-font"
 import * as ImagePicker from 'expo-image-picker';
 import { AppLoading } from 'expo';
 import { imagePersonelle } from './AppContext';
+import { useNavigation } from '@react-navigation/native';
 
 async function loadFont(){
     await Font.loadAsync({
@@ -26,6 +27,7 @@ export default function ScreenSearch() {
     const [searchText, setSearchText] = useState('');
     const [searchResult, setSearchResult] = useState('');
     const [image, setImage] = useState(null);
+    const navigation = useNavigation();
     //const { imagePersonelle } = useImages();
     //const { addImage } = useImages();
 
@@ -48,8 +50,8 @@ export default function ScreenSearch() {
 
             if (!result["cancelled"]) {
                 let image = result["assets"][0]["uri"];
-                addImage(image);
             }
+        navigation.navigate("Styles")
         }
 
 
@@ -79,8 +81,9 @@ export default function ScreenSearch() {
                 }
 
             }
-
+            navigation.navigate("Styles")
             setSearchResult(info)
+
         };
 
 

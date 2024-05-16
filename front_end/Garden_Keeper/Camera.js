@@ -13,7 +13,7 @@ export default function App() {
     let cameraRef = useRef();
     const [hasCameraPermission, setHasCameraPermission] = useState();
     const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState();
-    const [photo, setPhoto] = useState(null);
+    const [photo, setPhoto] = useState();
     const [photoURI, setPhotoURI] = useState();
     const navigation = useNavigation();
     const { setImagePersonnelle, setNomScientifique } = useAppContext()
@@ -29,7 +29,8 @@ export default function App() {
         left: 0,
         elevation: 0,
         backgroundColor: 'transparent', };
-    const hiddenTabBarStyle = { display: 'Pas de nom!' };
+    const hiddenTabBarStyle = {display: "none"};
+
     // Navigation bar
     useFocusEffect(
         useCallback(() => {
@@ -42,7 +43,7 @@ export default function App() {
             return () => {
                 unsubscribeFocus();
                 unsubscribeBlur();
-                showTabBar();
+                showTabBar()
             };
         }, [navigation])
     );
@@ -86,6 +87,7 @@ export default function App() {
     if (photoURI) {
         const exportPhoto = () => {
             handlePhotoSearch().then(r => 'null');
+            navigation.navigate("Styles")
         };
 
         const handlePhotoSearch = async () => {
@@ -121,7 +123,7 @@ export default function App() {
 
         return (
             <SafeAreaView style={styles.container}>
-                <Image style={styles.preview} source={{ uri: photoURI }} />
+                <Image style={styles.preview} source={{ uri: photo.uri }} />
                 <View style={styles.proceedingContainer}>
                 {hasMediaLibraryPermission ? <TouchableOpacity onPress= {exportPhoto}>
                     <Image
