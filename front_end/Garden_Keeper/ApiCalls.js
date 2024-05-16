@@ -57,6 +57,7 @@ export const handlePhotoSearchAPI = async (photo) => {
             console.log('Checking nom_scientifique and id_perenual', nom_scientifique, id_perenual);
             addNewPlantToDatabase({
                     nom_scientifique: nom_scientifique,
+                    image_personelle: photo.uri,
                     id_perenual: id_perenual,
                 }
             )
@@ -128,32 +129,6 @@ export const addNewPlantToDatabase = async (data) => {
         });
 };
 
-// export const modifyPlantInfo= async(id_perenual) => {
-//     console.log("Id from perenual that we are about to send:" , id_perenual)
-//
-//     const options = {
-//         method: 'PATCH',
-//         headers: { 'Content-Type': 'application/json'},
-//     };
-//
-//     const url = `http://${IP_ADDRESS}:8000/edit-plante/${id_perenual}/`
-//
-//     return fetch(url, options)
-//         .then(response => {
-//             if(response.ok){
-//                 return response.json();
-//             } else {
-//                 throw new Error('Failed to send PATCH request')
-//             }
-//         })
-//         .then(data => {
-//             console.log('Response from edit plant', data)
-//         })
-//         .catch(error => {
-//             console.error('Error in edit plant', error)
-//             throw error;
-//         });
-// };
 
 
 
@@ -223,6 +198,33 @@ const acquireInformationAPI = async (nom_scientifique) => {
 //     };
 //
 //     const url = `http://${IP_ADDRESS}:8000/edit-plante/${}/`
+//
+//     return fetch(url, options)
+//         .then(response => {
+//             if(response.ok){
+//                 return response.json();
+//             } else {
+//                 throw new Error('Failed to send PATCH request')
+//             }
+//         })
+//         .then(data => {
+//             console.log('Response from edit plant', data)
+//         })
+//         .catch(error => {
+//             console.error('Error in edit plant', error)
+//             throw error;
+//         });
+// };
+
+// export const modifyPlantInfo= async(id_perenual) => {
+//     console.log("Id from perenual that we are about to send:" , id_perenual)
+//
+//     const options = {
+//         method: 'PATCH',
+//         headers: { 'Content-Type': 'application/json'},
+//     };
+//
+//     const url = `http://${IP_ADDRESS}:8000/edit-plante/${id_perenual}/`
 //
 //     return fetch(url, options)
 //         .then(response => {

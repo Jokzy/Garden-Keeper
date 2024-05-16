@@ -55,7 +55,7 @@ def addPlant(request):
     except json.JSONDecodeError:
         return JsonResponse({"error": "Invalid JSON format"}, status=400)
 
-@api_view(['PATCH'])
+@api_view(['PATCH']) #TODO: Edit the way you names crap -> misleading variable names
 def editPlant(request, id_perenual):
     try:
         plante = Plante.objects.get(id_perenual=id_perenual)
@@ -70,6 +70,18 @@ def editPlant(request, id_perenual):
     except Exception as e:
         return Response({'error': str(e)}, status=404)
 
+@api_view(['GET'])
+def getPlant(request, id_perenual):
+    try:
+        plante = Plante.objects.get(id_perenual=id_perenual)
+        serializer = PlanteSerializer(plante)
+
+        # If the plant is found and serialized correctly, the serialized data will be returned
+        return Response({'Plant_data': serializer.data}, status=200)
+    except Plante.DoesNotExist:
+        return Response({"error": "Plant not found"}, status=404)
+    except Exception as e:
+        return Response({'error': str(e)}, status=404)
 
 # ----------------- CODE GRAVEYARD -----------------
 # @api_view(['POST'])
