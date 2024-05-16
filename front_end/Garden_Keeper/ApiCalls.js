@@ -1,6 +1,6 @@
 import {useState} from "react";
 
-const IP_ADDRESS = "192.168.0.248" //TODO: Don't push your IP address!
+const IP_ADDRESS = "" //TODO: Don't push your IP address!
 const perenual_key = "sk-3pOW6643942e18ef15485"
 const plantID_key = "uNrAXKqhOOBBoNXCMQIaEJpqmE6gFs8g0O6tFoEAa5q9AzpQgG"
 

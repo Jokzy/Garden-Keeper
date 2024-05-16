@@ -29,7 +29,7 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0',
     '127.0.0.1',
-    '192.168.0.248', #Mettre l'addresse IP de l'ordinateur! #TODO: REMOVE YOUR IP BEFORE PUSHING LOL
+    '', #Mettre l'addresse IP de l'ordinateur! #TODO: REMOVE YOUR IP BEFORE PUSHING LOL
 ]
 
 # Application definition
