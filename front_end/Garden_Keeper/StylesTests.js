@@ -1,10 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {View, TextInput, Button, Text, StyleSheet, ImageBackground, Image, TouchableOpacity, Dimensions} from 'react-native';
-import {photoDB, setPhotoDB} from "./Camera";
-import {getPerenualID, getPlantFromDatabase, handlePhotoSearchAPI} from "./ApiCalls";
+import {useImages} from './ImageContext'
 
 export default function StylesTests() {
+    const {photoDB} = useImages(); //Use context to access photoDB
+    const [isChecked, setIsChecked] = useState(false);
+
+    useEffect(() => {
+        console.log('photoDB in StylesTests:', photoDB);
+    })
+
     const CheckBox = ({isChecked, onPress}) => (
         <TouchableOpacity style={styles.checkBox} onPress={onPress}>
             <Image
@@ -13,7 +19,6 @@ export default function StylesTests() {
             />
         </TouchableOpacity>
     )
-    const [isChecked, setIsChecked] = useState(false);
 
 
 

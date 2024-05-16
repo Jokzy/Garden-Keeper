@@ -4,7 +4,7 @@ import { Camera } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
 import { useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
-import { useImages } from './ImageContext';
+import {ImageProvider, useImages} from './ImageContext';
 import React from 'react';
 import {handlePhotoSearchAPI, getPlantFromDatabase, getPerenualID} from "./ApiCalls";
 
@@ -14,11 +14,11 @@ export default function App() {
     const [hasCameraPermission, setHasCameraPermission] = useState();
     const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState();
     const [photo, setPhoto] = useState(null);
-    const [photoDB, setPhotoDB] = useState() //TODO: temp test constant
     const [photoURI, setPhotoURI] = useState();
     const navigation = useNavigation();
     const { addImage } = useImages();
     const { addGardenImage } = useImages();
+    const { setPhotoDB } = useImages();
     // const [plantName, setPlantName ] = useState(null);
 
     const originalTabBarStyle = {
@@ -87,13 +87,8 @@ export default function App() {
 
     if (photoURI) {
         const exportPhoto = () => {
-            if (photoURI) {
-                addImage(photoURI);  // Add the photo URI to the context-managed array
-                //setPhoto(undefined); // Optionally clear the photo after adding
-            }
             handlePhotoSearch().then(r => 'null');
         };
-
 
         const handlePhotoSearch = async () => {
             try {
@@ -109,7 +104,6 @@ export default function App() {
                 const imagePersonelle = plant.Plant_data.image_personelle;
                 console.log("Image Personelle", imagePersonelle)
                 setPhotoDB(imagePersonelle)
-                await console.log(photoDB)
 
                 // getPlantFromDatabase(id_plant)
                 //     .then(Plant_data => {
@@ -159,26 +153,27 @@ export default function App() {
     }
 
     return (
-        <Camera style={styles.container} ref={cameraRef}>
-            <View style={styles.topContainer}>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Image
-                        style={{width: 50, height: 50}}
-                        source={require('./assets/back_icon.png')}
-                    />
+        <ImageProvider>
+            <Camera style={styles.container} ref={cameraRef}>
+                <View style={styles.topContainer}>
+                    <TouchableOpacity onPress={() => navigation.goBack()}>
+                        <Image
+                            style={{width: 50, height: 50}}
+                            source={require('./assets/back_icon.png')}
+                        />
 
-                </TouchableOpacity>
-            </View>
-            <View style={styles.bottomContainer}>
-                <TouchableOpacity onPress={() => takePic()}>
-                    <Image
-                        style={{width: 150, height: 150}}
-                        source={require('./assets/circle_icon.png')}
-                    />
-                </TouchableOpacity>
-            </View>
-        </Camera>
-
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.bottomContainer}>
+                    <TouchableOpacity onPress={() => takePic()}>
+                        <Image
+                            style={{width: 150, height: 150}}
+                            source={require('./assets/circle_icon.png')}
+                        />
+                    </TouchableOpacity>
+                </View>
+            </Camera>
+        </ImageProvider>
     );
 }
 

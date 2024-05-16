@@ -1,6 +1,6 @@
 import {useState} from "react";
 
-const IP_ADDRESS = "" //TODO: Don't push your IP address!
+const IP_ADDRESS = "192.168.0.248" //TODO: Don't push your IP address!
 const perenual_key = "sk-WBy766460d80d73615523"
 const plantID_key = "0X99pkY4nMqFiA2tyXxUBIAn7yYe9tmwn52FiwmCPwNomcMacz"
 
@@ -137,21 +137,7 @@ export const getPlantFromDatabase = async (id_perenual) => {
         console.error("Error in handlePhotoSearch", error);
         throw error;
     }
-//
-//     return fetch(url, options)
-//         .then(response => {
-//             console.log("Response status:", response.status);
-//
-//             const data = await response.json();
-//             // console.log("Response body:", response)
-//             if (response.ok) {
-//                 console.log("tis the response:", response.json())
-//                 return response.json();
-//             } else {
-//                 throw new Error("Failed to retrieve plant from database.")
-//             }
-//         })
-// }
+
 
 // Get the plant from our database and fill its information
 // Or get the information first and then fill it?
@@ -311,4 +297,20 @@ const acquireInformationAPI = async (nom_scientifique) => {
     //         console.error('Error here:', error)
     //         throw error;
     //     });
+
+//
+//     return fetch(url, options)
+//         .then(response => {
+//             console.log("Response status:", response.status);
+//
+//             const data = await response.json();
+//             // console.log("Response body:", response)
+//             if (response.ok) {
+//                 console.log("tis the response:", response.json())
+//                 return response.json();
+//             } else {
+//                 throw new Error("Failed to retrieve plant from database.")
+//             }
+//         })
+// }
 
