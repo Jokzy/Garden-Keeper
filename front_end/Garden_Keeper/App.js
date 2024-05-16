@@ -129,7 +129,6 @@ export default function App() {
                 <topTab.Screen name="Recherche" component={StackNavSearch}/>
                 <topTab.Screen name="Encyclopédie" component={StackNavEnc}/>
                 <topTab.Screen name="Jardin" component={ScreenJar}/>
-                <topTab.Screen name={"Styles"} component={StylesTests}/>
             </topTab.Navigator>
         </NavigationContainer>
         </ImageProvider>
@@ -142,6 +141,7 @@ function StackNavMain(){
             <Stack.Navigator screenOptions={{headerShown: false}}>
                 <Stack.Screen name="Main" component={SettingsScreen}/>
                 <Stack.Screen name="Camera" component={Camera} options={{tabBarVisible: false }} />
+                <topTab.Screen name={"Styles"} component={StylesTests}/>
             </Stack.Navigator>
     );
 }

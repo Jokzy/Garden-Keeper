@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useImages } from './ImageContext';
 import React from 'react';
 import {handlePhotoSearchAPI, getPlantFromDatabase, getPerenualID} from "./ApiCalls";
+import StylesTests from "./StylesTests";
 
 export default function App() {
     // note: on utilise des [const, funct] au lieu d'un let, car, comme ça, React sait qu'il doit rafraîchir la page
@@ -86,12 +87,15 @@ export default function App() {
     };
 
     if (photoURI) {
-        const exportPhoto = () => {
+        const exportPhoto = async () => {
             if (photoURI) {
                 addImage(photoURI);  // Add the photo URI to the context-managed array
                 //setPhoto(undefined); // Optionally clear the photo after adding
             }
-            handlePhotoSearch().then(r => 'null');
+            const imagePersonelle = await handlePhotoSearch();
+            if (imagePersonelle) {
+                navigation.navigate("Styles", {photoDB: imagePersonelle});
+            }
         };
 
 

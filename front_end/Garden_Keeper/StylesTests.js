@@ -4,7 +4,8 @@ import {View, TextInput, Button, Text, StyleSheet, ImageBackground, Image, Touch
 import {photoDB, setPhotoDB} from "./Camera";
 import {getPerenualID, getPlantFromDatabase, handlePhotoSearchAPI} from "./ApiCalls";
 
-export default function StylesTests() {
+export default function StylesTests({ route }) {
+    const { photoDBFromCam } = route.params
     const CheckBox = ({isChecked, onPress}) => (
         <TouchableOpacity style={styles.checkBox} onPress={onPress}>
             <Image
@@ -20,7 +21,7 @@ export default function StylesTests() {
     return (
         <View style={styles.container}>
             <View style={styles.containerPhotoPrise}>
-                <Image source={{uri: photoDB}} style={styles.imagePhoto}/>
+                <Image source={{uri: photoDBFromCam}} style={styles.imagePhoto}/>
             </View>
             <View style={styles.containerID}>
 
