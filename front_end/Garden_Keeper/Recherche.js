@@ -14,7 +14,7 @@ import {
 import * as Font from "expo-font"
 import * as ImagePicker from 'expo-image-picker';
 import { AppLoading } from 'expo';
-import { useImages } from './ImageContext';
+import { imagePersonelle } from './AppContext';
 
 async function loadFont(){
     await Font.loadAsync({
@@ -26,8 +26,8 @@ export default function ScreenSearch() {
     const [searchText, setSearchText] = useState('');
     const [searchResult, setSearchResult] = useState('');
     const [image, setImage] = useState(null);
-    const { images } = useImages();
-    const { addImage } = useImages();
+    //const { imagePersonelle } = useImages();
+    //const { addImage } = useImages();
 
     const pickImage = async () => {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();

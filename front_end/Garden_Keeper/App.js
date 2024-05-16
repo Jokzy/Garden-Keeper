@@ -14,7 +14,7 @@ import MenuIcon from "./assets/MainTopTabIcon.png"
 import EncyclopedieIcon from "./assets/EncyTopTabIcon.png"
 import GardenIcon from "./assets/yard_icon.png"
 import SearchIcon from "./assets/search_icon.png"
-import { ImageProvider } from './ImageContext';
+import { AppProvider } from './AppContext';
 
 const topTab = createMaterialTopTabNavigator()
 const Stack = createNativeStackNavigator();
@@ -87,52 +87,52 @@ export default function App() {
         }
 
     return (
-        <ImageProvider>
-        <NavigationContainer theme={navigationTheme}>
-            <topTab.Navigator
-                initialRouteName={"Menu"}
-                screenOptions={({route}) => ({
-                    tabBarIcon: ({focused, color, size}) => {
-                        let icon;
-                        if (route.name === 'Menu') {
-                            icon = MenuIcon;
-                        } else if (route.name === 'Encyclopédie') {
-                            icon = EncyclopedieIcon
-                        } else if (route.name === 'Jardin') {
-                            icon = GardenIcon
-                        } else if (route.name === 'Recherche') {
-                            icon = SearchIcon
+        <AppProvider>
+            <NavigationContainer theme={navigationTheme}>
+                <topTab.Navigator
+                    initialRouteName={"Menu"}
+                    screenOptions={({route}) => ({
+                        tabBarIcon: ({focused, color, size}) => {
+                            let icon;
+                            if (route.name === 'Menu') {
+                                icon = MenuIcon;
+                            } else if (route.name === 'Encyclopédie') {
+                                icon = EncyclopedieIcon
+                            } else if (route.name === 'Jardin') {
+                                icon = GardenIcon
+                            } else if (route.name === 'Recherche') {
+                                icon = SearchIcon
+                            }
+                            // This whole thing lets us change the icons for the top bar. It works ish we just have to find a way to make them all fit
+                            return <Image source={icon} style={{width: 35, height: 35, tintColor: color}}/>;
+                        },
+                        tabBarShowLabel: false,
+                        tabBarShowIcon: true,
+                        swipeEnabled: false,
+
+
+                        tabBarStyle: {
+                            position: 'absolute',
+                            borderTopLeftRadius: 12,
+                            borderTopRightRadius: 12,
+                            top: 30, //Top, bottom, right, left, sont la position arbitraire de la tab bar et permettent de la voir.
+                            bottom: 695,
+                            right: 0,
+                            left: 0,
+                            elevation: 0, // Elevation 0 fait qu'il y a pas de shadow en dessous de la tab bar
+                            backgroundColor: 'transparent',
                         }
-                        // This whole thing lets us change the icons for the top bar. It works ish we just have to find a way to make them all fit
-                        return <Image source={icon} style={{width: 35, height: 35, tintColor: color}}/>;
-                    },
-                    tabBarShowLabel: false,
-                    tabBarShowIcon: true,
-                    swipeEnabled: false,
+                    })}
+                >
 
-
-                    tabBarStyle: {
-                        position: 'absolute',
-                        borderTopLeftRadius: 12,
-                        borderTopRightRadius: 12,
-                        top: 30, //Top, bottom, right, left, sont la position arbitraire de la tab bar et permettent de la voir.
-                        bottom: 695,
-                        right: 0,
-                        left: 0,
-                        elevation: 0, // Elevation 0 fait qu'il y a pas de shadow en dessous de la tab bar
-                        backgroundColor: 'transparent',
-                    }
-                })}
-            >
-
-                <topTab.Screen name="Menu" component={StackNavMain}/>
-                <topTab.Screen name="Recherche" component={StackNavSearch}/>
-                <topTab.Screen name="Encyclopédie" component={StackNavEnc}/>
-                <topTab.Screen name="Jardin" component={ScreenJar}/>
-                <topTab.Screen name={"Styles"} component={StylesTests}/>
-            </topTab.Navigator>
-        </NavigationContainer>
-        </ImageProvider>
+                    <topTab.Screen name="Menu" component={StackNavMain}/>
+                    <topTab.Screen name="Recherche" component={StackNavSearch}/>
+                    <topTab.Screen name="Encyclopédie" component={StackNavEnc}/>
+                    <topTab.Screen name="Jardin" component={ScreenJar}/>
+                    <topTab.Screen name={"Styles"} component={StylesTests}/>
+                </topTab.Navigator>
+            </NavigationContainer>
+        </AppProvider>
 
     )
 }

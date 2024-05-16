@@ -109,6 +109,7 @@ export const addNewPlantToDatabase = async (data) => {
         })
         .catch(error => {
             console.error('Error in addNewPlantToDatabase', error);
+            console.error('Full error details', JSON.stringify(error,null, 2))
             throw error;
         });
 };

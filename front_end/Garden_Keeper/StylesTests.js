@@ -1,14 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useContext, useEffect, useState} from 'react';
 import {View, TextInput, Button, Text, StyleSheet, ImageBackground, Image, TouchableOpacity, Dimensions} from 'react-native';
-import {useImages} from './ImageContext'
+import {useAppContext} from './AppContext'
 
 export default function StylesTests() {
-    const {photoDB} = useImages(); //Use context to access photoDB
+    const {imagePersonnelle} = useAppContext(); //Use context to access photoDB
+    const {nomScientifique} = useAppContext();
     const [isChecked, setIsChecked] = useState(false);
 
-    useEffect(() => {
-        console.log('photoDB in StylesTests:', photoDB);
+    useEffect(() => { //THIS IS JUST TO TEST
+        console.log('photoDB in StylesTests:', imagePersonnelle);
+        console.log('nomScientifique', nomScientifique)
     })
 
     const CheckBox = ({isChecked, onPress}) => (
@@ -25,11 +27,11 @@ export default function StylesTests() {
     return (
         <View style={styles.container}>
             <View style={styles.containerPhotoPrise}>
-                <Image source={{uri: photoDB}} style={styles.imagePhoto}/>
+                <Image source={{uri: imagePersonnelle}} style={styles.imagePhoto}/>
             </View>
             <View style={styles.containerID}>
 
-                <Text style={styles.plantName}>grosse affaire</Text>
+                <Text style={styles.plantName}>{nomScientifique}</Text>
                 <Image source={require('./assets/PlanteMenu.png')} style={styles.imageApi}/>
             </View>
             <View style={styles.containerInfo}>

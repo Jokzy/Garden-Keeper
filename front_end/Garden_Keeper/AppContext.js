@@ -1,29 +1,26 @@
 import React, { createContext, useContext, useState } from 'react';
 
 
-const ImageContext = createContext();
+const AppContext = createContext();
 
 
-export const ImageProvider = ({ children }) => {
-    const [photoDB, setPhotoDB] = useState(null);
-
+export const AppProvider = ({ children }) => {
+    const [imagePersonnelle, setImagePersonnelle] = useState(null);
+    const [nomScientifique, setNomScientifique] = useState(null);
 
     return (
-        <ImageContext.Provider value={{ photoDB, setPhotoDB}}>
+        <AppContext.Provider value={{
+            imagePersonnelle,
+            setImagePersonnelle,
+            nomScientifique,
+            setNomScientifique
+        }}>
             {children}
-        </ImageContext.Provider>
+        </AppContext.Provider>
     );
 };
 
-export const useImages = () => useContext(ImageContext);
-
-
-
-
-
-
-
-
+export const useAppContext = () => useContext(AppContext);
 
 
     //const [images, setImages] = useState([]);

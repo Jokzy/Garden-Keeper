@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 import * as Font from "expo-font"
 import * as ImagePicker from 'expo-image-picker';
-import { useImages } from './ImageContext';
+//import { useImages } from './AppContext';
 
 async function loadFont(){
     await Font.loadAsync({
@@ -28,9 +28,9 @@ async function loadFont(){
 export default function ScreenJar() {
     const [searchText, setSearchText] = useState('');
     const [searchResult, setSearchResult] = useState('');
-    const [image, setImage] = useState(null);
-    const { gImages } = useImages();
-    const { addGardenImage } = useImages();
+    //const [image, setImage] = useState(null);
+    //const { gImages } = useImages();
+    //const { addGardenImage } = useImages();
 
 
 
@@ -69,7 +69,7 @@ export default function ScreenJar() {
 
                 </KeyboardAvoidingView>
                 <FlatList
-                    data={gImages}
+                    //data={gImages}
                     keyExtractor={item => item.id.toString()}
                     renderItem={({ item }) => (
                         <Pressable onPress={() => console.log("Pressed item", item.id)} style={styles.pressableItem}>

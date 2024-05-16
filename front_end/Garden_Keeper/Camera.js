@@ -4,7 +4,7 @@ import { Camera } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
 import { useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
-import {ImageProvider, useImages} from './ImageContext';
+import {useAppContext, AppProvider} from "./AppContext";
 import React from 'react';
 import {handlePhotoSearchAPI, getPlantFromDatabase, getPerenualID} from "./ApiCalls";
 
@@ -16,9 +16,7 @@ export default function App() {
     const [photo, setPhoto] = useState(null);
     const [photoURI, setPhotoURI] = useState();
     const navigation = useNavigation();
-    const { addImage } = useImages();
-    const { addGardenImage } = useImages();
-    const { setPhotoDB } = useImages();
+    const { setImagePersonnelle, setNomScientifique } = useAppContext()
     // const [plantName, setPlantName ] = useState(null);
 
     const originalTabBarStyle = {
@@ -100,10 +98,8 @@ export default function App() {
                 const plant = await getPlantFromDatabase(id_plant)
                 console.log("This is the response:", plant)
 
-
-                const imagePersonelle = plant.Plant_data.image_personelle;
-                console.log("Image Personelle", imagePersonelle)
-                setPhotoDB(imagePersonelle)
+                setNomScientifique(nom_plante)
+                setImagePersonnelle(plant.Plant_data.image_personelle)
 
                 // getPlantFromDatabase(id_plant)
                 //     .then(Plant_data => {
@@ -153,7 +149,7 @@ export default function App() {
     }
 
     return (
-        <ImageProvider>
+        <AppProvider>
             <Camera style={styles.container} ref={cameraRef}>
                 <View style={styles.topContainer}>
                     <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -173,7 +169,7 @@ export default function App() {
                     </TouchableOpacity>
                 </View>
             </Camera>
-        </ImageProvider>
+        </AppProvider>
     );
 }
 
