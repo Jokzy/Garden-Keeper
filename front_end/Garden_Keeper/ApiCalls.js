@@ -1,8 +1,8 @@
 import {useState} from "react";
 
 const IP_ADDRESS = "" //TODO: Don't push your IP address!
-const perenual_key = "sk-eKNW65d813327065e4323"
-const plantID_key = "0X99pkY4nMqFiA2tyXxUBIAn7yYe9tmwn52FiwmCPwNomcMacz"
+const perenual_key = "sk-EOO16646872e1c7935538"
+const plantID_key = "78wKYnmoSAawYGVcmrotGJw3mBweeCN7mMDaZ8PXDNOoVtLLfV"
 
 //TODO: A lot of this can be handled directly in the API calls, like the setPlantName
 
@@ -61,11 +61,22 @@ export const handlePhotoSearchAPI = async (photo) => {
         const id_perenual = await getPerenualID(nom_scientifique);
         console.log("dis the id:", id_perenual)
 
+        const response2 = await fetch(`https://perenual.com/api/species/details/${id_perenual}?key=${perenual_key}`);
+        if (!response.ok) {
+            const errorText = await response2.text();
+            throw new Error(`Failed to fetch data ${errorText}`);
+        }
+        const result = await response2.json();
+
         //Adding 3 base info into the DB
         await addNewPlantToDatabase({
                     nom_scientifique: nom_scientifique,
                     image_personelle: photo.uri,
                     id_perenual: id_perenual,
+                    frequence_arrosage: result["watering"],
+                    ensoleillement: result["sunlight"],
+                    image_API: result["default_image"]["original_url"],
+                    description: result["description"],
                 });
 
         return nom_scientifique;
@@ -144,7 +155,7 @@ export const getPlantFromDatabase = async (id_perenual) => {
 // Or get the information first and then fill it?
 // And fill in information
 export const acquireInformationAPI = async (id_perenual) => {
-    try {
+    /*try {
         const response = await fetch(`https://perenual.com/api/species/details/${id_perenual}?key=${perenual_key}`);
         if (!response.ok) {
             const errorText = await response.text();
@@ -173,6 +184,7 @@ export const acquireInformationAPI = async (id_perenual) => {
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
+
                 }
                 return response.json();
             })
@@ -187,7 +199,7 @@ export const acquireInformationAPI = async (id_perenual) => {
     } catch (error) {
         console.error('Error in acquireInformationAPI', error);
         throw error;
-    }
+    }*/
 
 
 

@@ -95,7 +95,7 @@ export default function App() {
                 console.log("nom de la damn plante:", nom_plante)
                 const id_plant = await getPerenualID(nom_plante)
                 console.log("ID of the damn plant:", id_plant)
-                await acquireInformationAPI(id_plant)
+                //await acquireInformationAPI(id_plant)
                 const plant = await getPlantFromDatabase(id_plant)
                 console.log("This is the response:", plant)
 

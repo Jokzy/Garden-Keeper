@@ -7,8 +7,8 @@ from rest_framework.decorators import api_view
 from gk_app.models import Plante
 from .serializers import PlanteSerializer
 
-perenual_key = "sk-eKNW65d813327065e4323"
-plantID_key = "uNrAXKqhOOBBoNXCMQIaEJpqmE6gFs8g0O6tFoEAa5q9AzpQgG"
+perenual_key = "sk-EOO16646872e1c7935538"
+plantID_key = "78wKYnmoSAawYGVcmrotGJw3mBweeCN7mMDaZ8PXDNOoVtLLfV"
 
 
 @api_view(['GET'])
