@@ -1,7 +1,7 @@
 import {useState} from "react";
 
 const IP_ADDRESS = "" //TODO: Don't push your IP address!
-const perenual_key = "sk-WBy766460d80d73615523"
+const perenual_key = "sk-eKNW65d813327065e4323"
 const plantID_key = "0X99pkY4nMqFiA2tyXxUBIAn7yYe9tmwn52FiwmCPwNomcMacz"
 
 //TODO: A lot of this can be handled directly in the API calls, like the setPlantName
@@ -137,37 +137,63 @@ export const getPlantFromDatabase = async (id_perenual) => {
     } catch (error) {
         console.error("Error in handlePhotoSearch", error);
         throw error;
-    }
+    }}
 
 
 // Get the plant from our database and fill its information
 // Or get the information first and then fill it?
 // And fill in information
-const acquireInformationAPI = async (nom_scientifique) => {
-    const options= {
-        method: 'GET',
+export const acquireInformationAPI = async (id_perenual) => {
+    try {
+        const response = await fetch(`https://perenual.com/api/species/details/${id_perenual}?key=${perenual_key}`);
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Failed to fetch data ${errorText}`);
+        }
+        const result = await response.json();
+        //console.log("result json", result);
+        const patchData = {
+            frequence_arrosage: result["watering"],
+            ensoleillement: result["sunlight"],
+            image_API: result["default_image"]["original_url"],
+            description: result["description"]
+        }
+        //console.log("data to send:", patchData)
+
+        const options= {
+        method: 'PATCH',
         headers: {
             'Content-Type':'application/json',
-            'key': perenual_key,
         },
-        body: JSON.stringify({'q': nom_scientifique})
+        body: JSON.stringify(patchData)
+    }
+        const url = `http://${IP_ADDRESS}:8000/edit-plante/${id_perenual}/`
+
+        fetch(url, options)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Data received: ', data) //TEST
+            })
+            .catch(error => {
+                console.error('There was a problem with the patch operation:', error);
+            })
+
+
+    } catch (error) {
+        console.error('Error in acquireInformationAPI', error);
+        throw error;
     }
 
-    fetch()
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Data received: ', data) //TEST
-        })
-        .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
-        })
+
+
+
 }
-}
+
 
 
 

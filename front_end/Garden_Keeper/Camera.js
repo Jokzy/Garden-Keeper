@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import {useAppContext, AppProvider} from "./AppContext";
 import React from 'react';
-import {handlePhotoSearchAPI, getPlantFromDatabase, getPerenualID} from "./ApiCalls";
+import {handlePhotoSearchAPI, getPlantFromDatabase, getPerenualID, acquireInformationAPI} from "./ApiCalls";
 
 export default function App() {
     // note: on utilise des [const, funct] au lieu d'un let, car, comme ça, React sait qu'il doit rafraîchir la page
@@ -95,6 +95,7 @@ export default function App() {
                 console.log("nom de la damn plante:", nom_plante)
                 const id_plant = await getPerenualID(nom_plante)
                 console.log("ID of the damn plant:", id_plant)
+                await acquireInformationAPI(id_plant)
                 const plant = await getPlantFromDatabase(id_plant)
                 console.log("This is the response:", plant)
 

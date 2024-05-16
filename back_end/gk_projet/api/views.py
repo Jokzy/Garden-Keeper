@@ -10,6 +10,7 @@ from .serializers import PlanteSerializer
 perenual_key = "sk-eKNW65d813327065e4323"
 plantID_key = "uNrAXKqhOOBBoNXCMQIaEJpqmE6gFs8g0O6tFoEAa5q9AzpQgG"
 
+
 @api_view(['GET'])
 def getPlant(request, id_perenual):
     try:
@@ -52,8 +53,11 @@ def addPlant(request):
 @api_view(['PATCH'])
 def editPlant(request, id_perenual):
     try:
+        data = json.loads(request.body)
+        processed_data = {key: value for key, value in data.items() if value}
+
         plante = Plante.objects.get(id_perenual=id_perenual)
-        serializer = PlanteSerializer(plante, data=request.data, partial=True)
+        serializer = PlanteSerializer(plante, data=processed_data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response({'message': 'Plant update successfully', 'updated_data': serializer.data}, status=200)
@@ -63,8 +67,6 @@ def editPlant(request, id_perenual):
         return Response({"error": "Plant not found"}, status=404)
     except Exception as e:
         return Response({'error': str(e)}, status=404)
-
-
 
 # ----------------- CODE GRAVEYARD -----------------
 # @api_view(['POST'])
@@ -134,4 +136,3 @@ def editPlant(request, id_perenual):
 #         #     serializer = PlanteSerializer(plante)
 #         #     return Response(serializer.data)
 #         return Response({"message": "Plante introuvable"})
-
