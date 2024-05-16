@@ -31,19 +31,19 @@ export default function App() {
         backgroundColor: 'transparent', };
     const hiddenTabBarStyle = {display: "none"};
 
-    // Navigation bar
     useFocusEffect(
         useCallback(() => {
+            const parentNavigation = navigation.getParent();
+            if (parentNavigation) {
+                parentNavigation.setOptions({ tabBarStyle: hiddenTabBarStyle });
+            }
 
-            const hideTabBar = () => navigation.getParent().setOptions({ tabBarStyle: hiddenTabBarStyle });
-            const showTabBar = () => navigation.getParent().setOptions({ tabBarStyle: originalTabBarStyle });
-            const unsubscribeFocus = navigation.addListener('focus', hideTabBar);
-            const unsubscribeBlur = navigation.addListener('blur', showTabBar);
+            setPhotoURI(undefined);
 
             return () => {
-                unsubscribeFocus();
-                unsubscribeBlur();
-                showTabBar()
+                if (parentNavigation) {
+                    parentNavigation.setOptions({ tabBarStyle: originalTabBarStyle });
+                }
             };
         }, [navigation])
     );
@@ -123,7 +123,7 @@ export default function App() {
 
         return (
             <SafeAreaView style={styles.container}>
-                <Image style={styles.preview} source={{ uri: "data:image/jpg;base64,"+ photo.base64 }} />
+                <Image style={styles.preview} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />
                 <View style={styles.proceedingContainer}>
                 {hasMediaLibraryPermission ? <TouchableOpacity onPress= {exportPhoto}>
                     <Image
@@ -132,25 +132,18 @@ export default function App() {
                     />
                 </TouchableOpacity> : undefined}
 
-                <TouchableOpacity onPress={() => setPhoto(undefined)}>
+                <TouchableOpacity onPress={() => setPhotoURI(undefined)}>
                     <Image
                         style={{width: 80, height: 98}}
                         source={require('./assets/delete_icon.png')}
                     />
                 </TouchableOpacity>
-                    <TouchableOpacity onPress={addPhotoGarden}>
-                        <Image
-                            style={{width: 80, height: 98}}
-                            source={require('./assets/yard_icon.png')}
-                        />
-                    </TouchableOpacity>
                 </View>
             </SafeAreaView>
         );
     }
 
     return (
-        <AppProvider>
             <Camera style={styles.container} ref={cameraRef}>
                 <View style={styles.topContainer}>
                     <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -170,7 +163,6 @@ export default function App() {
                     </TouchableOpacity>
                 </View>
             </Camera>
-        </AppProvider>
     );
 }
 
