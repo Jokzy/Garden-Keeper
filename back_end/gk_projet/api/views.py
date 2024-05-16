@@ -6,10 +6,9 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from gk_app.models import Plante
 from .serializers import PlanteSerializer
-from django.http import HttpResponse
 
-perenual_key = "sk-eKNW65d813327065e4323"  # perenual
-plantID_key = "uNrAXKqhOOBBoNXCMQIaEJpqmE6gFs8g0O6tFoEAa5q9AzpQgG" #TODO: Put this in comments when it isn't being used
+perenual_key = "sk-eKNW65d813327065e4323"
+plantID_key = "uNrAXKqhOOBBoNXCMQIaEJpqmE6gFs8g0O6tFoEAa5q9AzpQgG"
 
 @api_view(['GET'])
 def getData(request, query):
@@ -42,30 +41,34 @@ def addItem(request):
 
 @api_view(['POST'])
 def addPlant(request):
-    if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            processed_data = {}
-            for key, value in data.items():
-                if value:
-                    processed_data[key] = value
+    try:
+        data = json.loads(request.body)
+        processed_data = {key: value for key, value in data.items() if value}
 
-            # Creating a Plante instance and adding it to the database
-            Plante.objects.create(**processed_data)
-            #The next lines are to serialize the plante object so that we can store it in the database
-            nom_recherche = processed_data.get('nom_scientifique')
-            if nom_recherche:
-                plante = Plante.objects.get(nom_scientifique=nom_scientifique)
-                serializer = PlanteSerializer(plante)
-                serializer.save()
-                response_data = {'message': 'Data received succesfully', 'processed_data': processed_data}
-                return JsonResponse(response_data)
-            else:
-                return JsonResponse({'error': 'Plante not found'})
-        except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON format'})
-    else:
-        return JsonResponse({'error': 'Only POST requests are allowed'})
+        if not processed_data:
+            return JsonResponse({"message": "No data provided"}, status=400)
+
+        plante = Plante.objects.create(**processed_data)
+        serializer = PlanteSerializer(plante)
+        return JsonResponse({'message': 'Data received successfully', 'processed_data': serializer.data}, status=201)
+
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "Invalid JSON format"}, status=400)
+
+@api_view(['PATCH'])
+def editPlant(request, id_perenual):
+    try:
+        plante = Plante.objects.get(id_perenual=id_perenual)
+        serializer = PlanteSerializer(plante, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Plant update successfully', 'updated_data': serializer.data}, status=200)
+        else:
+            return Response(serializer.errors, status=400)
+    except Plante.DoesNotExist:
+        return Response({"error": "Plant not found"}, status=404)
+    except Exception as e:
+        return Response({'error': str(e)}, status=404)
 
 
 # ----------------- CODE GRAVEYARD -----------------
@@ -74,7 +77,7 @@ def addPlant(request):
 #     with open('back_end/gk_projet/api/images/rose.jpg', 'rb') as file:
 #         image = base64.b64encode(file.read()).decode('ascii')
 #
-#     # print(image) #TODO: TEST
+#     # print(image)
 #     # response = requests.post(url='https://plant.id/api/v3/identification',
 #     #                   headers={'Api-Key': plantID_key, 'Content-Type': 'application/json'},
 #     #                   json={'images': image},
@@ -86,3 +89,31 @@ def addPlant(request):
 #     info = response.json()
 #     print({"message": info["result"]["classification"]["suggestions"][0]["name"]})
 #     return Response({"message": info["result"]["classification"]["suggestions"][0]["name"]})
+
+# @api_view(['POST'])
+# def addPlant(request):
+#     if request.method == 'POST':
+#         try:
+#             data = json.loads(request.body)
+#             processed_data = {}
+#             for key, value in data.items():
+#                 if value:
+#                     processed_data[key] = value
+#
+#             # Creating a Plante instance and adding it to the database
+#             Plante.objects.create(**processed_data)
+#             #The next lines are to serialize the plante object so that we can store it in the database
+#             nom_scientifique = processed_data.get('nom_scientifique')
+#             if nom_scientifique:
+#                 plante = Plante.objects.get(nom_scientifique=nom_scientifique)
+#                 serializer = PlanteSerializer(data=plante)
+#                 if serializer.is_valid():
+#                     serializer.save()
+#                 response_data = {'message': 'Data received succesfully', 'processed_data': processed_data}
+#                 return JsonResponse(response_data)
+#             else:
+#                 return JsonResponse({'error': 'Plante not found'})
+#         except json.JSONDecodeError:
+#             return JsonResponse({'error': 'Invalid JSON format'})
+#     else:
+#         return JsonResponse({'error': 'Only POST requests are allowed'})

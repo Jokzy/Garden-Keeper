@@ -6,19 +6,19 @@ import { useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useImages } from './ImageContext';
 import React from 'react';
-import {addNewPlantToDatabase, handlePhotoSearchAPI, getPerenualID} from "./ApiCalls";
+import {addNewPlantToDatabase, handlePhotoSearchAPI, getPerenualID, modifyPlantInfo} from "./ApiCalls";
 
 export default function App() {
-    // note: on utilise des [const, funct] au lieu d'un let, car, comme ça, React said qu'il doit rafraîchir la page
+    // note: on utilise des [const, funct] au lieu d'un let, car, comme ça, React sait qu'il doit rafraîchir la page
     let cameraRef = useRef();
     const [hasCameraPermission, setHasCameraPermission] = useState();
     const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState();
-    const [photo, setPhoto] = useState();
+    const [photo, setPhoto] = useState(null);
     const [photoURI, setPhotoURI] = useState();
     const navigation = useNavigation();
     const { addImage } = useImages();
     const { addGardenImage } = useImages();
-    const [plantName, setPlantName ] = useState();
+    const [plantName, setPlantName ] = useState(null);
 
     const originalTabBarStyle = {
         position: 'absolute',
@@ -31,7 +31,7 @@ export default function App() {
         elevation: 0,
         backgroundColor: 'transparent', };
     const hiddenTabBarStyle = { display: 'Pas de nom!' };
-
+    // Navigation bar
     useFocusEffect(
         useCallback(() => {
 
@@ -48,7 +48,7 @@ export default function App() {
         }, [navigation])
     );
 
-
+    // Receiving camera permissions
     useEffect(() => {
         (async () => {
             const cameraPermission = await Camera.requestCameraPermissionsAsync();
@@ -83,13 +83,6 @@ export default function App() {
     };
 
     if (photoURI) {
-
-        // let savePhoto = () => {
-        //     MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
-        //         setPhoto(undefined);
-        //     });
-        // };
-
         const exportPhoto = () => {
             if (photoURI) {
                 addImage(photoURI);  // Add the photo URI to the context-managed array
@@ -97,37 +90,45 @@ export default function App() {
             }
             handlePhotoSearch().then(r => 'null');
 
-            //console.log('Plant Name:', plantName); //TEST
-            getPerenualID("European Silver Fir")
-                .then(resolve => {
-                    console.log("ID of the plant from Perenual", resolve)
-                })
-                .catch(error => {
-                    console.error("Whoospies!", error)
-                })
+            console.log('Plant Name:', plantName); //TEST
+            if (plantName) {
+                getPerenualID(plantName)
+                    .then(resolve => {
+                        console.log("ID of the plant from Perenual", resolve)
+
+                    })
+                    .catch(error => {
+                        console.error("Whoospies!", error)
+                    })
+            }
         };
 
         const sendPlantToDatabase = async () => {
             try {
+                const image_personelle = typeof photoURI !== 'undefined' ? photoURI : '';
+                const nom_scientifique = typeof plantName !== 'undefined' ? plantName : '';
+
                 console.log('Before addNewPlantToDatabase', {
-                    frequence_arrosage: null,
-                    ensoleillement: null,
-                    image_personelle: photoURI,
-                    image_API: null,
-                    nom_personnel: null,
-                    nom_scientifique: plantName,
-                    description: null,
-                    dans_jardin: null,
+                    id_perenual: "",
+                    frequence_arrosage: "",
+                    ensoleillement: "",
+                    image_personelle: image_personelle || "",
+                    image_API: "",
+                    nom_personnel: "",
+                    nom_scientifique: nom_scientifique || "",
+                    description: "",
+                    dans_jardin: 'False',
                 })
                 await addNewPlantToDatabase({
-                    frequence_arrosage: null,
-                    ensoleillement: null,
-                    image_personelle: photoURI,
-                    image_API: null,
-                    nom_personnel: null,
-                    nom_scientifique: plantName,
-                    description: null,
-                    dans_jardin: null,
+                    id_perenual: "",
+                    frequence_arrosage: "",
+                    ensoleillement: "",
+                    image_personelle: photoURI || "",
+                    image_API: "",
+                    nom_personnel: "",
+                    nom_scientifique: plantName || "",
+                    description: "",
+                    dans_jardin: "False",
                 });
 
             } catch (error) {
@@ -135,11 +136,12 @@ export default function App() {
             }
         };
 
+
         const handlePhotoSearch = async () => {
             try {
                 //Retrieves the scientific name of the plant:
                 await handlePhotoSearchAPI(photo, setPlantName);
-                sendPlantToDatabase()
+                await sendPlantToDatabase()
 
             } catch (error) {
                 console.error('Error in handlePhotoSearch', error);
@@ -300,3 +302,10 @@ const styles = StyleSheet.create({
 //         })
 //         .catch(error => console.error('Error:', error));
 // }
+//
+// This was right under "if (photoURI)"
+// let savePhoto = () => {
+    //     MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
+    //         setPhoto(undefined);
+    //     });
+    // };

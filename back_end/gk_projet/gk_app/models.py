@@ -2,6 +2,7 @@ from django.db import models
 # Create your models here.
 
 class Plante(models.Model):
+    id_perenual = models.CharField(max_length=100, default='')
     frequence_arrosage = models.CharField(max_length=200, default='')
     ensoleillement = models.CharField(max_length=200, default='')
     image_personelle = models.CharField(max_length=200, default='')
@@ -11,15 +12,16 @@ class Plante(models.Model):
     description = models.CharField(max_length=200, default='')
     dans_jardin = models.BooleanField(max_length=200, default=False)
 
+    @classmethod
+    def create(cls, nom):
+        plante = cls(nom=nom)
+        return plante
 
+
+    # -------------- CODE GRAVEYARD --------------
     # nom_recherche = models.CharField(max_length=200)
     # nom = models.CharField(max_length=200)
     # nom_scientifique = models.JSONField()
     # arrosage = models.CharField(max_length=200)
     # soleil = models.JSONField()
     # cycle = models.CharField(max_length=200)
-
-    @classmethod
-    def create(cls, nom):
-        plante = cls(nom=nom)
-        return plante
