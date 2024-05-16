@@ -1,6 +1,6 @@
 import {useState} from "react";
 
-const IP_ADDRESS = "" //TODO: Don't push your IP address!
+const IP_ADDRESS = "192.168.0.248" //TODO: Don't push your IP address!
 const perenual_key = "sk-3pOW6643942e18ef15485"
 const plantID_key = "uNrAXKqhOOBBoNXCMQIaEJpqmE6gFs8g0O6tFoEAa5q9AzpQgG"
 
@@ -33,7 +33,7 @@ export const getPerenualID = async(nom_scientifique) => {
     }
 }
 
-// Sends photo to Plant.id APi and returns the name of the plant
+// Sends photo to Plant.id APi and returns the name of the plant - basically a getPlantNomScientifique
 export const handlePhotoSearchAPI = async (photo) => {
     const options = {
         method: 'POST',
@@ -76,29 +76,6 @@ export const addNewPlantToDatabase = async (data) => {
             postData[key] = data[key];
         }
     }
-    // const {
-    //     id_perenual,
-    //     frequence_arrosage,
-    //     ensoleillement,
-    //     image_personelle,
-    //     image_API,
-    //     nom_personnel,
-    //     nom_scientifique,
-    //     description,
-    //     dans_jardin
-    // } = data;
-    //
-    // const postData = {
-    //     id_perenual: id_perenual || null,
-    //     frequence_arrosage: frequence_arrosage || null,
-    //     ensoleillement: ensoleillement || null,
-    //     image_personelle: image_personelle || null,
-    //     image_API: image_API || null,
-    //     nom_personnel: nom_personnel || null,
-    //     nom_scientifique: nom_scientifique || null,
-    //     description: description || null,
-    //     dans_jardin: dans_jardin || null
-    // };
 
     console.log("The data that we are feeding:" , postData)
 
@@ -129,8 +106,23 @@ export const addNewPlantToDatabase = async (data) => {
         });
 };
 
+export const getPlantFromDatabase = async (id_perenual) => {
+    const options = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json'},
+    }
 
+    const url = `http://${IP_ADDRESS}:8000/get-plante/${id_perenual}/`
 
+    return fetch(url, options)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error("Failed to retrieve plant from database.")
+            }
+        })
+}
 
 // Get the plant from our database and fill its information
 // Or get the information first and then fill it?
@@ -242,3 +234,29 @@ const acquireInformationAPI = async (nom_scientifique) => {
 //             throw error;
 //         });
 // };
+
+// This was in "addNewPlantToDatabase":
+    // const {
+    //     id_perenual,
+    //     frequence_arrosage,
+    //     ensoleillement,
+    //     image_personelle,
+    //     image_API,
+    //     nom_personnel,
+    //     nom_scientifique,
+    //     description,
+    //     dans_jardin
+    // } = data;
+    //
+    // const postData = {
+    //     id_perenual: id_perenual || null,
+    //     frequence_arrosage: frequence_arrosage || null,
+    //     ensoleillement: ensoleillement || null,
+    //     image_personelle: image_personelle || null,
+    //     image_API: image_API || null,
+    //     nom_personnel: nom_personnel || null,
+    //     nom_scientifique: nom_scientifique || null,
+    //     description: description || null,
+    //     dans_jardin: dans_jardin || null
+    // };
+

@@ -11,26 +11,18 @@ perenual_key = "sk-eKNW65d813327065e4323"
 plantID_key = "uNrAXKqhOOBBoNXCMQIaEJpqmE6gFs8g0O6tFoEAa5q9AzpQgG"
 
 @api_view(['GET'])
-def getData(request, query):
-    if Plante.objects.filter(nom_recherche=query).exists():
-        plante = Plante.objects.get(nom_recherche=query)
-        serializer = PlanteSerializer(plante, many=False)
-        return Response(serializer.data)
-    else:
-        # perenual_url = f"https://perenual.com/api/species-list?key={perenual_key}&q={query}"
-        # r = requests.get(perenual_url)
-        # info = r.json()
-        #
-        # if info['data']: # vérifie si le dictionnaire est vide
-        #     Plante.objects.create(nom_recherche=query, nom=info['data'][0]["common_name"],
-        #                           nom_scientifique=info['data'][0]["scientific_name"],
-        #                           arrosage=info['data'][0]["watering"], soleil=info['data'][0]["sunlight"],
-        #                           cycle=info['data'][0]["cycle"])
-        #
-        #     plante = Plante.objects.get(nom_recherche=query)
-        #     serializer = PlanteSerializer(plante)
-        #     return Response(serializer.data)
-        return Response({"message": "Plante introuvable"})
+def getPlant(request, id_perenual):
+    try:
+        plante = Plante.objects.get(id_perenual=id_perenual)
+        serializer = PlanteSerializer(plante)
+
+        # If the plant is found and serialized correctly, the serialized data will be returned
+        return Response({'Plant_data': serializer.data}, status=200)
+    except Plante.DoesNotExist:
+        return Response({"error": "Plant not found"}, status=404)
+    except Exception as e:
+        return Response({'error': str(e)}, status=404)
+
 
 @api_view(['POST'])
 def addItem(request):
@@ -38,6 +30,7 @@ def addItem(request):
     if serializer.is_valid():
         serializer.save()
     return Response(serializer.data)  # This outputs json data
+
 
 @api_view(['POST'])
 def addPlant(request):
@@ -55,7 +48,8 @@ def addPlant(request):
     except json.JSONDecodeError:
         return JsonResponse({"error": "Invalid JSON format"}, status=400)
 
-@api_view(['PATCH']) #TODO: Edit the way you names crap -> misleading variable names
+
+@api_view(['PATCH'])
 def editPlant(request, id_perenual):
     try:
         plante = Plante.objects.get(id_perenual=id_perenual)
@@ -70,18 +64,7 @@ def editPlant(request, id_perenual):
     except Exception as e:
         return Response({'error': str(e)}, status=404)
 
-@api_view(['GET'])
-def getPlant(request, id_perenual):
-    try:
-        plante = Plante.objects.get(id_perenual=id_perenual)
-        serializer = PlanteSerializer(plante)
 
-        # If the plant is found and serialized correctly, the serialized data will be returned
-        return Response({'Plant_data': serializer.data}, status=200)
-    except Plante.DoesNotExist:
-        return Response({"error": "Plant not found"}, status=404)
-    except Exception as e:
-        return Response({'error': str(e)}, status=404)
 
 # ----------------- CODE GRAVEYARD -----------------
 # @api_view(['POST'])
@@ -129,3 +112,26 @@ def getPlant(request, id_perenual):
 #             return JsonResponse({'error': 'Invalid JSON format'})
 #     else:
 #         return JsonResponse({'error': 'Only POST requests are allowed'})
+
+# @api_view(['GET'])
+# def getData(request, query):
+#     if Plante.objects.filter(nom_recherche=query).exists():
+#         plante = Plante.objects.get(nom_recherche=query)
+#         serializer = PlanteSerializer(plante, many=False)
+#         return Response(serializer.data)
+#     else:
+#         # perenual_url = f"https://perenual.com/api/species-list?key={perenual_key}&q={query}"
+#         # r = requests.get(perenual_url)
+#         # info = r.json()
+#         #
+#         # if info['data']: # vérifie si le dictionnaire est vide
+#         #     Plante.objects.create(nom_recherche=query, nom=info['data'][0]["common_name"],
+#         #                           nom_scientifique=info['data'][0]["scientific_name"],
+#         #                           arrosage=info['data'][0]["watering"], soleil=info['data'][0]["sunlight"],
+#         #                           cycle=info['data'][0]["cycle"])
+#         #
+#         #     plante = Plante.objects.get(nom_recherche=query)
+#         #     serializer = PlanteSerializer(plante)
+#         #     return Response(serializer.data)
+#         return Response({"message": "Plante introuvable"})
+
