@@ -123,7 +123,7 @@ export default function App() {
 
         return (
             <SafeAreaView style={styles.container}>
-                <Image style={styles.preview} source={{ uri: photo.uri }} />
+                <Image style={styles.preview} source={{ uri: "data:image/jpg;base64,"+ photo.base64 }} />
                 <View style={styles.proceedingContainer}>
                 {hasMediaLibraryPermission ? <TouchableOpacity onPress= {exportPhoto}>
                     <Image
