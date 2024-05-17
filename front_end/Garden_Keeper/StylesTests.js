@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
         color: "#75904b",
     },
     infoText:{
-        fontSize: 20,
+        fontSize: 15,
         color:"#abce6e"
     },
     infoContainer:{
