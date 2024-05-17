@@ -1,5 +1,6 @@
 import requests
 import base64
+from rest_framework import viewsets
 import json
 from django.http import JsonResponse
 from rest_framework.response import Response
@@ -54,19 +55,32 @@ def addPlant(request):
 def editPlant(request, id_perenual):
     try:
         data = json.loads(request.body)
-        processed_data = {key: value for key, value in data.items() if value}
+        processed_data = {key: value for key, value in data.items() if value is not None}
+        print(processed_data) #TODO: TEST
+        if not processed_data:
+            return Response({"message": "No data provided"}, status=400)
 
-        plante = Plante.objects.get(id_perenual=id_perenual)
+        try:
+            plante = Plante.objects.get(id_perenual=id_perenual)
+        except Plante.DoesNotExist:
+            return Response({"error": "Plant not found"}, status=404)
+
         serializer = PlanteSerializer(plante, data=processed_data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response({'message': 'Plant update successfully', 'updated_data': serializer.data}, status=200)
         else:
             return Response(serializer.errors, status=400)
-    except Plante.DoesNotExist:
-        return Response({"error": "Plant not found"}, status=404)
+
     except Exception as e:
         return Response({'error': str(e)}, status=404)
+
+
+@api_view(['GET'])
+def getAllPlants(request):
+    plants = Plante.objects.all()
+    serializer = PlanteSerializer(plants, many=True)
+    return Response(serializer.data)
 
 # ----------------- CODE GRAVEYARD -----------------
 # @api_view(['POST'])

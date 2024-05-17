@@ -6,4 +6,5 @@ urlpatterns = [
     path('get-plante/<str:id_perenual>/', views.getPlant),
     path('add-plante/', views.addPlant),
     path('edit-plante/<str:id_perenual>', views.editPlant),
+    path('get-all-plants/', views.getAllPlants)
 ]

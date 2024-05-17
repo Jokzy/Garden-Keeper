@@ -15,7 +15,8 @@ import {
 import {useAppContext} from './AppContext'
 import { useNavigation } from '@react-navigation/native';
 
-export default function StylesTests() {
+export default function StylesTests({route}) {
+    const {infoRecu} = route.param;
     const {imagePersonnelle} = useAppContext(); //Use context to access photoDB
     const {nomScientifique} = useAppContext();
     const [isChecked, setIsChecked] = useState(false);

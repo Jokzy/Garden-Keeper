@@ -1,7 +1,8 @@
 import {useState} from "react";
 
+
 const IP_ADDRESS = "" //TODO: Don't push your IP address!
-const perenual_key = "sk-EOO16646872e1c7935538"
+const perenual_key = "sk-K1St6646b9bc47e595540"
 const plantID_key = "78wKYnmoSAawYGVcmrotGJw3mBweeCN7mMDaZ8PXDNOoVtLLfV"
 
 //TODO: A lot of this can be handled directly in the API calls, like the setPlantName
@@ -150,6 +151,30 @@ export const getPlantFromDatabase = async (id_perenual) => {
         throw error;
     }}
 
+export const getAllPlants = async () => {
+    try {
+        const response = await fetch(`http://${IP_ADDRESS}:8000/get-all-plants/`)
+        if (!response.ok) {
+            throw new Error("HTTP error! Stupid!");
+        }
+        const data = response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching plants:', error);
+        throw error;
+    }
+    // const url = `http://${IP_ADDRESS}:8000/get-all-plants/`;
+    //
+    // return fetch(url)
+    //     .then(response => {
+    //         if (response.ok) {
+    //             console.log("SENT all plants!") //TEST
+    //             return response.json();
+    //         } else {
+    //             throw new Error('Failed to send GET request to get all plants');
+    //         }
+    //     })
+}
 
 // Get the plant from our database and fill its information
 // Or get the information first and then fill it?

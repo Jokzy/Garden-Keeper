@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     View,
     TextInput,
@@ -10,12 +10,12 @@ import {
     KeyboardAvoidingView,
     FlatList,
     Pressable
-
-
 } from 'react-native';
 import * as Font from "expo-font"
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
+import {getAllPlants} from "./ApiCalls";
+
 //import { useImages } from './AppContext';
 
 async function loadFont(){
@@ -24,35 +24,52 @@ async function loadFont(){
     });
 }
 
+export default function ScreenEnc() {
+    const [searchText, setSearchText] = useState('');
+    const [searchResult, setSearchResult] = useState('');
+    const navigation = useNavigation();
 
+    const [plants, setPlants] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    export default function ScreenEnc() {
-        const [searchText, setSearchText] = useState('');
-        const [searchResult, setSearchResult] = useState('');
-        const navigation = useNavigation();
-        //const [image, setImage] = useState(null);
-        //const { images } = useImages();
-        //const { addImage } = useImages();
-
-        const pickImage = async () => {
-
-            const {status} = await ImagePicker.requestMediaLibraryPermissionsAsync();
-            if (status !== 'granted') {
-                alert('Sorry, we need camera roll permissions to make this work!');
-            }
-            let result = await ImagePicker.launchImageLibraryAsync({
-                mediaTypes: ImagePicker.MediaTypeOptions.All,
-                allowsEditing: true,
-                aspect: [4, 3],
-                quality: 1,
-            })
-
-            if (!result.cancelled) {
-                //setImage(result.uri);
-                addImage(result.uri);
+    useEffect(() => {
+        const fetchPlants = async() => {
+            try {
+                const data = await getAllPlants();
+                console.log("Data fetched:", data);
+                setPlants(data);
+                //setPlants(response.data);
+            } catch (error) {
+                console.error('Error fetching plants:', error);
+            } finally {
+                setLoading(false)
             }
         };
+        fetchPlants().then(r => null);
+    }, []);
 
+    if (loading) {
+        return <Text>Loading...</Text>
+    }
+
+    const pickImage = async () => {
+
+        const {status} = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+            alert('Sorry, we need camera roll permissions to make this work!');
+        }
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        })
+
+        if (!result.cancelled) {
+            //setImage(result.uri);
+            //addImage(result.uri);
+        }
+    };
 
 
         const handleSearch = () => {
@@ -60,6 +77,7 @@ async function loadFont(){
             // heeheheheheheh
             setSearchResult(searchText);
         };
+
         const SearchButton = ({ onPress }) => (
             <TouchableOpacity onPress={onPress} style={styles.button}>
                 <Image
@@ -98,14 +116,24 @@ async function loadFont(){
 
                     </KeyboardAvoidingView>
                     <FlatList
-                        //data={images}
-                        keyExtractor={item => item.id.toString()}
+                        data={plants}
+                        keyExtractor={item => item.id_perenual.toString()}
                         renderItem={({ item }) => (
-                            <Pressable onPress={() => console.log("Pressed item", item.id && navigation.navigate("Styles"))} style={styles.pressableItem}>
-                                <Image source={{ uri: item.uri }} style={styles.imageFormat} />
-                                <Text>Plant name</Text>
+                            <Pressable onPress={() => navigation.navigate("Styles", {plantID: item.id_perenual})}
+                                       style={styles.pressableItem}
+                                       >
+                                {/*console.log("Pressed item", item.id && navigation.navigate("Styles"))} style={styles.pressableItem}>*/}
+                                <Image source={{ uri: item.image_API }} style={styles.imageFormat} />
+                                <Text>{item.nom_scientifique}</Text>
                             </Pressable>
                         )}
+
+                        // renderItem={({ item }) => (
+                        //     <Pressable onPress={() => console.log("Pressed item", item.id && navigation.navigate("Styles"))} style={styles.pressableItem}>
+                        //         <Image source={{ uri: item.uri }} style={styles.imageFormat} />
+                        //         <Text>Plant name</Text>
+                        //     </Pressable>
+                        // )}
                         ListEmptyComponent={<Text style={styles.emptyMessage}>C'est bien vide ici...</Text>}
                         numColumns={3}
                         style={styles.containerFlatList}
