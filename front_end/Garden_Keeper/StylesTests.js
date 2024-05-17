@@ -10,7 +10,7 @@ import {
     Image,
     TouchableOpacity,
     Dimensions,
-    Pressable, Alert
+    Pressable, Alert, ScrollView
 } from 'react-native';
 import {useAppContext} from './AppContext'
 import { useNavigation } from '@react-navigation/native';
@@ -46,28 +46,35 @@ export default function StylesTests() {
 
     return (
         <View style={styles.container}>
+
             <View style={styles.containerPhotoPrise}>
                 <Image source={{uri: imagePersonnelle}} style={styles.imagePhoto}/>
             </View>
+
             <View style={styles.containerID}>
                 <Text style={styles.plantName}>{nomScientifique}</Text>
                 <Image source={{uri:imageAPI}} style={styles.imageApi}/>
             </View>
+
             <View style={styles.descriptionContainer}>
-                <View style={styles.descriptionText}>
+                <ScrollView style={styles.descriptionText}>
                     <Text style={styles.infoText}>{description}</Text>
-                </View>
+                </ScrollView>
+
             <View style={styles.containerInfo}>
+
             <View style={styles.infoContainer}>
                 <Image source={require('./assets/labelIcon.png')} style={styles.infoTitle}/>
                 <Text style={styles.gardenQ}>: </Text>
                 <Text style={styles.infoText}> {nomScientifique}</Text>
             </View>
+
                 <View style={styles.infoContainer}>
                     <Image source={require('./assets/sunIcon.png')} style={styles.infoTitle}/>
                     <Text style={styles.gardenQ}>: </Text>
                     <Text style={styles.infoText}> {Ensoleillement}</Text>
                 </View>
+
                 <View style={styles.infoContainer}>
                     <Image source={require('./assets/waterIcon.png')} style={styles.infoTitle}/>
                     <Text style={styles.gardenQ}>: </Text>
