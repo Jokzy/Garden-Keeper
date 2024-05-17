@@ -7,7 +7,7 @@ Il s'agit d'une application React Native qui permet aux utilisateurs de prendre 
 
 ## Utilisation des Fonctionnalités
 
-- **photo main menu** Commencez par naviger les différents menus
+- **photo main menu** : Commencez par naviger les différents menus
 - **photo camera** : Utilisez l'appareil photo de votre appareil pour prendre des photos de plantes.
 - **photo du info card** : Après avoir pris une photo, l'application vous fournira des données sur la plante.
 - **photo jardin** : Vous avez la possibilité de stocker les plants de votre choix dans votre "jardin" virtuelle
