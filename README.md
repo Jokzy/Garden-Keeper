@@ -21,7 +21,7 @@ Pour installer l'application, suivez ces étapes :
 3. Installez les dépendances : 
 4. Lancez l'application : 
 
-##Pour lancer l'application
+## Pour lancer l'application
 1. Télécharger l'application Expo Go
 2. Suivre les indications de l'application pour télécharger la version compatible avec notre programme (SDK 50)
 3. Ajouter votre adresse IP dans notre code (Regardez dans nos TODOs, il y a deux endroit à remplir)
