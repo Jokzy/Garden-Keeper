@@ -18,6 +18,10 @@ import { useNavigation } from '@react-navigation/native';
 export default function StylesTests() {
     const {imagePersonnelle} = useAppContext(); //Use context to access photoDB
     const {nomScientifique} = useAppContext();
+    const {frequenceArrosage} = useAppContext()
+    const {Ensoleillement} = useAppContext()
+    const {imageAPI} = useAppContext()
+    const {description} = useAppContext()
     const [isChecked, setIsChecked] = useState(false);
     const navigation = useNavigation();
     const [modalVisible, setModalVisible] = useState(false)
@@ -46,29 +50,28 @@ export default function StylesTests() {
                 <Image source={{uri: imagePersonnelle}} style={styles.imagePhoto}/>
             </View>
             <View style={styles.containerID}>
-
                 <Text style={styles.plantName}>{nomScientifique}</Text>
-                <Image source={require('./assets/PlanteMenu.png')} style={styles.imageApi}/>
+                <Image source={{uri:imageAPI}} style={styles.imageApi}/>
             </View>
             <View style={styles.descriptionContainer}>
                 <View style={styles.descriptionText}>
-                    <Text style={styles.infoText}>Long ass description that takes a lot of lines. like where they live or some shit idk I'm not an expert I don't know plants I was a part of the front end friends</Text>
+                    <Text style={styles.infoText}>{description}</Text>
                 </View>
             <View style={styles.containerInfo}>
             <View style={styles.infoContainer}>
                 <Image source={require('./assets/labelIcon.png')} style={styles.infoTitle}/>
                 <Text style={styles.gardenQ}>: </Text>
-                <Text style={styles.infoText}> blablabla</Text>
+                <Text style={styles.infoText}> {nomScientifique}</Text>
             </View>
                 <View style={styles.infoContainer}>
                     <Image source={require('./assets/sunIcon.png')} style={styles.infoTitle}/>
                     <Text style={styles.gardenQ}>: </Text>
-                    <Text style={styles.infoText}> blablabla</Text>
+                    <Text style={styles.infoText}> {Ensoleillement}</Text>
                 </View>
                 <View style={styles.infoContainer}>
                     <Image source={require('./assets/waterIcon.png')} style={styles.infoTitle}/>
                     <Text style={styles.gardenQ}>: </Text>
-                    <Text style={styles.infoText}> blablabla</Text>
+                    <Text style={styles.infoText}> {frequenceArrosage}</Text>
                 </View>
 
             </View>

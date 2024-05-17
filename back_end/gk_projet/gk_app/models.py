@@ -4,7 +4,7 @@ from django.db import models
 class Plante(models.Model):
     id_perenual = models.CharField(max_length=100, default='')
     frequence_arrosage = models.CharField(max_length=200, default='')
-    ensoleillement = models.CharField(max_length=200, default='')
+    ensoleillement = models.JSONField(max_length=200, default=dict)
     image_personelle = models.CharField(max_length=200, default='')
     image_API = models.CharField(max_length=200, default='')
     nom_personnel = models.CharField(max_length=200, default='Sans nom')

@@ -7,13 +7,25 @@ const AppContext = createContext();
 export const AppProvider = ({ children }) => {
     const [imagePersonnelle, setImagePersonnelle] = useState(null);
     const [nomScientifique, setNomScientifique] = useState(null);
+    const [frequenceArrosage, setFrequenceArrosage] = useState(null);
+    const [Ensoleillement, setEnsoleillement] = useState(null);
+    const [imageAPI, setImageAPI]= useState(null);
+    const [description, setDescription]=useState(null);
+    const [dansJardin, setDansJardin]= useState(null);
 
     return (
         <AppContext.Provider value={{
             imagePersonnelle,
             setImagePersonnelle,
             nomScientifique,
-            setNomScientifique
+            setNomScientifique,
+            frequenceArrosage,
+            setFrequenceArrosage,
+            Ensoleillement,
+            setEnsoleillement,
+            imageAPI, setImageAPI,
+            description, setDescription,
+            dansJardin, setDansJardin
         }}>
             {children}
         </AppContext.Provider>

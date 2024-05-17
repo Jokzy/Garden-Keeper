@@ -16,7 +16,9 @@ export default function App() {
     const [photo, setPhoto] = useState();
     const [photoURI, setPhotoURI] = useState();
     const navigation = useNavigation();
-    const { setImagePersonnelle, setNomScientifique } = useAppContext()
+    const { setImagePersonnelle, setNomScientifique, frequenceArrosage,
+            setFrequenceArrosage, setEnsoleillement, setImageAPI,
+            setDescription, setDansJardin } = useAppContext() //TODO: 2: add other functions you created
     // const [plantName, setPlantName ] = useState(null);
 
     const originalTabBarStyle = {
@@ -90,6 +92,7 @@ export default function App() {
             navigation.navigate("Styles")
         };
 
+        //On donne toutes les valeurs aux attributs qu'on veut display
         const handlePhotoSearch = async () => {
             try {
                 //Retrieves the scientific name of the plant:
@@ -102,7 +105,12 @@ export default function App() {
                 console.log("This is the response:", plant)
 
                 setNomScientifique(nom_plante)
-                setImagePersonnelle(plant.Plant_data.image_personelle)
+                setImagePersonnelle(plant.Plant_data.image_personelle) //TODO: 3 Set all the other things here (and get stuff from DB)
+                setFrequenceArrosage(plant.Plant_data.frequence_arrosage)
+                setEnsoleillement(plant.Plant_data.ensoleillement)
+                setImageAPI(plant.Plant_data.image_API)
+                setDescription(plant.Plant_data.description)
+                //setDansJardin(plant.Plant_data.dans_jardin)
 
                 // getPlantFromDatabase(id_plant)
                 //     .then(Plant_data => {
