@@ -3,7 +3,7 @@
 
 ## Description
 
-Il s'agit d'une application React Native qui permet aux utilisateurs de prendre des photos de plantes et de recevoir des données à leur sujet tell que le nom scientifique et le niveau d'arrosage. C'est parfait pour les amateurs de plantes, les botanistes ou toute personne intéressée à en savoir plus sur la flore qui l'entoure.
+Il s'agit d'une application React Native qui permet aux utilisateurs de prendre des photos de plantes et de recevoir des données à leur sujet tel que le nom scientifique et le niveau d'arrosage. C'est parfait pour les amateurs de plantes, les botanistes et toute personne intéressée à en savoir plus sur la flore qui les entoure.
 
 ## Utilisation des Fonctionnalités
 
@@ -18,7 +18,7 @@ Il s'agit d'une application React Native qui permet aux utilisateurs de prendre 
 - - 
 - **photo du info card ** : Après avoir pris une photo, l'application vous fournira des données sur la plante.
 - 
-- **photo jardin ** : Vous avez la possibilité de stocker les plants de votre choix dans votre "jardin " virtuelle
+- **photo jardin ** : Vous avez la possibilité de stocker les plants de votre choix dans votre "jardin" virtuelle
 
 - 
 ## Installation
