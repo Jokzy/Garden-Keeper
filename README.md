@@ -21,7 +21,13 @@ Pour installer l'application, suivez ces étapes :
 3. Installez les dépendances : 
 4. Lancez l'application : 
 
-
+##Pour lancer l'application
+1. Télécharger l'application Expo Go
+2. Suivre les indications de l'application pour télécharger la version compatible avec notre programme (SDK 50)
+3. Ajouter votre adresse IP dans notre code (Regardez dans nos TODOs, il y a deux endroit à remplir)
+4. Pour partir l'application, run la partie REACT et la partie Python (python manage.py runserver *adresse IP*:8000, dans le terminal)
+5. Scanner le code QR avec EXPO GO
+6. Enjoy :)
 
 ## Contribution
 
