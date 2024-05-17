@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import * as Font from "expo-font"
 import * as ImagePicker from 'expo-image-picker';
+import { useNavigation } from '@react-navigation/native';
 //import { useImages } from './AppContext';
 
 async function loadFont(){
@@ -28,6 +29,7 @@ async function loadFont(){
     export default function ScreenEnc() {
         const [searchText, setSearchText] = useState('');
         const [searchResult, setSearchResult] = useState('');
+        const navigation = useNavigation();
         //const [image, setImage] = useState(null);
         //const { images } = useImages();
         //const { addImage } = useImages();
@@ -99,7 +101,7 @@ async function loadFont(){
                         //data={images}
                         keyExtractor={item => item.id.toString()}
                         renderItem={({ item }) => (
-                            <Pressable onPress={() => console.log("Pressed item", item.id)} style={styles.pressableItem}>
+                            <Pressable onPress={() => console.log("Pressed item", item.id && navigation.navigate("Styles"))} style={styles.pressableItem}>
                                 <Image source={{ uri: item.uri }} style={styles.imageFormat} />
                                 <Text>Plant name</Text>
                             </Pressable>

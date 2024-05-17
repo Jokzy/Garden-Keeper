@@ -1,12 +1,27 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useContext, useEffect, useState} from 'react';
-import {View, TextInput, Button, Text, StyleSheet, ImageBackground, Image, TouchableOpacity, Dimensions} from 'react-native';
+import {
+    View,
+    TextInput,
+    Button,
+    Text,
+    StyleSheet,
+    ImageBackground,
+    Image,
+    TouchableOpacity,
+    Dimensions,
+    Pressable, Alert
+} from 'react-native';
 import {useAppContext} from './AppContext'
+import { useNavigation } from '@react-navigation/native';
 
 export default function StylesTests() {
     const {imagePersonnelle} = useAppContext(); //Use context to access photoDB
     const {nomScientifique} = useAppContext();
     const [isChecked, setIsChecked] = useState(false);
+    const navigation = useNavigation();
+    const [modalVisible, setModalVisible] = useState(false)
+    const [modalText, setModalText] = useState()
 
     useEffect(() => { //THIS IS JUST TO TEST
         console.log('photoDB in StylesTests:', imagePersonnelle);
@@ -24,6 +39,7 @@ export default function StylesTests() {
 
 
 
+
     return (
         <View style={styles.container}>
             <View style={styles.containerPhotoPrise}>
@@ -34,27 +50,42 @@ export default function StylesTests() {
                 <Text style={styles.plantName}>{nomScientifique}</Text>
                 <Image source={require('./assets/PlanteMenu.png')} style={styles.imageApi}/>
             </View>
+            <View style={styles.descriptionContainer}>
+                <View style={styles.descriptionText}>
+                    <Text style={styles.infoText}>Long ass description that takes a lot of lines. like where they live or some shit idk I'm not an expert I don't know plants I was a part of the front end friends</Text>
+                </View>
             <View style={styles.containerInfo}>
             <View style={styles.infoContainer}>
-                <Text style={styles.infoTitle}>Info 1:</Text>
+                <Image source={require('./assets/labelIcon.png')} style={styles.infoTitle}/>
+                <Text style={styles.gardenQ}>: </Text>
                 <Text style={styles.infoText}> blablabla</Text>
             </View>
                 <View style={styles.infoContainer}>
-                    <Text style={styles.infoTitle}>Info 2:</Text>
+                    <Image source={require('./assets/sunIcon.png')} style={styles.infoTitle}/>
+                    <Text style={styles.gardenQ}>: </Text>
                     <Text style={styles.infoText}> blablabla</Text>
                 </View>
                 <View style={styles.infoContainer}>
-                    <Text style={styles.infoTitle}>Info 3:</Text>
+                    <Image source={require('./assets/waterIcon.png')} style={styles.infoTitle}/>
+                    <Text style={styles.gardenQ}>: </Text>
                     <Text style={styles.infoText}> blablabla</Text>
                 </View>
 
             </View>
+            </View>
             <View style={styles.containerCheckBox}>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <Image
+                        style={{width: 30, height: 30, marginRight: 30}}
+                        source={require('./assets/back_icon.png')}
+                    />
+
+                </TouchableOpacity>
                 <CheckBox
                     isChecked={isChecked}
                     onPress={()=> setIsChecked(!isChecked)}
                 />
-                <Text style={styles.infoTitle}>Dans le jardin?</Text>
+                <Text style={styles.gardenQ}>Dans le jardin?</Text>
             </View>
         </View>
 
@@ -84,7 +115,7 @@ const styles = StyleSheet.create({
         width: "90%"
     },
     containerInfo:{
-        flex: 0.5,
+        flex: 1,
         justifyContent: "center",
         alignItems: "center",
 
@@ -97,11 +128,16 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     infoTitle:{
+        height: 20,
+        width: 20,
+        alignItems: "center"
+    },
+    gardenQ:{
         fontSize: 30,
-        color:"#75904b"
+        color: "#75904b",
     },
     infoText:{
-        fontSize: 30,
+        fontSize: 20,
         color:"#abce6e"
     },
     infoContainer:{
@@ -109,7 +145,8 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        paddingRight: 100
+        paddingLeft: 40,
+        paddingRight: 50
     },
     imagePhoto: {
         width: screenWidth,
@@ -137,7 +174,16 @@ const styles = StyleSheet.create({
     textContainer:{
         flex:1,
         flexWrap: "wrap",
+    },
+    descriptionContainer:{
+        flexDirection: "row",
+        flex: 0.5,
 
-
+    },
+    descriptionText:{
+        flex:1,
+        justifyContent: "center",
+        alignItems: "center",
+        paddingLeft: 20
     }
 });
