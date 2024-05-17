@@ -7,7 +7,7 @@ from rest_framework.decorators import api_view
 from gk_app.models import Plante
 from .serializers import PlanteSerializer
 
-perenual_key = "sk-EOO16646872e1c7935538"
+perenual_key = "sk-K1St6646b9bc47e595540"
 plantID_key = "78wKYnmoSAawYGVcmrotGJw3mBweeCN7mMDaZ8PXDNOoVtLLfV"
 
 
@@ -42,8 +42,11 @@ def addPlant(request):
         if not processed_data:
             return JsonResponse({"message": "No data provided"}, status=400)
 
-        plante = Plante.objects.create(**processed_data)
-        serializer = PlanteSerializer(plante)
+        if not(Plante.objects.filter(id_perenual=processed_data["id_perenual"]).exists()):
+            plante = Plante.objects.create(**processed_data)
+            serializer = PlanteSerializer(plante)
+        else:
+            serializer = PlanteSerializer(Plante.objects.get(id_perenual=processed_data["id_perenual"]))
         return JsonResponse({'message': 'Data received successfully', 'processed_data': serializer.data}, status=201)
 
     except json.JSONDecodeError:

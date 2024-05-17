@@ -1,7 +1,7 @@
 import {useState} from "react";
 
 const IP_ADDRESS = "" //TODO: Don't push your IP address!
-const perenual_key = "sk-EOO16646872e1c7935538"
+const perenual_key = "sk-K1St6646b9bc47e595540"
 const plantID_key = "78wKYnmoSAawYGVcmrotGJw3mBweeCN7mMDaZ8PXDNOoVtLLfV"
 
 //TODO: A lot of this can be handled directly in the API calls, like the setPlantName
@@ -60,6 +60,7 @@ export const handlePhotoSearchAPI = async (photo) => {
         //Getting the id in Perenual from the scientific name
         const id_perenual = await getPerenualID(nom_scientifique);
         console.log("dis the id:", id_perenual)
+
 
         const response2 = await fetch(`https://perenual.com/api/species/details/${id_perenual}?key=${perenual_key}`);
         if (!response.ok) {
