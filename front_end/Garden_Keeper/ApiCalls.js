@@ -150,6 +150,19 @@ export const getPlantFromDatabase = async (id_perenual) => {
         throw error;
     }}
 
+export const getAllPlantsDB = async () => {
+    const url = `http://${IP_ADDRESS}:8000/getAllPlants/`;
+
+    return fetch(url)
+        .then(response => {
+            if (response.ok) {
+                console.log("SENT!") //TEST
+                return response.json();
+            } else {
+                throw new Error('Failed to send POST request');
+            }
+        })
+}
 
 // Get the plant from our database and fill its information
 // Or get the information first and then fill it?

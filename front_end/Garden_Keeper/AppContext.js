@@ -9,12 +9,7 @@ export const AppProvider = ({ children }) => {
     const [nomScientifique, setNomScientifique] = useState(null);
 
     return (
-        <AppContext.Provider value={{
-            imagePersonnelle,
-            setImagePersonnelle,
-            nomScientifique,
-            setNomScientifique
-        }}>
+        <AppContext.Provider value={{imagePersonnelle, setImagePersonnelle, nomScientifique, setNomScientifique}}>
             {children}
         </AppContext.Provider>
     );
