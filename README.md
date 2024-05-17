@@ -35,9 +35,9 @@ Pour installer l'application, suivez ces étapes :
 ## Contribution
 
 Joe El-Hachem:  
-Sonia Ly:
-Jacob Boucher:
-Camille Marquis:
+Sonia Ly:   
+Jacob Boucher:  
+Camille Marquis:  
 
 ## Licence
 
